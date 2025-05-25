@@ -15,6 +15,8 @@
   "@react-navigation/stack": "^7.3.2",
   "react": "19.0.0",
   "react-native": "0.79.2",
+  "react-native-country-codes-picker": "^2.3.5",
+  "react-native-element-dropdown": "^2.12.4",
   "react-native-gesture-handler": "^2.25.0",
   "react-native-responsive-dimensions": "^3.1.1",
   "react-native-safe-area-context": "^5.4.1",
