@@ -6,6 +6,7 @@ import SignUpScreen from '../Screens/SignUp/Signup';
 import OtpScreen from '../Screens/OtpScreen/OtpScreens';
 import TrialAccessScreen from '../Screens/TrialScreen/TrialScreen';
 import PlanScreen from '../Screens/PlanScreen/PlanScreen';
+import PaymentScreen from '../Screens/PaymentScreen/PaymentScreen';
 const Stack = createStackNavigator();
 
 const MyStack = () => {
@@ -16,6 +17,7 @@ const MyStack = () => {
    <Stack.Screen name="OtpScreen" component={OtpScreen} />
    <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
+   <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
   </Stack.Navigator>
  );
 };
