@@ -10,3 +10,7 @@ export const BLANK_CARD = require('../../Src/Images/credit-card.png');
 export const REVIEW = require('../../Src/Images/review.png');
 export const STRIPE = require('../../Src/Images/paymentIcon.png');
 export const ORDER = require('../../Src/Images/orderSuccess.png');
+export const VIDEOICON = require('../../Src/Images/videoIcon.png');
+export const TIMEICON = require('../../Src/Images/timeIcon.png');
+export const MENUICON = require('../../Src/Images/menuIcon.png');
+

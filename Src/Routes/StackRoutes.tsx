@@ -7,6 +7,10 @@ import OtpScreen from '../Screens/OtpScreen/OtpScreens';
 import TrialAccessScreen from '../Screens/TrialScreen/TrialScreen';
 import PlanScreen from '../Screens/PlanScreen/PlanScreen';
 import PaymentScreen from '../Screens/PaymentScreen/PaymentScreen';
+import CourseListIndex from '../Screens/CourseList/CourseListIndex';
+import HairCourses from '../Screens/CourseList/HairCourses/HairCourses';
+import ViewFolder from '../Screens/ViewFolder/ViewFolder';
+import SingleCoursePlayer from '../Screens/SingleCoursePlayer/SingleCoursePlayer';
 const Stack = createStackNavigator();
 
 const MyStack = () => {
@@ -18,6 +22,10 @@ const MyStack = () => {
    <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
    <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+   <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
+   <Stack.Screen name="HairCourses" component={HairCourses} />
+   <Stack.Screen name="ViewFolder" component={ViewFolder} />
+   <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
   </Stack.Navigator>
  );
 };
