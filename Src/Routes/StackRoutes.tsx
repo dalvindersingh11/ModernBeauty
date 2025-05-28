@@ -11,6 +11,13 @@ import CourseListIndex from '../Screens/CourseList/CourseListIndex';
 import HairCourses from '../Screens/CourseList/HairCourses/HairCourses';
 import ViewFolder from '../Screens/ViewFolder/ViewFolder';
 import SingleCoursePlayer from '../Screens/SingleCoursePlayer/SingleCoursePlayer';
+import Settings from '../Screens/Settings/Settings';
+import EditProfile from '../Screens/EditProfile/EditProfile';
+import PrivacyPolicy from '../Screens/PrivacyPolicy/PrivacyPolicy';
+import ManageSubscription from '../Screens/ManageSubscription/ManageSubscription';
+import HelpSupport from '../Screens/Help&Support/HelpSupport';
+import TermsPolicies from '../Screens/TermsPolicies/TermsPolicies';
+import AddTicket from '../Screens/AddTicket/AddTicket';
 const Stack = createStackNavigator();
 
 const MyStack = () => {
@@ -26,6 +33,15 @@ const MyStack = () => {
    <Stack.Screen name="HairCourses" component={HairCourses} />
    <Stack.Screen name="ViewFolder" component={ViewFolder} />
    <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
+   <Stack.Screen name="Settings" component={Settings} />
+   <Stack.Screen name="EditProfile" component={EditProfile} />
+   <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+   <Stack.Screen name="ManageSubscription" component={ManageSubscription} />
+   <Stack.Screen name="HelpSupport" component={HelpSupport} />
+   <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
+   <Stack.Screen name="AddTicket" component={AddTicket} />
+   
+   
   </Stack.Navigator>
  );
 };

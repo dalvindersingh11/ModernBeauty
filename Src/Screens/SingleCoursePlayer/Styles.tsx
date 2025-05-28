@@ -9,9 +9,7 @@ export default StyleSheet.create({
   container: {
   flex: 1,
   backgroundColor: colors.backgrounColor,
-  
-//   alignItems: 'center',
-//   paddingTop: moderateScale(21),
+
  },
  header: {
   width: '100%',
