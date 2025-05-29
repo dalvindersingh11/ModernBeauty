@@ -34,34 +34,25 @@ const Styles = StyleSheet.create({
     width: ms(18),
     height: mvs(16),
   },
-  title: {
+  headerTitle: {
     fontSize: ms(24),
     fontWeight: '700',
     color: '#000',
   },
-  emptySpace: {
-    width: ms(18),
-    height: mvs(16),
+  helpPlusIcon: {
+    width: ms(24.22),
+    height: ms(24.22),
+    resizeMode: 'contain',
   },
-  label: {
-    fontSize: ms(16),
-    fontWeight: '700',
+  noTicketContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noTicketText: {
+    fontSize: ms(12),
+    fontWeight: '400',
     color: '#000',
-  },
-  inputBox: {
-    backgroundColor: '#fff',
-    borderRadius: ms(6),
-    gap: mvs(10),
-    padding: mvs(10),
-    alignItems: 'flex-start',
-  },
-  messageBox: {
-    backgroundColor: '#fff',
-    borderRadius: ms(6),
-    gap: mvs(10),
-    padding: mvs(10),
-    alignItems: 'flex-start',
-    minHeight: mvs(161),
   },
 });
 
