@@ -5,6 +5,7 @@
  "scripts": {
   "android": "react-native run-android",
   "clear": "cd android ./gradlew clean cd..",
+  "build-font": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
   "ios": "react-native run-ios",
   "lint": "eslint .",
   "start": "react-native start",
