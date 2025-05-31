@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import MyStack from './Src/Routes/StackRoutes';
 import SplashScreen from './Src/Screens/SplashScreen/SplashScreen';
+import { Provider } from 'react-redux';
+import store from './Src/store.tsx/store';
 
 function App() {
  const [showSplash, setShowSplash] = useState(true);
@@ -20,9 +22,11 @@ function App() {
    {showSplash ? (
     <SplashScreen />
    ) : (
-    <NavigationContainer>
-     <MyStack />
-    </NavigationContainer>
+    <Provider store={store}>
+     <NavigationContainer>
+      <MyStack />
+     </NavigationContainer>
+    </Provider>
    )}
   </>
  );

@@ -17,6 +17,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
+import TopHeader from '../TopHeader/TopHeader';
 export default function ShippingAddress(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -37,13 +38,7 @@ export default function ShippingAddress(props: any) {
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}
-     <View style={Styles.header}>
-      <Image
-       style={{ height: moderateScale(20), width: moderateScale(76) }}
-       source={APP_LOGO}
-      />
-      <Image source={USER} style={Styles.profileIcon} />
-     </View>
+     <TopHeader />
      <View style={Styles.navRow}>
       <TouchableOpacity
        onPress={() => navigation?.goBack()}

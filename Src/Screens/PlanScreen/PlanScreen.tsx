@@ -7,6 +7,7 @@ import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import colors from '../../Constant/colors';
 import { useNavigation } from '@react-navigation/native';
 import Styles from './Styles';
+import TopHeader from '../../Component/TopHeader/TopHeader';
 export default function PlanScreen() {
  const [selectedPlan, setSelectedPlan] = useState('annual');
  const navigation = useNavigation<any>();
@@ -14,13 +15,7 @@ export default function PlanScreen() {
  return (
   <ScrollView contentContainerStyle={Styles.container}>
    {/* Header */}
-   <View style={Styles.header}>
-    <Image
-     style={{ height: moderateScale(20), width: moderateScale(76) }}
-     source={APP_LOGO}
-    />
-    <Image source={USER} style={Styles.profileIcon} />
-   </View>
+   <TopHeader />
 
    {/* Title */}
    <Text allowFontScaling={true} style={Styles.title}>

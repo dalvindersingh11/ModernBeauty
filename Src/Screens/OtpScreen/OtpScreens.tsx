@@ -5,12 +5,14 @@ import {
  Text,
  TextInput,
  TouchableOpacity,
- Image
+ Image,
+ Alert
 } from 'react-native';
 import { APP_LOGO } from '../../Constant/Icons';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OtpScreen() {
  const navigation = useNavigation<any>();
@@ -64,7 +66,18 @@ export default function OtpScreen() {
    </View>
 
    <TouchableOpacity
-    onPress={() => navigation?.navigate('TrialAccessScreen')}
+    onPress={async () => {
+     const enteredOtp = otp.join('');
+     if (enteredOtp === '1234') {
+      await AsyncStorage.setItem('otpVerified', 'true');
+      navigation?.navigate('TrialAccessScreen');
+      setTimeout(() => {
+       setOtp(['', '', '', '']);
+      }, 2000);
+     } else {
+      Alert.alert('Invalid OTP. Please try again.');
+     }
+    }}
     style={Styles.verifyButton}>
     <Text allowFontScaling={false} style={Styles.verifyText}>
      Verify

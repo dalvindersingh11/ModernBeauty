@@ -12,7 +12,7 @@ export default StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
-  paddingTop: moderateScale(21),
+  paddingTop: moderateScale(8),
   padding: 8
  },
  header: {

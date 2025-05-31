@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
 import colors from '../../Constant/colors';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import TopHeader from '../TopHeader/TopHeader';
 export default function PaymentMethod(props: any) {
  const navigation = useNavigation<any>();
 
@@ -25,13 +26,7 @@ export default function PaymentMethod(props: any) {
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}
-     <View style={Styles.header}>
-      <Image
-       style={{ height: moderateScale(20), width: moderateScale(76) }}
-       source={APP_LOGO}
-      />
-      <Image source={USER} style={Styles.profileIcon} />
-     </View>
+     <TopHeader />
      <View style={Styles.navRow}>
       <TouchableOpacity onPress={props?.onBackStep} style={Styles.arrowStyle}>
        <Icon name="arrow-back" size={30} />

@@ -1,6 +1,6 @@
 // TrialAccessScreen.tsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 import Video from 'react-native-video';
@@ -10,23 +10,35 @@ import fonts from '../../Constant/Fonts';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import TopHeader from '../../Component/TopHeader/TopHeader';
+import { IMAGE_URL } from '../../Constant/apiUrl';
 export default function TrialAccessScreen() {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
+ const [user, setUser] = useState<any>(null);
+
+ useEffect(() => {
+  const loadUser = async () => {
+   try {
+    const jsonValue = await AsyncStorage.getItem('user');
+    if (jsonValue != null) {
+     setUser(JSON.parse(jsonValue));
+    }
+   } catch (e) {
+    console.error('Failed to load user:', e);
+   }
+  };
+
+  loadUser();
+ }, []);
+
  return (
   <View style={styles.container}>
-   {/* Top branding */}
-   <View style={styles.header}>
-    <Image
-     style={{ height: moderateScale(20), width: moderateScale(76) }}
-     source={APP_LOGO}
-    />
-    <Image source={USER} style={styles.profileIcon} />
-   </View>
-
+   <TopHeader />
    <View style={{ height: 90 }} />
    <Text allowFontScaling={false} style={styles.welcome}>
-    Welcome Joe!
+    Welcome {user?.name}!
    </Text>
    <Text allowFontScaling={false} style={styles.subtitle}>
     This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!

@@ -10,7 +10,7 @@ export default StyleSheet.create({
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
   paddingTop: moderateScale(21),
-  padding: 20
+  padding: 1
  },
  header: {
   width: '90%',

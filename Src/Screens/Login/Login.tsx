@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
  SafeAreaView,
  View,
@@ -7,27 +7,87 @@ import {
  TouchableOpacity,
  StyleSheet,
  Image,
- ScrollView
+ ScrollView,
+ Alert,
+ ActivityIndicator
 } from 'react-native';
 import colors from '../../Constant/colors';
 import { APP_LOGO } from '../../Constant/Icons';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { moderateScale } from 'react-native-size-matters';
+import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 export default function LoginScreen() {
  const navigation = useNavigation<any>();
+ const [email, setEmail] = useState('');
+ const [password, setPassword] = useState('');
+ const [loading, setLoading] = useState(false);
+ const [secureText, setSecureText] = useState(true);
+
+ const [user, setUser] = useState(null);
+
+ const handleLogin = async () => {
+  if (!email || !password) {
+   Alert.alert('Validation', 'Email and password are required');
+   return;
+  }
+
+  setLoading(true);
+  try {
+   const response = await axios.post(
+    'http://api.digitaloldhand.com/api/login',
+    {
+     email,
+     password
+    },
+    {
+     headers: {
+      'Content-Type': 'application/json'
+     }
+    }
+   );
+
+   console.log('Login Success:', response.data);
+   setUser(response.data.user); // Or store token, etc.
+   await AsyncStorage.setItem('token', response?.data?.token);
+   saveUser(response.data.user);
+   navigation?.navigate('OtpScreen');
+   Alert.alert('Success', 'Login successful!');
+  } catch (error: any) {
+   console.error('Login Error:', error.response?.data || error.message);
+   Alert.alert(
+    'Login Failed',
+    error.response?.data?.message || 'Something went wrong'
+   );
+  } finally {
+   setLoading(false);
+  }
+ };
+ const saveUser = async (user: object) => {
+  try {
+   const jsonValue = JSON.stringify(user);
+   await AsyncStorage.setItem('user', jsonValue);
+  } catch (e) {
+   console.error('Failed to save user:', e);
+  }
+ };
  return (
   <SafeAreaView style={Styles.container}>
    <Image style={Styles.logoStyle} source={APP_LOGO} />
    <View style={Styles.inputContainer}>
     <Text allowFontScaling={false} style={[Styles.label, { marginTop: '3%' }]}>
-     Username
+     Email
     </Text>
     <TextInput
      allowFontScaling={false}
-     placeholder="Enter Username"
+     placeholder="E-mail"
+     editable={loading == true ? false : true}
      style={[Styles.input]}
      placeholderTextColor={colors.gray}
+     onChangeText={(text: string) => setEmail(text)}
     />
    </View>
 
@@ -35,21 +95,46 @@ export default function LoginScreen() {
     <Text allowFontScaling={false} style={Styles.label}>
      Password
     </Text>
-    <TextInput
-     allowFontScaling={false}
-     placeholder="Enter Password"
-     style={Styles.input}
-     placeholderTextColor={colors.gray}
-     secureTextEntry
-    />
+    <View
+     style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      backgroundColor: colors.white,
+      padding: 5,
+      borderRadius: 9
+     }}>
+     <TextInput
+      allowFontScaling={false}
+      placeholder="Password"
+      style={[Styles.input, { width: '85%', height: moderateScale(36) }]}
+      editable={loading == true ? false : true}
+      placeholderTextColor={colors.gray}
+      secureTextEntry={secureText}
+      onChangeText={(text: string) => setPassword(text)}
+     />
+     <Entypo
+      name={secureText ? 'eye-with-line' : 'eye'}
+      color={colors.black}
+      onPress={() => setSecureText(!secureText)}
+      size={20}
+      style={{ right: responsiveScreenWidth(3) }}
+     />
+    </View>
    </View>
 
    <TouchableOpacity
-    onPress={() => navigation?.navigate('OtpScreen')}
+    disabled={loading}
+    onPress={() => handleLogin()}
     style={Styles.loginButton}>
-    <Text allowFontScaling={false} style={Styles.loginText}>
-     Log In
-    </Text>
+    {loading ? (
+     <ActivityIndicator size={20} color={colors.white} />
+    ) : (
+     <Text allowFontScaling={false} style={Styles.loginText}>
+      Log In
+     </Text>
+    )}
    </TouchableOpacity>
 
    <Text allowFontScaling={false} style={Styles.orText}>

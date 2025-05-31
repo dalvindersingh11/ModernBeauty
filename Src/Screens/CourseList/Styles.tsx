@@ -10,17 +10,15 @@ import {
 export default StyleSheet.create({
  container: {
   flex: 1,
-  backgroundColor: colors.backgrounColor,
-//   alignItems: 'center',
-//   paddingTop: moderateScale(21),
-//   padding: 8
+  backgroundColor: colors.backgrounColor
+  //   alignItems: 'center',
+  //   paddingTop: moderateScale(21),
+  //   padding: 8
  },
  header: {
-
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
-
+  alignItems: 'center'
  },
  brand: {
   fontSize: 12,
@@ -35,8 +33,8 @@ export default StyleSheet.create({
 
  title: {
   fontSize: ms(13),
-  fontFamily:fonts.medium,
-  fontWeight:'700',
+  fontFamily: fonts.medium,
+  fontWeight: '700',
   marginVertical: mvs(20),
   color: '#000'
  },
@@ -48,7 +46,7 @@ export default StyleSheet.create({
   height: moderateScale(38),
   justifyContent: 'center',
   alignItems: 'center',
-  alignSelf:'center'
+  alignSelf: 'center'
  },
  levelText: {
   color: '#fff',

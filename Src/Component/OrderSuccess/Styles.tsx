@@ -12,8 +12,8 @@ export default StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
-  paddingTop: moderateScale(21),
-  padding: 8
+  paddingTop: moderateScale(8),
+  padding: 0
  },
  header: {
   width: '90%',

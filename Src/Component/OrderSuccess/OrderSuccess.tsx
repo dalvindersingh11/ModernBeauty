@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
 import colors from '../../Constant/colors';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import TopHeader from '../TopHeader/TopHeader';
 export default function OrderSuccess(props: any) {
  const navigation = useNavigation<any>();
 
@@ -25,13 +26,7 @@ export default function OrderSuccess(props: any) {
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}
-     <View style={Styles.header}>
-      <Image
-       style={{ height: moderateScale(20), width: moderateScale(76) }}
-       source={APP_LOGO}
-      />
-      <Image source={USER} style={Styles.profileIcon} />
-     </View>
+     <TopHeader />
      <View style={{ height: moderateScale(38) }} />
      <Image
       style={{ width: moderateScale(240), height: moderateScale(240) }}
@@ -46,7 +41,7 @@ export default function OrderSuccess(props: any) {
       explore our wide range {'\n'} of products. Happy Shopping!
      </Text>
      <TouchableOpacity
-      onPress={props?.onPressThirdStep}
+      onPress={() => navigation?.navigate('CourseListIndex')}
       style={Styles.levelButton}>
       <Text allowFontScaling={false} style={Styles.levelText}>
        Done

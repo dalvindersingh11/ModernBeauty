@@ -20,9 +20,12 @@
         "buildios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
     },
     "dependencies": {
+        "@react-native-async-storage/async-storage": "^2.1.2",
         "@react-native-community/datetimepicker": "^8.4.1",
         "@react-navigation/native": "^7.1.9",
         "@react-navigation/stack": "^7.3.2",
+        "@reduxjs/toolkit": "^2.8.2",
+        "axios": "^1.9.0",
         "react": "19.0.0",
         "react-native": "0.79.2",
         "react-native-country-codes-picker": "^2.3.5",
@@ -35,7 +38,8 @@
         "react-native-screens": "^4.10.0",
         "react-native-size-matters": "^0.4.2",
         "react-native-vector-icons": "^10.2.0",
-        "react-native-video": "^6.14.0"
+        "react-native-video": "^6.14.0",
+        "react-redux": "^9.2.0"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
