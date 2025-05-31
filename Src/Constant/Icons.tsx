@@ -10,3 +10,19 @@ export const BLANK_CARD = require('../../Src/Images/credit-card.png');
 export const REVIEW = require('../../Src/Images/review.png');
 export const STRIPE = require('../../Src/Images/paymentIcon.png');
 export const ORDER = require('../../Src/Images/orderSuccess.png');
+export const VIDEOICON = require('../../Src/Images/videoIcon.png');
+export const TIMEICON = require('../../Src/Images/timeIcon.png');
+export const MENUICON = require('../../Src/Images/menuIcon.png');
+export const SETTINGUSER = require('../../Src/Images/settingUserProfile.png');
+export const SETTINGPRIVACY = require('../../Src/Images/settingPrivacy.png');
+export const SETTINGSUBSCRIPTION = require('../../Src/Images/settingSubscription.png');
+export const SETTINGHELP = require('../../Src/Images/settingHelp.png');
+export const SETTINGTERMSPOLICIES = require('../../Src/Images/settingTermsPolicies.png');
+export const SETTINGLOGOUT = require('../../Src/Images/settingLogout.png');
+export const BACKICON = require('../../Src/Images/back.png');
+export const SAMPLEIMAGE = require('../../Src/Images/sampleImage.jpg');
+export const EDITPROFILEICON = require('../../Src/Images/EditProfileIcon.png');
+export const DROPDOWNICON = require('../../Src/Images/dropDown.png');
+export const HELPPLUS = require('../../Src/Images/helpPlus.png');
+
+
