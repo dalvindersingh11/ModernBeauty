@@ -50,12 +50,17 @@ export default function SignUpScreen() {
     }
    );
 
-   console.log('Login Success:', response.data);
-   // Or store token, etc.
-   await AsyncStorage.setItem('token', response?.data?.token);
+   console.log('Signup Success:', response);
+
+   await AsyncStorage.setItem(
+    'token',
+    response?.data?.user?.verification_token
+   );
    saveUser(response.data.user);
    navigation?.navigate('OtpScreen');
-   Alert.alert('Successful!');
+   Alert.alert('Success', 'SignUp successful!');
+   //    await AsyncStorage.setItem('token', response?.data?.token);
+   //    saveUser(response.data.user);
   } catch (error: any) {
    console.log('Login Error:', error);
    Alert.alert('SignUp Failed', 'Something went wrong');
@@ -80,6 +85,7 @@ export default function SignUpScreen() {
     </Text>
     <TextInput
      allowFontScaling={false}
+     editable={loading == true ? false : true}
      placeholder="Enter Username"
      style={[Styles.input]}
      placeholderTextColor={colors.black}
@@ -92,6 +98,7 @@ export default function SignUpScreen() {
     </Text>
     <TextInput
      allowFontScaling={false}
+     editable={loading == true ? false : true}
      placeholder="Enter E-mail"
      style={[Styles.input]}
      placeholderTextColor={colors.black}
