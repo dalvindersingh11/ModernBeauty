@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
-import { moderateScale, ms } from 'react-native-size-matters';
+import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import {
  responsiveScreenHeight,
  responsiveScreenWidth
@@ -147,5 +147,28 @@ export default StyleSheet.create({
  inputSearchStyle: {
   height: 40,
   fontSize: 16
- }
+ },
+  phoneInputWrapper: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderRadius: 8,
+ //  paddingHorizontal: 10,
+  marginBottom: 16,
+  backgroundColor: '#fff',height:mvs(44),
+ },
+ callingCodeBox: {
+  paddingHorizontal: 10,
+  paddingVertical: 12,
+  borderRightWidth: 1,
+  borderColor: '#ccc'
+ },
+ callingCodeText: {
+  fontSize: 16,
+  color: '#000'
+ },
+ phoneInput: {
+  flex: 1,
+  paddingLeft: 10,
+  fontSize: 16
+ },
 });

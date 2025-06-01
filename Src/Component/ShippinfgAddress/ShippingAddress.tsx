@@ -18,11 +18,17 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
 import TopHeader from '../TopHeader/TopHeader';
+import { CountryPicker } from 'react-native-country-codes-picker';
 export default function ShippingAddress(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
  const [value, setValue] = useState(null);
+  const [phone, setPhone] = useState('');
  const [isFocus, setIsFocus] = useState(false);
+  const [countryCode, setCountryCode] = useState('IN');
+  const [country, setCountry] = useState(null);
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
+   const [callingCode, setCallingCode] = useState('91');
  const data = [
   { label: 'Item 1', value: '1' },
   { label: 'Item 2', value: '2' },
@@ -75,8 +81,47 @@ export default function ShippingAddress(props: any) {
        placeholderTextColor={colors.gray}
       />
      </View>
+ <View style={Styles.inputContainer}>
+    <Text allowFontScaling={false} style={[Styles.label]}>
+       Phone Number
+      </Text>
+     <View style={Styles.phoneInputWrapper}>
+      <TouchableOpacity
+       style={Styles.callingCodeBox}
+       onPress={() => setShowCountryPicker(true)}>
+       <Text style={Styles.callingCodeText}>+{callingCode}</Text>
+      </TouchableOpacity>
+      <TextInput
+       style={Styles.phoneInput}
+       placeholder="Phone number"
+       keyboardType="phone-pad"
+       onChangeText={(text) => setPhone(text)}
+       value={phone}
+      />
+     </View>
+     </View>
 
-     <View style={Styles.inputContainer}>
+     {/* Country Picker for phone code */}
+     {showCountryPicker && (
+      <CountryPicker
+       countryCode={countryCode}
+       withFilter
+       withFlag
+       withCallingCode
+       withEmoji
+       onSelect={(selectedCountry) => {
+        setCountryCode(selectedCountry.cca2);
+        setCountry(selectedCountry);
+        setCallingCode(selectedCountry.callingCode[0]);
+        setShowCountryPicker(false);
+       }}
+       onClose={() => setShowCountryPicker(false)}
+       visible
+      />
+     )}
+
+
+     {/* <View style={Styles.inputContainer}>
       <Text allowFontScaling={false} style={[Styles.label]}>
        Phone Number
       </Text>
@@ -86,7 +131,7 @@ export default function ShippingAddress(props: any) {
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
       />
-     </View>
+     </View> */}
      <View style={Styles.inputContainer}>
       <View style={[Styles.viewInput]}>
        <Dropdown
@@ -167,3 +212,30 @@ export default function ShippingAddress(props: any) {
   </View>
  );
 }
+
+const renderLabel = (
+ label:
+  | string
+  | number
+  | bigint
+  | boolean
+  | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+  | Iterable<React.ReactNode>
+  | Promise<
+     | string
+     | number
+     | bigint
+     | boolean
+     | React.ReactPortal
+     | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+     | Iterable<React.ReactNode>
+     | null
+     | undefined
+    >
+  | null
+  | undefined
+) => (
+ <Text allowFontScaling={false} style={{marginBottom:5}}>
+  {label}
+ </Text>
+);

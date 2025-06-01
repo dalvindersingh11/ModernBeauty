@@ -108,5 +108,29 @@ export default StyleSheet.create({
   color: colors.white,
   fontFamily: fonts.medium,
   fontSize: 16
- }
+ },
+ phoneInputWrapper: {
+ flexDirection: 'row',
+ alignItems: 'center',
+ borderRadius: 8,
+//  paddingHorizontal: 10,
+ marginBottom: 16,
+ backgroundColor: '#fff',height:mvs(44)
+},
+callingCodeBox: {
+ paddingHorizontal: 10,
+ paddingVertical: 12,
+ borderRightWidth: 1,
+ borderColor: '#ccc'
+},
+callingCodeText: {
+ fontSize: 16,
+ color: '#000'
+},
+phoneInput: {
+ flex: 1,
+ paddingLeft: 10,
+ fontSize: 16
+}
+
 });

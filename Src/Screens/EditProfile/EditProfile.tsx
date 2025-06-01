@@ -34,6 +34,7 @@ const EditProfile = () => {
  const navigation = useNavigation();
 
  const [date, setDate] = useState(new Date());
+ const [callingCode, setCallingCode] = useState('91'); 
  const [showDatePicker, setShowDatePicker] = useState(false);
  const [name, setName] = useState('');
  const [phone, setPhone] = useState('');
@@ -42,6 +43,7 @@ const EditProfile = () => {
  const [countryCode, setCountryCode] = useState('US');
  const [country, setCountry] = useState(null);
  const [showCountryPicker, setShowCountryPicker] = useState(false);
+ 
 
  const handleConfirmDate = (selectedDate: React.SetStateAction<Date>) => {
   if (selectedDate) {
@@ -167,12 +169,43 @@ const EditProfile = () => {
 
     {/* Date Picker Modal */}
 
-     {renderLabel('Phone')}
-      <TextInput
-      style={Styles.inputBox}
-       placeholder="PhoneNumber"
-       onChangeText={(text) => setPhone(text)}
-      />
+   {renderLabel('Phone')}
+<View style={Styles.phoneInputWrapper}>
+  <TouchableOpacity
+    style={Styles.callingCodeBox}
+    onPress={() => setShowCountryPicker(true)}
+  >
+    <Text style={Styles.callingCodeText}>+{callingCode}</Text>
+  </TouchableOpacity>
+  <TextInput
+    style={Styles.phoneInput}
+    placeholder="Phone number"
+    keyboardType="phone-pad"
+    onChangeText={(text) => setPhone(text)}
+    value={phone}
+  />
+</View>
+
+{/* Country Picker for phone code */}
+{showCountryPicker && (
+  <CountryPicker
+    countryCode={countryCode}
+    withFilter
+    withFlag
+    withCallingCode
+    withEmoji
+    onSelect={(selectedCountry) => {
+      setCountryCode(selectedCountry.cca2);
+      setCountry(selectedCountry);
+      setCallingCode(selectedCountry.callingCode[0]);
+      setShowCountryPicker(false);
+    }}
+    onClose={() => setShowCountryPicker(false)}
+    visible
+  />
+)}
+
+
      <DateTimePickerModal
       isVisible={showDatePicker}
       mode="date"
