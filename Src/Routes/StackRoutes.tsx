@@ -19,58 +19,73 @@ import ManageSubscription from '../Screens/ManageSubscription/ManageSubscription
 import HelpSupport from '../Screens/Help&Support/HelpSupport';
 import TermsPolicies from '../Screens/TermsPolicies/TermsPolicies';
 import AddTicket from '../Screens/AddTicket/AddTicket';
+import UpdatePassword from '../Screens/UpdatePassword/UpdatePassword';
+
+import TopHeader from '../Component/TopHeader/TopHeader';
 
 const Stack = createStackNavigator();
 
 const MyStack = () => {
- const [token, setToken] = useState<string | null>(null);
- const [otpVerified, setOtpVerified] = useState<string | null>(null);
- const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
+  const [otpVerified, setOtpVerified] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const checkStorage = async () => {
-   const storedToken = await AsyncStorage.getItem('token');
-   const storedOtp = await AsyncStorage.getItem('otpVerified');
-   setToken(storedToken);
-   setOtpVerified(storedOtp);
-   setLoading(false);
-  };
-  checkStorage();
- }, []);
+  useEffect(() => {
+    const checkStorage = async () => {
+      const storedToken = await AsyncStorage.getItem('token');
+      const storedOtp = await AsyncStorage.getItem('otpVerified');
+      setToken(storedToken);
+      setOtpVerified(storedOtp);
+      setLoading(false);
+    };
+    checkStorage();
+  }, []);
 
- if (loading) return null; // Show splash or spinner here if needed
+  if (loading) return null;
 
- const isAuthenticated = token && otpVerified === 'true';
+  const isAuthenticated = token && otpVerified === 'true';
 
- return (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-   {!isAuthenticated ? (
-    <>
-     <Stack.Screen name="Login" component={LoginScreen} />
-     <Stack.Screen name="SignUp" component={SignUpScreen} />
-     <Stack.Screen name="OtpScreen" component={OtpScreen} />
-     <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
-    </>
-   ) : (
-    <>
-     <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
-     <Stack.Screen name="PlanScreen" component={PlanScreen} />
-     <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
-     <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
-     <Stack.Screen name="HairCourses" component={HairCourses} />
-     <Stack.Screen name="ViewFolder" component={ViewFolder} />
-     <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
-     <Stack.Screen name="Settings" component={Settings} />
-     <Stack.Screen name="EditProfile" component={EditProfile} />
-     <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-     <Stack.Screen name="ManageSubscription" component={ManageSubscription} />
-     <Stack.Screen name="HelpSupport" component={HelpSupport} />
-     <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
-     <Stack.Screen name="AddTicket" component={AddTicket} />
-    </>
-   )}
-  </Stack.Navigator>
- );
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: ({ navigation }) => (
+          <TopHeader backOnPress={() => navigation.goBack()} />
+        ),
+      }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="OtpScreen"
+        component={OtpScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
+      <Stack.Screen name="PlanScreen" component={PlanScreen} />
+      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+      <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
+      <Stack.Screen name="HairCourses" component={HairCourses} />
+      <Stack.Screen name="ViewFolder" component={ViewFolder} />
+      <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
+      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="ManageSubscription" component={ManageSubscription} />
+      <Stack.Screen name="HelpSupport" component={HelpSupport} />
+      <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
+      <Stack.Screen name="AddTicket" component={AddTicket} />
+      <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+    </Stack.Navigator>
+  );
 };
 
 export default MyStack;

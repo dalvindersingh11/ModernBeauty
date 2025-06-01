@@ -8,8 +8,8 @@ const Styles = StyleSheet.create({
     backgroundColor: colors.backgrounColor,
   },
   container: {
-    gap: mvs(10),
-    padding: ms(12),
+   gap: mvs(10),
+  width:"90%",alignSelf:'center',paddingHorizontal:ms(8),paddingTop:mvs(10)
   },
   brandingRow: {
     flexDirection: 'row',
@@ -37,7 +37,7 @@ const Styles = StyleSheet.create({
   title: {
     fontSize: ms(24),
     fontWeight: '700',
-    color: '#000',
+    color: '#000',alignSelf:'center'
   },
   emptySpace: {
     width: ms(18),

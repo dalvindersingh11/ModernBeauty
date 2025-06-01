@@ -38,7 +38,7 @@ export default StyleSheet.create({
   fontFamily:fonts.medium,
   fontWeight:'700',
   marginVertical: mvs(20),
-  color: '#000'
+  color: '#000',marginLeft:ms(10)
  },
 
  levelButton: {

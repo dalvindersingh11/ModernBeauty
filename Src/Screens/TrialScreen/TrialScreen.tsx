@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, mvs } from 'react-native-size-matters';
 import Video from 'react-native-video';
 import { APP_LOGO, USER } from '../../Constant/Icons';
 import colors from '../../Constant/colors';
@@ -35,8 +35,7 @@ export default function TrialAccessScreen() {
 
  return (
   <View style={styles.container}>
-   <TopHeader />
-   <View style={{ height: 90 }} />
+   <View style={{ height: mvs(25) }} />
    <Text allowFontScaling={false} style={styles.welcome}>
     Welcome {user?.name}!
    </Text>

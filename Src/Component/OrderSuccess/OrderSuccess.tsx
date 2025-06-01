@@ -22,11 +22,11 @@ export default function OrderSuccess(props: any) {
  const navigation = useNavigation<any>();
 
  return (
-  <SafeAreaView style={Styles.container}>
+    <View style={{flex:1,width:'100%'}}>
+       {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
-     {/* Top branding */}
-     <TopHeader />
+
      <View style={{ height: moderateScale(38) }} />
      <Image
       style={{ width: moderateScale(240), height: moderateScale(240) }}
@@ -49,6 +49,6 @@ export default function OrderSuccess(props: any) {
      </TouchableOpacity>
     </View>
    </ScrollView>
-  </SafeAreaView>
+  </View>
  );
 }

@@ -73,11 +73,11 @@ const EditProfile = () => {
    setLoading(false);
   }
  };
-//  useEffect(() => {
-//   handGetProfile();
-//  }, []);
-  const handleUpdateProfile = async () => {
-    let token = await AsyncStorage?.getItem('token');
+ //  useEffect(() => {
+ //   handGetProfile();
+ //  }, []);
+ const handleUpdateProfile = async () => {
+  let token = await AsyncStorage?.getItem('token');
   if (!name || !phone || !gender) {
    Alert.alert('Validation', 'Email and password are required');
    return;
@@ -94,72 +94,70 @@ const EditProfile = () => {
     },
     {
      headers: {
-        'Content-Type': 'application/json',
-         Authorization: `Bearer${token}`
+      'Content-Type': 'application/json',
+      Authorization: `Bearer${token}`
      }
     }
    );
 
    console.log('updateProfile', response);
-
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);
-   Alert.alert(
-   'Something went wrong'
-   );
+   Alert.alert('Something went wrong');
   } finally {
    setLoading(false);
   }
  };
  return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
-     <ScrollView>
-     <View style={{ gap: mvs(10), padding: ms(12) }}>
-    {/* Header */}
-    <View style={Styles.header}>
-     <Image style={Styles.logo} source={APP_LOGO} />
-     <Image source={USER} style={Styles.userAvatar} />
-    </View>
+   <ScrollView>
+    <View style={Styles.contentWrapper}>
+     {/* Header */}
+     {/* <View style={Styles.header}>
+      <Image style={Styles.logo} source={APP_LOGO} />
+      <Image source={USER} style={Styles.userAvatar} />
+     </View> */}
 
-    {/* Avatar */}
-    <View style={Styles.avatarRow}>
-     <TouchableOpacity onPress={() => navigation.goBack()}>
-      <Image source={BACKICON} style={Styles.backIcon} />
-     </TouchableOpacity>
-     <View style={Styles.avatarWrapper}>
-      <View style={Styles.avatarInner}>
-       <Image source={SAMPLEIMAGE} style={Styles.avatarImage} />
+     {/* Avatar */}
+     <View style={Styles.avatarRow}>
+      {/* <TouchableOpacity onPress={() => navigation.goBack()}>
+       <Image source={BACKICON} style={Styles.backIcon} />
+      </TouchableOpacity> */}
+      <View style={Styles.avatarWrapper}>
+       <View style={Styles.avatarInner}>
+        <Image source={SAMPLEIMAGE} style={Styles.avatarImage} />
+       </View>
+       <TouchableOpacity style={Styles.editIcon}>
+        <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
+       </TouchableOpacity>
       </View>
-      <TouchableOpacity style={Styles.editIcon}>
-       <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
-      </TouchableOpacity>
+      {/* <View style={{ width: ms(18), height: mvs(16) }} /> */}
      </View>
-     <View style={{ width: ms(18), height: mvs(16) }} />
-    </View>
 
-    {/* Input Fields */}
-    {renderLabel('Name')}
-    <View style={Styles.inputBox}>
-     <TextInput
-      placeholder="Enter name"
-      onChangeText={(text) => setName(text)}
-     />
-    </View>
+     {/* Input Fields */}
+     {renderLabel('Name')}
+      <TextInput
+       style={Styles.inputBox}
+       placeholder="Enter name"
+       onChangeText={(text) => setName(text)}
+      />
 
-    {renderLabel('Email')}
-    <View style={Styles.inputBox}>
-     <TextInput
-     placeholder="Enter email"
-      editable={false}
-     />
-    </View>
+     {renderLabel('Email')}
+      <TextInput
+       style={Styles.inputBox}
+       placeholder="Enter email"
+       autoCapitalize='none'
+       // editable={false}
+      />
 
-    {renderLabel('Gender')}
-    <View style={Styles.inputBox}>
-     <TextInput placeholder="Gender" onChangeText={(text) => setGender(text)} />
-    </View>
+     {renderLabel('Gender')}
+      <TextInput
+       style={Styles.inputBox}
+       placeholder="Gender"
+       onChangeText={(text) => setGender(text)}
+      />
 
-    {/* {renderLabel('Date of birth')}
+     {/* {renderLabel('Date of birth')}
     <TouchableOpacity
      onPress={() => setShowDatePicker(true)}
      style={Styles.dropdownBox}>
@@ -168,62 +166,64 @@ const EditProfile = () => {
     </TouchableOpacity>
 
     {/* Date Picker Modal */}
-       
-       {renderLabel('Phone')}
-    <View style={Styles.inputBox}>
-     <TextInput placeholder="PhoneNumber" onChangeText={(text) => setPhone(text)} />
-    </View>
-    <DateTimePickerModal
-     isVisible={showDatePicker}
-     mode="date"
-     onConfirm={handleConfirmDate}
-     onCancel={() => setShowDatePicker(false)}
-     maximumDate={new Date()}
-     display="spinner"
-     locale="en_US"
-     pickerContainerStyleIOS={{ backgroundColor: '#fff' }}
-    /> */}
 
-    {renderLabel('Country/Region')}
-    <TouchableOpacity
-     onPress={() => setShowCountryPicker(true)}
-     style={Styles.dropdownBox}>
-     <Text>{country?.name || 'Select country'}</Text>
-     <Image style={Styles.dropdownIcon} source={DROPDOWNICON} />
-    </TouchableOpacity>
-
-    {showCountryPicker && (
-     <CountryPicker
-      countryCode={countryCode}
-      withFilter
-      withFlag
-      withCountryNameButton={false}
-      withAlphaFilter
-      withCallingCodeButton={false}
-      withEmoji
-      onSelect={(selectedCountry) => {
-       setCountryCode(selectedCountry.cca2);
-       setCountry(selectedCountry);
-       setShowCountryPicker(false);
-      }}
-      onClose={() => setShowCountryPicker(false)}
-      visible
+     {renderLabel('Phone')}
+      <TextInput
+      style={Styles.inputBox}
+       placeholder="PhoneNumber"
+       onChangeText={(text) => setPhone(text)}
+      />
+     <DateTimePickerModal
+      isVisible={showDatePicker}
+      mode="date"
+      onConfirm={handleConfirmDate}
+      onCancel={() => setShowDatePicker(false)}
+      maximumDate={new Date()}
+      display="spinner"
+      locale="en_US"
+      pickerContainerStyleIOS={{ backgroundColor: '#fff' }}
      />
-       )}
-        <TouchableOpacity
-    disabled={loading}
-    onPress={() => handleUpdateProfile()}
-    style={Styles.loginButton}>
-    {loading ? (
-     <ActivityIndicator size={20} color={colors.white} />
-    ) : (
-     <Text allowFontScaling={false} style={Styles.loginText}>
-     Submit
-     </Text>
-    )}
-   </TouchableOpacity>
-   </View>
- </ScrollView>
+
+     {renderLabel('Country/Region')}
+     <TouchableOpacity
+      onPress={() => setShowCountryPicker(true)}
+      style={Styles.dropdownBox}>
+      <Text>{country?.name || 'Select country'}</Text>
+      <Image style={Styles.dropdownIcon} source={DROPDOWNICON} />
+     </TouchableOpacity>
+
+     {showCountryPicker && (
+      <CountryPicker
+       countryCode={countryCode}
+       withFilter
+       withFlag
+       withCountryNameButton={false}
+       withAlphaFilter
+       withCallingCodeButton={false}
+       withEmoji
+       onSelect={(selectedCountry) => {
+        setCountryCode(selectedCountry.cca2);
+        setCountry(selectedCountry);
+        setShowCountryPicker(false);
+       }}
+       onClose={() => setShowCountryPicker(false)}
+       visible
+      />
+     )}
+     <TouchableOpacity
+      disabled={loading}
+      onPress={() => handleUpdateProfile()}
+      style={Styles.loginButton}>
+      {loading ? (
+       <ActivityIndicator size={20} color={colors.white} />
+      ) : (
+       <Text allowFontScaling={false} style={Styles.loginText}>
+        Submit
+       </Text>
+      )}
+     </TouchableOpacity>
+    </View>
+   </ScrollView>
   </SafeAreaView>
  );
 };

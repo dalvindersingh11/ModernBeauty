@@ -22,17 +22,17 @@ export default function PaymentMethod(props: any) {
  const navigation = useNavigation<any>();
 
  return (
-  <SafeAreaView style={Styles.container}>
+  <View style={{flex:1,width:'100%'}}>
+    {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}
-     <TopHeader />
-     <View style={Styles.navRow}>
+     {/* <View style={Styles.navRow}>
       <TouchableOpacity onPress={props?.onBackStep} style={Styles.arrowStyle}>
        <Icon name="arrow-back" size={30} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text style={Styles.checkoutText}>Checkout</Text>
-     </View>
+     {/* </View> */}
      <View style={Styles.stepContainer}>
       <View style={Styles.step}>
        <Icon name="local-shipping" size={20} />
@@ -130,6 +130,6 @@ export default function PaymentMethod(props: any) {
      </TouchableOpacity>
     </View>
    </ScrollView>
-  </SafeAreaView>
+  </View>
  );
 }

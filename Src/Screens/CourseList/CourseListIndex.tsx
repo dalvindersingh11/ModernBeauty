@@ -123,10 +123,9 @@ const CourseList = () => {
  };
 
  return (
-  <SafeAreaView style={Styles.container}>
+  <View style={Styles.container}>
    <View style={[Styles.container, { padding: 20 }]}>
-    {/* Header */}
-    <TopHeader />
+
 
     <Text allowFontScaling={true} style={Styles.title}>
      List of Courses
@@ -142,7 +141,7 @@ const CourseList = () => {
      contentContainerStyle={{ paddingTop: mvs(10) }}
     />
    </View>
-  </SafeAreaView>
+  </View>
  );
 };
 

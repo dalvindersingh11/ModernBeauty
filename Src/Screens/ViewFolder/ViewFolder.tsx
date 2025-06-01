@@ -128,14 +128,7 @@ alignItems:'flex-start'
  return (
   <SafeAreaView style={Styles.container}>
    <View style={[Styles.container, { padding: 20 }]}>
-    {/* Header */}
-    <View style={Styles.header}>
-     <Image
-      style={{ height: moderateScale(20), width: moderateScale(76) }}
-      source={APP_LOGO}
-     />
-     <Image source={USER} style={Styles.profileIcon} />
-    </View>
+   
 
     <Text allowFontScaling={true} style={Styles.title}>
      Hair Courses

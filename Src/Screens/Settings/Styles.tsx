@@ -15,7 +15,7 @@ export default StyleSheet.create({
  },
  contentWrapper: {
   gap: mvs(10),
-  padding: ms(12),
+  width:"90%",alignSelf:'center',paddingHorizontal:ms(8),paddingTop:mvs(10)
  },
  brandingContainer: {
   flexDirection: 'row',
@@ -33,8 +33,7 @@ export default StyleSheet.create({
  },
  header: {
   flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
+  alignSelf: 'center',
  },
  backIcon: {
   width: ms(18),
@@ -46,10 +45,10 @@ export default StyleSheet.create({
   fontWeight: '700',
   color: '#000',
  },
- placeholder: {
-  width: ms(18),
-  height: mvs(16),
- },
+//  placeholder: {
+//   width: ms(18),
+//   height: mvs(16),
+//  },
  sectionTitle: {
   fontSize: ms(16),
   fontWeight: '600',

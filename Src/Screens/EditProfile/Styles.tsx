@@ -13,6 +13,10 @@ export default StyleSheet.create({
   justifyContent: 'space-between',
   alignItems: 'center'
  },
+  contentWrapper: {
+  gap: mvs(10),
+  width:"90%",alignSelf:'center',paddingHorizontal:ms(8),paddingTop:mvs(10)
+ },
  logo: {
   height: moderateScale(20),
   width: moderateScale(76)
@@ -24,13 +28,13 @@ export default StyleSheet.create({
  },
  avatarRow: {
   flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between'
+  alignSelf: 'center',
+  // justifyContent: 'space-between'
  },
  backIcon: {
   width: ms(18),
   height: mvs(16),
-  borderRadius: 20
+  borderRadius: 20,marginTop:mvs(20)
  },
  avatarWrapper: {
   width: mvs(170),
@@ -73,17 +77,17 @@ export default StyleSheet.create({
   backgroundColor: '#fff',
   borderRadius: ms(6),
   gap: mvs(10),
-  padding: mvs(10),
-  alignItems: 'flex-start'
+  paddingHorizontal: mvs(10),
+  alignItems: 'flex-start',height:mvs(44)
  },
  dropdownBox: {
   backgroundColor: '#fff',
   borderRadius: ms(6),
   gap: mvs(10),
-  padding: mvs(10),
+  paddingHorizontal: mvs(10),
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center'
+  alignItems: 'center',height:mvs(44)
  },
  dropdownIcon: {
   height: ms(16.67),
@@ -93,8 +97,7 @@ export default StyleSheet.create({
  loginButton: {
   backgroundColor: '#000',
   paddingVertical: moderateScale(11),
-  paddingHorizontal: moderateScale(20),
-  borderRadius: 11,
+  borderRadius: ms(10),
   alignSelf: 'center',
   width: '80%',
   alignItems: 'center',

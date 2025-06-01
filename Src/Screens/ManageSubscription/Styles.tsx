@@ -8,23 +8,10 @@ const Styles = StyleSheet.create({
     backgroundColor: colors.backgrounColor,
   },
   container: {
-    gap: mvs(10),
-    padding: ms(12),
+   gap: mvs(10),
+  width:"90%",alignSelf:'center',paddingHorizontal:ms(8),paddingTop:mvs(20)
   },
-  brandingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  appLogo: {
-    height: moderateScale(20),
-    width: moderateScale(76),
-  },
-  userIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
+
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -37,7 +24,7 @@ const Styles = StyleSheet.create({
   headerTitle: {
     fontSize: ms(24),
     fontWeight: '700',
-    color: '#000',
+    color: '#000',alignSelf:'center'
   },
   spacer: {
     width: ms(18),

@@ -14,33 +14,36 @@ const Styles = StyleSheet.create({
   paddingHorizontal: ms(8),
   paddingTop: mvs(20)
  },
-
  headerRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between'
+  alignSelf: 'center',marginTop:mvs(10)
  },
  backIcon: {
   width: ms(18),
   height: mvs(16)
  },
- headerTitle: {
+ title: {
   fontSize: ms(24),
   fontWeight: '700',
-  color: '#000',alignSelf:"center"
+  color: '#000'
  },
- headerSpacer: {
+ emptySpace: {
   width: ms(18),
   height: mvs(16)
  },
- bodyText: {
-  fontSize: ms(10),
-  fontWeight: '400',
-  color: '#000',
-  paddingHorizontal: 20,
-  marginTop: mvs(20),
-  lineHeight: 18
- }
+ label: {
+  fontSize: ms(16),
+  fontWeight: '700',
+  color: '#000'
+ },
+ inputBox: {
+  backgroundColor: '#fff',
+  borderRadius: ms(6),
+  gap: mvs(10),
+  paddingHorizontal: mvs(10),
+  alignItems: 'flex-start',
+  height: mvs(44)
+ },
+
 });
 
 export default Styles;

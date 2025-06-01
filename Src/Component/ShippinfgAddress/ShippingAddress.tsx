@@ -10,8 +10,8 @@ import {
  SafeAreaView,
  ScrollView
 } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
-import { APP_LOGO, USER } from '../../Constant/Icons';
+import { moderateScale, ms, mvs } from 'react-native-size-matters';
+import { APP_LOGO, BACKICON, USER } from '../../Constant/Icons';
 import colors from '../../Constant/colors';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
@@ -34,19 +34,14 @@ export default function ShippingAddress(props: any) {
   { label: 'Item 8', value: '8' }
  ];
  return (
-  <SafeAreaView style={Styles.container}>
-   <ScrollView showsVerticalScrollIndicator={false}>
+  <View style={{flex:1,width:'100%'}}>
+        {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+   <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,width:'90%',alignSelf:'center'}} >
     <View style={[Styles.container, { padding: 0 }]}>
+
      {/* Top branding */}
-     <TopHeader />
-     <View style={Styles.navRow}>
-      <TouchableOpacity
-       onPress={() => navigation?.goBack()}
-       style={Styles.arrowStyle}>
-       <Icon name="arrow-back" size={30} />
-      </TouchableOpacity>
+    
       <Text style={Styles.checkoutText}>Checkout</Text>
-     </View>
      <View style={Styles.stepContainer}>
       <View style={Styles.step}>
        <Icon name="local-shipping" size={20} />
@@ -169,6 +164,6 @@ export default function ShippingAddress(props: any) {
      </TouchableOpacity>
     </View>
    </ScrollView>
-  </SafeAreaView>
+  </View>
  );
 }

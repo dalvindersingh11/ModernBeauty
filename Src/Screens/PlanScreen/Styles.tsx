@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, mvs } from 'react-native-size-matters';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
@@ -31,7 +31,7 @@ export default StyleSheet.create({
  title: {
   fontSize: 32,
   fontFamily: fonts.bold,
-  marginTop: responsiveScreenHeight(5),
+  marginTop: mvs(10),
   color: '#000'
  },
  subtitle: {

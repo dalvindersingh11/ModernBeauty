@@ -23,27 +23,20 @@ const AddTicket = () => {
     <SafeAreaView style={Styles.safeArea}>
       <View style={Styles.container}>
 
-        {/* Top branding */}
-        <View style={Styles.brandingRow}>
-          <Image style={Styles.appLogo} source={APP_LOGO} />
-          <Image source={USER} style={Styles.userIcon} />
-        </View>
-
         {/* Header */}
-        <View style={Styles.headerRow}>
+        {/* <View style={Styles.headerRow}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={BACKICON} style={Styles.backIcon} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <Text allowFontScaling style={Styles.title}>Add Ticket</Text>
-          <View style={Styles.emptySpace} />
-        </View>
+          {/* <View style={Styles.emptySpace} />
+        </View> */}
 
         {/* Subject */}
         <Text allowFontScaling style={Styles.label}>Subject</Text>
-        <View style={Styles.inputBox}>
-          <TextInput placeholder="Enter subject" />
-        </View>
+          <TextInput placeholder="Enter subject" 
+           style={Styles.inputBox}/>
 
         {/* Message */}
         <Text allowFontScaling style={Styles.label}>Message</Text>

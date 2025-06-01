@@ -68,19 +68,14 @@ const Settings = () => {
  return (
   <SafeAreaView style={Styles.container}>
    <View style={Styles.contentWrapper}>
-    <View style={Styles.brandingContainer}>
-     <Image style={Styles.logo} source={APP_LOGO} />
-     <Image source={USER} style={Styles.userImage} />
-    </View>
-
     <View style={Styles.header}>
-     <TouchableOpacity onPress={() => navigation.goBack()}>
+     {/* <TouchableOpacity onPress={() => navigation.goBack()}>
       <Image source={BACKICON} style={Styles.backIcon} />
-     </TouchableOpacity>
+     </TouchableOpacity> */}
      <Text allowFontScaling={true} style={Styles.title}>
       Settings
      </Text>
-     <View style={Styles.placeholder} />
+     {/* <View style={Styles.placeholder} /> */}
     </View>
 
     <Text allowFontScaling={true} style={Styles.sectionTitle}>
@@ -93,6 +88,14 @@ const Settings = () => {
       <Image source={SETTINGUSER} style={Styles.icon} />
       <Text allowFontScaling={true} style={Styles.optionText}>
        Edit profile
+      </Text>
+     </TouchableOpacity>
+     <TouchableOpacity
+      onPress={() => navigation?.navigate('UpdatePassword')}
+      style={Styles.row}>
+      <Image source={SETTINGPRIVACY} style={Styles.icon} />
+      <Text allowFontScaling={true} style={Styles.optionText}>
+       Update Password
       </Text>
      </TouchableOpacity>
      <TouchableOpacity

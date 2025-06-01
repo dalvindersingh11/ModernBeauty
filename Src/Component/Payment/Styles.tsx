@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, mvs } from 'react-native-size-matters';
 import {
  responsiveScreenHeight,
  responsiveScreenWidth
@@ -11,12 +11,11 @@ export default StyleSheet.create({
  container: {
   flex: 1,
   backgroundColor: colors.backgrounColor,
-  alignItems: 'center',
-  paddingTop: moderateScale(8),
-  padding: 8
+  alignItems: 'center',width:'90%',alignSelf:'center'
+
  },
  header: {
-  width: '90%',
+  // width: '90%',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -58,7 +57,8 @@ export default StyleSheet.create({
  checkoutText: {
   fontSize: 20,
   fontWeight: 'bold',
-  marginLeft: 12
+  marginVertical:mvs(10)
+//   marginLeft: 12
  },
  stepContainer: {
   flexDirection: 'row',

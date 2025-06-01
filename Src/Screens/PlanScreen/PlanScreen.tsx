@@ -14,8 +14,6 @@ export default function PlanScreen() {
 
  return (
   <ScrollView contentContainerStyle={Styles.container}>
-   {/* Header */}
-   <TopHeader />
 
    {/* Title */}
    <Text allowFontScaling={true} style={Styles.title}>

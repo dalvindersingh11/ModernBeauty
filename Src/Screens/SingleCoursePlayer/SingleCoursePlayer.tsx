@@ -26,17 +26,8 @@ export default function SingleCoursePlayer() {
  const navigation = useNavigation<any>();
  return (
   <SafeAreaView style={Styles.container}>
-   <View style={{padding:ms(20),gap:mvs(14)}}>
-    {/* Top branding */}
-
-    <View style={Styles.header}>
-     <Image
-      style={{ height: moderateScale(20), width: moderateScale(76) }}
-      source={APP_LOGO}
-     />
-     <Image source={USER} style={Styles.profileIcon} />
-    </View>
-
+   <View style={{gap:mvs(14),width:"90%",alignSelf:'center',paddingHorizontal:ms(10),marginTop:mvs(20)}}>
+    
     <Text allowFontScaling={true} style={Styles.title}>
      Hair Courses
     </Text>

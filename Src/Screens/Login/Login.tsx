@@ -145,7 +145,7 @@ export default function LoginScreen() {
      New Register User
     </Text>
    </TouchableOpacity>
-   <TouchableOpacity onPress={() => navigation?.navigate('Settings')}>
+   <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
     <Text allowFontScaling={false} style={Styles.registerText}>
      GO TO SETTINGS TESTING BUTTON
     </Text>

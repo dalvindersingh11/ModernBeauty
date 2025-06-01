@@ -20,23 +20,18 @@ const PrivacyPolicy = () => {
   return (
     <SafeAreaView style={Styles.safeArea}>
       <View style={Styles.container}>
-        {/* Top branding */}
-        <View style={Styles.brandingRow}>
-          <Image style={Styles.appLogo} source={APP_LOGO} />
-          <Image source={USER} style={Styles.userIcon} />
-        </View>
-
+    
         {/* Header */}
-        <View style={Styles.headerRow}>
+        {/* <View style={Styles.headerRow}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={BACKICON} style={Styles.backIcon} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <Text allowFontScaling={true} style={Styles.title}>
             Privacy Policy
           </Text>
-          <View style={Styles.emptySpace} />
-        </View>
+          {/* <View style={Styles.emptySpace} />
+        </View> */}
 
         {/* Description */}
         <Text allowFontScaling={true} style={Styles.description}>
