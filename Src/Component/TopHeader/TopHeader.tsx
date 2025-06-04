@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IMAGE_URL } from '../../Constant/apiUrl';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../../Constant/colors';
+import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 
 const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
  const [user, setUser] = useState<any>(null);
@@ -31,8 +32,8 @@ const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
    style={{
     backgroundColor: colors.backgrounColor,
     justifyContent: 'center',
-     width: '100%',
-    alignItems: 'center',
+    width: '100%',
+    alignItems: 'center'
    }}>
    <View
     style={{
@@ -41,6 +42,7 @@ const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
      justifyContent: 'space-between',
      alignItems: 'center',
      paddingHorizontal: ms(8),
+     marginTop: responsiveScreenHeight(2)
     }}>
     {backOnPress ? (
      <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -48,7 +50,7 @@ const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
        source={BACKICON}
        style={{
         width: ms(18),
-        height: mvs(16),
+        height: mvs(16)
        }}
       />
      </TouchableOpacity>

@@ -23,12 +23,12 @@ export default function ShippingAddress(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
  const [value, setValue] = useState(null);
-  const [phone, setPhone] = useState('');
+ const [phone, setPhone] = useState('');
  const [isFocus, setIsFocus] = useState(false);
-  const [countryCode, setCountryCode] = useState('IN');
-  const [country, setCountry] = useState(null);
-  const [showCountryPicker, setShowCountryPicker] = useState(false);
-   const [callingCode, setCallingCode] = useState('91');
+ const [countryCode, setCountryCode] = useState('IN');
+ const [country, setCountry] = useState(null);
+ const [showCountryPicker, setShowCountryPicker] = useState(false);
+ const [callingCode, setCallingCode] = useState('91');
  const data = [
   { label: 'Item 1', value: '1' },
   { label: 'Item 2', value: '2' },
@@ -40,14 +40,15 @@ export default function ShippingAddress(props: any) {
   { label: 'Item 8', value: '8' }
  ];
  return (
-  <View style={{flex:1,width:'100%'}}>
-        {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
-   <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,width:'90%',alignSelf:'center'}} >
+  <View style={{ flex: 1, width: '100%' }}>
+   {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+   <ScrollView
+    showsVerticalScrollIndicator={false}
+    style={{ flex: 1, width: '90%', alignSelf: 'center' }}>
     <View style={[Styles.container, { padding: 0 }]}>
-
      {/* Top branding */}
-    
-      <Text style={Styles.checkoutText}>Checkout</Text>
+
+     <Text style={Styles.checkoutText}>Checkout</Text>
      <View style={Styles.stepContainer}>
       <View style={Styles.step}>
        <Icon name="local-shipping" size={20} />
@@ -81,24 +82,24 @@ export default function ShippingAddress(props: any) {
        placeholderTextColor={colors.gray}
       />
      </View>
- <View style={Styles.inputContainer}>
-    <Text allowFontScaling={false} style={[Styles.label]}>
+     <View style={Styles.inputContainer}>
+      <Text allowFontScaling={false} style={[Styles.label]}>
        Phone Number
       </Text>
-     <View style={Styles.phoneInputWrapper}>
-      <TouchableOpacity
-       style={Styles.callingCodeBox}
-       onPress={() => setShowCountryPicker(true)}>
-       <Text style={Styles.callingCodeText}>+{callingCode}</Text>
-      </TouchableOpacity>
-      <TextInput
-       style={Styles.phoneInput}
-       placeholder="Phone number"
-       keyboardType="phone-pad"
-       onChangeText={(text) => setPhone(text)}
-       value={phone}
-      />
-     </View>
+      <View style={Styles.phoneInputWrapper}>
+       <TouchableOpacity
+        style={Styles.callingCodeBox}
+        onPress={() => setShowCountryPicker(true)}>
+        <Text style={Styles.callingCodeText}>+{callingCode}</Text>
+       </TouchableOpacity>
+       <TextInput
+        style={Styles.phoneInput}
+        placeholder="Phone number"
+        keyboardType="phone-pad"
+        onChangeText={(text) => setPhone(text)}
+        value={phone}
+       />
+      </View>
      </View>
 
      {/* Country Picker for phone code */}
@@ -119,7 +120,6 @@ export default function ShippingAddress(props: any) {
        visible
       />
      )}
-
 
      {/* <View style={Styles.inputContainer}>
       <Text allowFontScaling={false} style={[Styles.label]}>
@@ -208,6 +208,7 @@ export default function ShippingAddress(props: any) {
       </Text>
      </TouchableOpacity>
     </View>
+    <View style={{ height: moderateScale(18) }} />
    </ScrollView>
   </View>
  );
@@ -235,7 +236,7 @@ const renderLabel = (
   | null
   | undefined
 ) => (
- <Text allowFontScaling={false} style={{marginBottom:5}}>
+ <Text allowFontScaling={false} style={{ marginBottom: 5 }}>
   {label}
  </Text>
 );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
  View,
  Text,
@@ -6,7 +6,8 @@ import {
  Image,
  SafeAreaView,
  StyleSheet,
- Alert
+ Alert,
+ ActivityIndicator
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import {
@@ -25,10 +26,13 @@ import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { showToast } from '../../Constant/showToast';
 
 const Settings = () => {
  const navigation = useNavigation<any>();
+ const [loading, setLoading] = useState(false);
  const handleLogout = async () => {
+  setLoading(true);
   try {
    const token = await AsyncStorage.getItem('token');
 
@@ -47,21 +51,21 @@ const Settings = () => {
      }
     }
    );
-
+   console.log('logoutResponse', response);
    // Clear local storage on success
    await AsyncStorage.removeItem('token');
    await AsyncStorage.removeItem('user');
-
-   Alert.alert('Logged out successfully');
+   setLoading(false);
+   showToast('Logged out successfully');
 
    // Navigate to login or splash screen
    navigation?.navigate('Login');
   } catch (error: any) {
+   setLoading(false);
    console.log('Logout error:', error);
-   Alert.alert(
-    'Logout Failed',
-    error?.response?.data?.message || 'Please try again.'
-   );
+   showToast('Something went wrong ,Please try again.');
+  } finally {
+   setLoading(false);
   }
  };
 
@@ -144,9 +148,13 @@ const Settings = () => {
     <View style={Styles.card}>
      <TouchableOpacity onPress={() => handleLogout()} style={Styles.row}>
       <Image source={SETTINGLOGOUT} style={Styles.icon} />
-      <Text allowFontScaling={true} style={Styles.optionText}>
-       Log out
-      </Text>
+      {loading ? (
+       <ActivityIndicator size={20} color={colors.black} />
+      ) : (
+       <Text allowFontScaling={true} style={Styles.optionText}>
+        Log out
+       </Text>
+      )}
      </TouchableOpacity>
     </View>
    </View>

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
-
+import fonts from '../../Constant/Fonts';
 const Styles = StyleSheet.create({
  safeArea: {
   flex: 1,
@@ -15,7 +15,8 @@ const Styles = StyleSheet.create({
   paddingTop: mvs(20)
  },
  headerRow: {
-  alignSelf: 'center',marginTop:mvs(10)
+  alignSelf: 'center',
+  marginTop: mvs(10)
  },
  backIcon: {
   width: ms(18),
@@ -43,7 +44,21 @@ const Styles = StyleSheet.create({
   alignItems: 'flex-start',
   height: mvs(44)
  },
-
+ loginButton: {
+  backgroundColor: '#000',
+  paddingVertical: moderateScale(11),
+  borderRadius: ms(10),
+  alignSelf: 'center',
+  width: '80%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '12%'
+ },
+ loginText: {
+  color: colors.white,
+  fontFamily: fonts.medium,
+  fontSize: 16
+ }
 });
 
 export default Styles;

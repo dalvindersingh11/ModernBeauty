@@ -22,8 +22,8 @@ export default function PaymentMethod(props: any) {
  const navigation = useNavigation<any>();
 
  return (
-  <View style={{flex:1,width:'100%'}}>
-    {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+  <View style={{ flex: 1, width: '100%' }}>
+   {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}
@@ -31,7 +31,7 @@ export default function PaymentMethod(props: any) {
       <TouchableOpacity onPress={props?.onBackStep} style={Styles.arrowStyle}>
        <Icon name="arrow-back" size={30} />
       </TouchableOpacity> */}
-      <Text style={Styles.checkoutText}>Checkout</Text>
+     <Text style={Styles.checkoutText}>Checkout</Text>
      {/* </View> */}
      <View style={Styles.stepContainer}>
       <View style={Styles.step}>

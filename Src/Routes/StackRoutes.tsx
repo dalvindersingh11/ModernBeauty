@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import LoginScreen from '../Screens/Login/Login';
 import SignUpScreen from '../Screens/SignUp/Signup';
 import OtpScreen from '../Screens/OtpScreen/OtpScreens';
@@ -52,7 +51,7 @@ const MyStack = () => {
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
    }}>
-   {isAuthenticated ? (
+   {!isAuthenticated ? (
     <>
      <Stack.Screen
       name="Login"
@@ -69,23 +68,10 @@ const MyStack = () => {
       component={OtpScreen}
       options={{ headerShown: false }}
      />
-     <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
     </>
    ) : (
     <>
-     <Stack.Screen
-      name="TrialAccessScreen"
-      component={TrialAccessScreen}
-      options={({ navigation }) => ({
-       header: () =>
-        isAuthenticated ? (
-         <TopHeader backOnPress={() => navigation.goBack()} />
-        ) : (
-         <TopHeader />
-        )
-      })}
-     />
-
+     <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
      <Stack.Screen name="PlanScreen" component={PlanScreen} />
      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
      <Stack.Screen name="CourseListIndex" component={CourseListIndex} />

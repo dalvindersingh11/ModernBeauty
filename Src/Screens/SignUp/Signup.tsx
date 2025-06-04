@@ -5,9 +5,7 @@ import {
  Text,
  TextInput,
  TouchableOpacity,
- StyleSheet,
  Image,
- ScrollView,
  Alert
 } from 'react-native';
 import colors from '../../Constant/colors';
@@ -19,6 +17,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showToast } from '../../Constant/showToast';
 
 export default function SignUpScreen() {
  const navigation = useNavigation<any>();
@@ -29,7 +28,12 @@ export default function SignUpScreen() {
  const [secureText, setSecureText] = useState(true);
  const handleSignUp = async () => {
   if (!email || !password || !name) {
-   Alert.alert('All fields are required');
+   showToast('All fields are required');
+   return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+   showToast('Please enter a valid email address');
    return;
   }
 
@@ -58,12 +62,12 @@ export default function SignUpScreen() {
    );
    saveUser(response.data.user);
    navigation?.navigate('OtpScreen');
-   Alert.alert('Success', 'SignUp successful!');
+   showToast('SignUp successful!');
    //    await AsyncStorage.setItem('token', response?.data?.token);
    //    saveUser(response.data.user);
   } catch (error: any) {
    console.log('Login Error:', error);
-   Alert.alert('SignUp Failed', 'Something went wrong');
+   showToast('Something went wrong');
   } finally {
    setLoading(false);
   }
@@ -74,6 +78,8 @@ export default function SignUpScreen() {
    await AsyncStorage.setItem('user', jsonValue);
   } catch (e) {
    console.error('Failed to save user:', e);
+  } finally {
+   setLoading(false);
   }
  };
  return (

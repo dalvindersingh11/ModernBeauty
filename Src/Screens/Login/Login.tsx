@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  SafeAreaView,
  View,
@@ -20,18 +20,37 @@ import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { moderateScale } from 'react-native-size-matters';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import { showToast } from '../../Constant/showToast';
 export default function LoginScreen() {
  const navigation = useNavigation<any>();
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  const [loading, setLoading] = useState(false);
  const [secureText, setSecureText] = useState(true);
-
+ const [token, setToken] = useState<string | null>(null);
+ const [otpVerified, setOtpVerified] = useState<string | null>(null);
+ const isAuthenticated = token && otpVerified === 'true';
  const [user, setUser] = useState(null);
-
+ useEffect(() => {
+  const checkStorage = async () => {
+   const storedToken = await AsyncStorage.getItem('token');
+   const storedOtp = await AsyncStorage.getItem('otpVerified');
+   setToken(storedToken);
+   setOtpVerified(storedOtp);
+   setLoading(false);
+  };
+  checkStorage();
+ }, []);
  const handleLogin = async () => {
   if (!email || !password) {
-   Alert.alert('Validation', 'Email and password are required');
+   showToast('Email and password are required');
+   return;
+  }
+
+  // Email regex validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+   showToast('Please enter a valid email address');
    return;
   }
 
@@ -55,13 +74,10 @@ export default function LoginScreen() {
    await AsyncStorage.setItem('token', response?.data?.token);
    saveUser(response.data.user);
    navigation?.navigate('OtpScreen');
-   Alert.alert('Success', 'Login successful!');
+   showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);
-   Alert.alert(
-    'Login Failed',
-    error.response?.data?.message || 'Something went wrong'
-   );
+   showToast('Login Failed Something went wrong');
   } finally {
    setLoading(false);
   }
@@ -74,6 +90,7 @@ export default function LoginScreen() {
    console.error('Failed to save user:', e);
   }
  };
+
  return (
   <SafeAreaView style={Styles.container}>
    <Image style={Styles.logoStyle} source={APP_LOGO} />
@@ -145,11 +162,11 @@ export default function LoginScreen() {
      New Register User
     </Text>
    </TouchableOpacity>
-   <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-    <Text allowFontScaling={false} style={Styles.registerText}>
-     GO TO SETTINGS TESTING BUTTON
-    </Text>
-   </TouchableOpacity>
+   {/* <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+               <Text allowFontScaling={false} style={Styles.registerText}>
+                GO TO SETTINGS TESTING BUTTON
+               </Text>
+              </TouchableOpacity> */}
   </SafeAreaView>
  );
 }
