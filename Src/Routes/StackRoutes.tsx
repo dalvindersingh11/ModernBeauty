@@ -32,9 +32,9 @@ const MyStack = () => {
  useEffect(() => {
   const checkStorage = async () => {
    const storedToken = await AsyncStorage.getItem('token');
-   const storedOtp = await AsyncStorage.getItem('otpVerified');
+   console.log('storedToken', storedToken);
+
    setToken(storedToken);
-   setOtpVerified(storedOtp);
    setLoading(false);
   };
   checkStorage();
@@ -42,7 +42,7 @@ const MyStack = () => {
 
  if (loading) return null;
 
- const isAuthenticated = token && otpVerified === 'true';
+ const isAuthenticated = token;
 
  return (
   <Stack.Navigator
@@ -63,11 +63,26 @@ const MyStack = () => {
       component={SignUpScreen}
       options={{ headerShown: false }}
      />
-     <Stack.Screen
+     {/* <Stack.Screen
       name="OtpScreen"
       component={OtpScreen}
       options={{ headerShown: false }}
-     />
+     /> */}
+     <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
+     <Stack.Screen name="PlanScreen" component={PlanScreen} />
+     <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+     <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
+     <Stack.Screen name="HairCourses" component={HairCourses} />
+     <Stack.Screen name="ViewFolder" component={ViewFolder} />
+     <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
+     <Stack.Screen name="Settings" component={Settings} />
+     <Stack.Screen name="EditProfile" component={EditProfile} />
+     <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+     <Stack.Screen name="ManageSubscription" component={ManageSubscription} />
+     <Stack.Screen name="HelpSupport" component={HelpSupport} />
+     <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
+     <Stack.Screen name="AddTicket" component={AddTicket} />
+     <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
     </>
    ) : (
     <>

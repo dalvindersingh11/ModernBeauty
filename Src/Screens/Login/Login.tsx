@@ -21,6 +21,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { moderateScale } from 'react-native-size-matters';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import { showToast } from '../../Constant/showToast';
+import { BASE_URL } from '../../Constant/apiUrl';
 export default function LoginScreen() {
  const navigation = useNavigation<any>();
  const [email, setEmail] = useState('');
@@ -57,7 +58,7 @@ export default function LoginScreen() {
   setLoading(true);
   try {
    const response = await axios.post(
-    'http://api.digitaloldhand.com/api/login',
+    BASE_URL + 'login',
     {
      email,
      password
@@ -70,10 +71,10 @@ export default function LoginScreen() {
    );
 
    console.log('Login Success:', response.data);
-   setUser(response.data.user); // Or store token, etc.
-   await AsyncStorage.setItem('token', response?.data?.token);
-   saveUser(response.data.user);
-   navigation?.navigate('OtpScreen');
+   //    setUser(response.data.user_id); // Or store token, etc.
+   await AsyncStorage.setItem('token', response?.data?.bearer_token);
+   //    saveUser(response.data.user);
+   navigation?.navigate('TrialAccessScreen');
    showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);

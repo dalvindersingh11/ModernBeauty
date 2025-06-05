@@ -1,0 +1,35 @@
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from '../Screens/Login/Login';
+import SignUpScreen from '../Screens/SignUp/Signup';
+import OtpScreen from '../Screens/OtpScreen/OtpScreens';
+import TrialAccessScreen from '../Screens/TrialScreen/TrialScreen';
+
+const Stack = createStackNavigator();
+
+const AuthNavigator = () => {
+ return (
+  <Stack.Navigator
+   initialRouteName="Login"
+   screenOptions={{ headerShown: false }}>
+   <Stack.Screen
+    name="Login"
+    component={LoginScreen}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="SignUp"
+    component={SignUpScreen}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="OtpScreen"
+    component={OtpScreen}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
+  </Stack.Navigator>
+ );
+};
+
+export default AuthNavigator;

@@ -27,6 +27,8 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { showToast } from '../../Constant/showToast';
+import fonts from '../../Constant/Fonts';
+import { BASE_URL } from '../../Constant/apiUrl';
 
 const Settings = () => {
  const navigation = useNavigation<any>();
@@ -41,20 +43,15 @@ const Settings = () => {
     return;
    }
 
-   const response = await axios.post(
-    'https://api.digitaloldhand.com/api/logout',
-    {},
-    {
-     headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-     }
+   const response = await axios.post(BASE_URL + 'logout', {
+    headers: {
+     'Content-Type': 'application/json',
+     Authorization: `Bearer ${token}`
     }
-   );
+   });
    console.log('logoutResponse', response);
    // Clear local storage on success
    await AsyncStorage.removeItem('token');
-   await AsyncStorage.removeItem('user');
    setLoading(false);
    showToast('Logged out successfully');
 
@@ -146,10 +143,23 @@ const Settings = () => {
      Actions
     </Text>
     <View style={Styles.card}>
-     <TouchableOpacity onPress={() => handleLogout()} style={Styles.row}>
+     <TouchableOpacity
+      disabled={loading}
+      onPress={() => handleLogout()}
+      style={Styles.row}>
       <Image source={SETTINGLOGOUT} style={Styles.icon} />
       {loading ? (
-       <ActivityIndicator size={20} color={colors.black} />
+       <View style={{ top: moderateScale(0), marginLeft: '5%' }}>
+        <Text
+         allowFontScaling={false}
+         style={{
+          color: colors.black,
+          fontFamily: fonts.regular,
+          fontSize: 15
+         }}>
+         Logging Out ...
+        </Text>
+       </View>
       ) : (
        <Text allowFontScaling={true} style={Styles.optionText}>
         Log out

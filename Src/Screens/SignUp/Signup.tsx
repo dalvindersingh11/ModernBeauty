@@ -6,7 +6,8 @@ import {
  TextInput,
  TouchableOpacity,
  Image,
- Alert
+ Alert,
+ Linking
 } from 'react-native';
 import colors from '../../Constant/colors';
 import { APP_LOGO } from '../../Constant/Icons';
@@ -18,6 +19,8 @@ import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showToast } from '../../Constant/showToast';
+import { BASE_URL } from '../../Constant/apiUrl';
+import Popup from './Popup';
 
 export default function SignUpScreen() {
  const navigation = useNavigation<any>();
@@ -26,6 +29,7 @@ export default function SignUpScreen() {
  const [password, setPassword] = useState('');
  const [loading, setLoading] = useState(false);
  const [secureText, setSecureText] = useState(true);
+ const [modalVisible, setModalVisible] = useState(false);
  const handleSignUp = async () => {
   if (!email || !password || !name) {
    showToast('All fields are required');
@@ -40,7 +44,7 @@ export default function SignUpScreen() {
   setLoading(true);
   try {
    const response = await axios.post(
-    'http://api.digitaloldhand.com/api/register',
+    BASE_URL + 'register',
     {
      email,
      name,
@@ -56,17 +60,14 @@ export default function SignUpScreen() {
 
    console.log('Signup Success:', response);
 
-   await AsyncStorage.setItem(
-    'token',
-    response?.data?.user?.verification_token
-   );
-   saveUser(response.data.user);
-   navigation?.navigate('OtpScreen');
-   showToast('SignUp successful!');
+   setModalVisible(!modalVisible);
+   //    saveUser(response.data.user);
+   //    navigation?.navigate('OtpScreen');
+   //    showToast('SignUp successful!');
    //    await AsyncStorage.setItem('token', response?.data?.token);
    //    saveUser(response.data.user);
   } catch (error: any) {
-   console.log('Login Error:', error);
+   console.log('SignUp Error:', error);
    showToast('Something went wrong');
   } finally {
    setLoading(false);
@@ -82,6 +83,7 @@ export default function SignUpScreen() {
    setLoading(false);
   }
  };
+
  return (
   <SafeAreaView style={Styles.container}>
    <Image style={Styles.logoStyle} source={APP_LOGO} />
@@ -143,7 +145,13 @@ export default function SignUpScreen() {
      />
     </View>
    </View>
-
+   <Popup
+    modalVisible={modalVisible}
+    closeModal={() => {
+     setModalVisible(!modalVisible),
+      Linking.openURL('https://gmail.app.goo.gl');
+    }}
+   />
    <TouchableOpacity onPress={() => handleSignUp()} style={Styles.loginButton}>
     <Text allowFontScaling={false} style={Styles.loginText}>
      Sign Up

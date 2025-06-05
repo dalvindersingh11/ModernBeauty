@@ -13,9 +13,12 @@ export default StyleSheet.create({
   justifyContent: 'space-between',
   alignItems: 'center'
  },
-  contentWrapper: {
+ contentWrapper: {
   gap: mvs(10),
-  width:"90%",alignSelf:'center',paddingHorizontal:ms(8),paddingTop:mvs(10)
+  width: '90%',
+  alignSelf: 'center',
+  paddingHorizontal: ms(8),
+  paddingTop: mvs(10)
  },
  logo: {
   height: moderateScale(20),
@@ -28,13 +31,14 @@ export default StyleSheet.create({
  },
  avatarRow: {
   flexDirection: 'row',
-  alignSelf: 'center',
+  alignSelf: 'center'
   // justifyContent: 'space-between'
  },
  backIcon: {
   width: ms(18),
   height: mvs(16),
-  borderRadius: 20,marginTop:mvs(20)
+  borderRadius: 20,
+  marginTop: mvs(20)
  },
  avatarWrapper: {
   width: mvs(170),
@@ -78,7 +82,8 @@ export default StyleSheet.create({
   borderRadius: ms(6),
   gap: mvs(10),
   paddingHorizontal: mvs(10),
-  alignItems: 'flex-start',height:mvs(44)
+  alignItems: 'flex-start',
+  height: mvs(44)
  },
  dropdownBox: {
   backgroundColor: '#fff',
@@ -87,7 +92,8 @@ export default StyleSheet.create({
   paddingHorizontal: mvs(10),
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',height:mvs(44)
+  alignItems: 'center',
+  height: mvs(44)
  },
  dropdownIcon: {
   height: ms(16.67),
@@ -110,27 +116,59 @@ export default StyleSheet.create({
   fontSize: 16
  },
  phoneInputWrapper: {
- flexDirection: 'row',
- alignItems: 'center',
- borderRadius: 8,
-//  paddingHorizontal: 10,
- marginBottom: 16,
- backgroundColor: '#fff',height:mvs(44)
-},
-callingCodeBox: {
- paddingHorizontal: 10,
- paddingVertical: 12,
- borderRightWidth: 1,
- borderColor: '#ccc'
-},
-callingCodeText: {
- fontSize: 16,
- color: '#000'
-},
-phoneInput: {
- flex: 1,
- paddingLeft: 10,
- fontSize: 16
-}
-
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderRadius: 8,
+  //  paddingHorizontal: 10,
+  marginBottom: 16,
+  backgroundColor: '#fff',
+  height: mvs(44)
+ },
+ callingCodeBox: {
+  paddingHorizontal: 10,
+  paddingVertical: 12,
+  borderRightWidth: 1,
+  borderColor: '#ccc'
+ },
+ callingCodeText: {
+  fontSize: 16,
+  color: '#000'
+ },
+ phoneInput: {
+  flex: 1,
+  paddingLeft: 10,
+  fontSize: 16
+ },
+ dropdown: {
+  height: 50,
+  width: '100%',
+  borderRadius: 8,
+  paddingHorizontal: 8
+ },
+ icon: {
+  marginRight: 5
+ },
+ droplabel: {
+  position: 'absolute',
+  backgroundColor: 'white',
+  left: 22,
+  top: 8,
+  zIndex: 999,
+  paddingHorizontal: 8,
+  fontSize: 14
+ },
+ placeholderStyle: {
+  fontSize: 16
+ },
+ selectedTextStyle: {
+  fontSize: 16
+ },
+ iconStyle: {
+  width: 20,
+  height: 20
+ },
+ inputSearchStyle: {
+  height: 40,
+  fontSize: 16
+ }
 });

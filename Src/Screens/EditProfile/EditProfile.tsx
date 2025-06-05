@@ -22,9 +22,11 @@ import { useNavigation } from '@react-navigation/native';
 import Styles from './Styles';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL } from '../../Constant/apiUrl';
+import { BASE_URL, IMAGE_URL } from '../../Constant/apiUrl';
 import ImagePicker from 'react-native-image-crop-picker';
 import { showToast } from '../../Constant/showToast';
+import { Dropdown } from 'react-native-element-dropdown';
+
 const EditProfile = () => {
  const navigation = useNavigation();
 
@@ -34,13 +36,20 @@ const EditProfile = () => {
  const [name, setName] = useState('');
  const [phone, setPhone] = useState('');
  const [gender, setGender] = useState('');
+ const [userInfo, setUserInfo] = useState('');
+ const [email, setEmail] = useState('');
+ const [value, setValue] = useState(null);
+ const [isFocus, setIsFocus] = useState(false);
  const [image, setImage] = useState('');
  const [loading, setLoading] = useState(false);
- const [countryCode, selectedCountry] = useState('US');
+ const [countryCode, setCountryCode] = useState('');
  const [country, setCountry] = useState(null);
  const [showCountryPicker, setShowCountryPicker] = useState(false);
  const [user, setUser] = useState<any>(null);
-
+ const data = [
+  { label: 'male', value: '1' },
+  { label: 'female', value: '2' }
+ ];
  useEffect(() => {
   const loadUser = async () => {
    try {
@@ -110,36 +119,43 @@ const EditProfile = () => {
   setShowDatePicker(false);
  };
  const handGetProfile = async () => {
-  let token = await AsyncStorage?.getItem('token');
-  console.log('token', token);
   try {
-   const response = await axios.get(
-    `${BASE_URL}profile`,
+   const token = await AsyncStorage.getItem('token');
+   console.log('Token:', token);
 
-    {
-     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer${token}`
-     }
+   const response = await fetch(BASE_URL + 'profile', {
+    method: 'GET',
+    headers: {
+     'Content-Type': 'application/json',
+     Authorization: `Bearer ${token}` // ✅ Space after "Bearer"
     }
-   );
+   });
 
-   console.log('getProfile Success:', response.data);
-  } catch (error: any) {
-   console.error('Something went wrong');
-   showToast('Something went wrong');
-  } finally {
-   console.log('kl');
+   if (!response.ok) {
+    throw new Error('Failed to fetch profile');
+   }
+
+   const data = await response.json();
+   setUserInfo(data?.data);
+   setPhone(data?.data?.phone);
+   setImage(data?.data?.image);
+   setGender(data?.data.gender);
+   setEmail(data?.data?.email);
+   setName(data?.data?.name);
+   console.log('Profile Data:', data);
+  } catch (error) {
+   console.error('Error fetching profile:', error);
+   // showToast('Something went wrong'); // Optional
   }
  };
- //  useEffect(() => {
- //   handGetProfile();
- //   console.log('hjfdhjf', user);
- //  }, []);
+ useEffect(() => {
+  handGetProfile();
+  console.log('hjfdhjf', user);
+ }, []);
  const handleUpdateProfile = async () => {
   console.log('params', name, phone, gender);
   let token = await AsyncStorage?.getItem('token');
-  if (!name || !phone || !gender) {
+  if (!name || !phone || !gender || !email) {
    showToast('All Fields are required');
    return;
   }
@@ -149,16 +165,16 @@ const EditProfile = () => {
    const response = await axios.put(
     `${BASE_URL}update-profile`,
     {
-     email: user?.email,
+     email: email,
      password: user?.password,
      name,
-     phone,
+     phone: `+${countryCode ? countryCode : '91'}${phone}`,
      gender
     },
     {
      headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer${token}`
+      Authorization: `Bearer ${token}`
      }
     }
    );
@@ -189,18 +205,25 @@ const EditProfile = () => {
     {
      headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer${token}`
+      Authorization: `Bearer ${token}`
      }
     }
    );
 
    console.log('response', response);
+   handGetProfile();
   } catch (error: any) {
    console.error('Error:', error.response?.data || error.message);
    showToast('Something went wrong');
   } finally {
    setLoading(false);
+   handGetProfile();
   }
+ };
+ const handleCountrySelect = (selectedCountry: { callingCode: any[] }) => {
+  // Safe assignment
+  const codes = selectedCountry?.callingCode?.map((item) => `+${item}`);
+  setCountryCode(codes[0]);
  };
  return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
@@ -222,7 +245,10 @@ const EditProfile = () => {
         {image == '' ? (
          <Image source={SAMPLEIMAGE} style={Styles.avatarImage} />
         ) : (
-         <Image source={{ uri: image }} style={Styles.avatarImage} />
+         <Image
+          source={{ uri: IMAGE_URL + image }}
+          style={Styles.avatarImage}
+         />
         )}
        </View>
        <TouchableOpacity onPress={showMediaPicker} style={Styles.editIcon}>
@@ -236,6 +262,7 @@ const EditProfile = () => {
      {renderLabel('Name')}
      <TextInput
       style={Styles.inputBox}
+      value={name}
       placeholder="Enter name"
       onChangeText={(text) => setName(text)}
      />
@@ -243,36 +270,35 @@ const EditProfile = () => {
      {renderLabel('Email')}
      <TextInput
       style={Styles.inputBox}
-      value={user?.email}
+      value={email}
       placeholder="Enter email"
       autoCapitalize="none"
-      editable={false}
+      // editable={false}
+      onChangeText={(text) => setEmail(text)}
      />
 
      {renderLabel('Gender')}
-     <TextInput
-      style={Styles.inputBox}
-      placeholder="Enter Gender (Male/Female)"
-      returnKeyType="done"
-      onSubmitEditing={(event) => {
-       const text = event.nativeEvent.text.trim().toLowerCase();
-       if (text === 'male' || text === 'female') {
-        setGender(text.charAt(0).toUpperCase() + text.slice(1)); // Capitalize
-       } else {
-        Alert.alert('Invalid input', 'Please enter either "Male" or "Female".');
-       }
-      }}
-     />
-
-     {/* {renderLabel('Date of birth')}
-    <TouchableOpacity
-     onPress={() => setShowDatePicker(true)}
-     style={Styles.dropdownBox}>
-     <Text>{date.toDateString()}</Text>
-     <Image style={Styles.dropdownIcon} source={DROPDOWNICON} />
-    </TouchableOpacity>
-
-    {/* Date Picker Modal */}
+     <View style={Styles.inputBox}>
+      <Dropdown
+       style={[Styles.dropdown]}
+       placeholderStyle={Styles.placeholderStyle}
+       selectedTextStyle={Styles.selectedTextStyle}
+       inputSearchStyle={Styles.inputSearchStyle}
+       iconStyle={Styles.iconStyle}
+       data={data}
+       maxHeight={150}
+       labelField="label"
+       valueField="value"
+       placeholder={!isFocus ? 'Gender' : '...'}
+       value={gender}
+       onFocus={() => setIsFocus(true)}
+       onBlur={() => setIsFocus(false)}
+       onChange={(item) => {
+        setGender(item.value);
+        setIsFocus(false);
+       }}
+      />
+     </View>
 
      {renderLabel('Phone')}
      <View style={Styles.phoneInputWrapper}>
@@ -283,10 +309,10 @@ const EditProfile = () => {
       </TouchableOpacity>
       <TextInput
        style={Styles.phoneInput}
+       value={phone}
        placeholder="Phone number"
        keyboardType="phone-pad"
        onChangeText={(text) => setPhone(text)}
-       value={phone}
       />
      </View>
 
@@ -299,10 +325,10 @@ const EditProfile = () => {
        withCallingCode
        withEmoji
        onSelect={(selectedCountry) => {
-        console.log('selectedCountry', selectedCountry?.callingCode);
-        // setCountryCode(selectedCountry.cca2);
-        setCountry(selectedCountry);
-        setCallingCode(selectedCountry.callingCode);
+        console.log('selectedCountry', selectedCountry);
+        handleCountrySelect(selectedCountry);
+        // setCountry(selectedCountry);
+        // setCallingCode(selectedCountry.callingCode);
         setShowCountryPicker(false);
        }}
        onClose={() => setShowCountryPicker(false)}
