@@ -91,7 +91,7 @@ export default StyleSheet.create({
   borderRadius: 10,
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: responsiveScreenHeight(4),
+  //   marginTop: responsiveScreenHeight(4),
   width: moderateScale(285),
   padding: moderateScale(15)
  },

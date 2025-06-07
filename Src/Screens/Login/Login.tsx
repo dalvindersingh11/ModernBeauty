@@ -141,7 +141,13 @@ export default function LoginScreen() {
      />
     </View>
    </View>
-
+   {/* <TouchableOpacity
+    style={{ alignSelf: 'flex-end', right: responsiveScreenWidth(15) }}
+    onPress={() => navigation?.navigate('UpdatePassword')}>
+    <Text allowFontScaling={false} style={Styles.registerText}>
+     Forgot Password
+    </Text>
+   </TouchableOpacity> */}
    <TouchableOpacity
     disabled={loading}
     onPress={() => handleLogin()}
@@ -160,14 +166,9 @@ export default function LoginScreen() {
    </Text>
    <TouchableOpacity onPress={() => navigation?.navigate('SignUp')}>
     <Text allowFontScaling={false} style={Styles.registerText}>
-     New Register User
+     Sign Up
     </Text>
    </TouchableOpacity>
-   {/* <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-               <Text allowFontScaling={false} style={Styles.registerText}>
-                GO TO SETTINGS TESTING BUTTON
-               </Text>
-              </TouchableOpacity> */}
   </SafeAreaView>
  );
 }

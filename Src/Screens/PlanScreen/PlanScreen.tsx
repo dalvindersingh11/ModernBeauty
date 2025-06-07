@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+ View,
+ Text,
+ TouchableOpacity,
+ Image,
+ ScrollView,
+ FlatList
+} from 'react-native';
 import { APP_LOGO, PREMIUM, USER } from '../../Constant/Icons';
 import { moderateScale } from 'react-native-size-matters';
 import fonts from '../../Constant/Fonts';
@@ -7,14 +14,68 @@ import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import colors from '../../Constant/colors';
 import { useNavigation } from '@react-navigation/native';
 import Styles from './Styles';
-import TopHeader from '../../Component/TopHeader/TopHeader';
-export default function PlanScreen() {
- const [selectedPlan, setSelectedPlan] = useState('annual');
- const navigation = useNavigation<any>();
+import { BASE_URL } from '../../Constant/apiUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export default function PlanScreen() {
+ const [selectedPlan, setSelectedPlan] = useState(null);
+ const [arrData, setArrData] = useState([]);
+
+ const navigation = useNavigation<any>();
+ const getAllPlans = async () => {
+  try {
+   const token = await AsyncStorage.getItem('token');
+   console.log('Token:', token);
+
+   const response = await fetch(BASE_URL + 'all_plans', {
+    method: 'GET',
+    headers: {
+     'Content-Type': 'application/json',
+     Authorization: `Bearer ${token}` // ✅ Space after "Bearer"
+    }
+   });
+
+   if (!response.ok) {
+    throw new Error('Failed to fetch profile');
+   }
+
+   const data = await response.json();
+
+   setArrData(data?.data);
+
+   console.log('plans Data:', data);
+  } catch (error) {
+   console.error('Error fetching profile:', error);
+   // showToast('Something went wrong'); // Optional
+  }
+ };
+ useEffect(() => {
+  getAllPlans();
+ }, []);
+ const renderPlans = ({ item, index }: any) => {
+  return (
+   <View>
+    <TouchableOpacity
+     style={[Styles.planBox, selectedPlan === index && Styles.planSelected]}
+     onPress={() => setSelectedPlan(index)}>
+     <View style={Styles.planTop}>
+      <Text allowFontScaling={false} style={Styles.planTitle}>
+       {item?.title}
+      </Text>
+      <Text allowFontScaling={false} style={Styles.bestValue}>
+       {item?.badge}
+      </Text>
+     </View>
+     <Text allowFontScaling={false} style={Styles.planText}>
+      {item?.description} - {Number(item?.price).toFixed(0)} /
+      {item?.duration_months} months
+     </Text>
+    </TouchableOpacity>
+   </View>
+  );
+ };
  return (
   <ScrollView contentContainerStyle={Styles.container}>
-
    {/* Title */}
    <Text allowFontScaling={true} style={Styles.title}>
     Go Premium
@@ -29,36 +90,10 @@ export default function PlanScreen() {
     source={PREMIUM} // replace with your image
     style={Styles.giftImage}
    />
+   <View style={{ height: responsiveScreenHeight(30) }}>
+    <FlatList data={arrData} renderItem={renderPlans} />
+   </View>
 
-   {/* Plans */}
-   <TouchableOpacity
-    style={[Styles.planBox, selectedPlan === 'annual' && Styles.planSelected]}
-    onPress={() => setSelectedPlan('annual')}>
-    <View style={Styles.planTop}>
-     <Text allowFontScaling={false} style={Styles.planTitle}>
-      Annual
-     </Text>
-     <Text allowFontScaling={false} style={Styles.bestValue}>
-      Best Value
-     </Text>
-    </View>
-    <Text allowFontScaling={false} style={Styles.planText}>
-     Get quiz session free - $999/Year
-    </Text>
-   </TouchableOpacity>
-
-   <TouchableOpacity
-    style={[Styles.planBox, selectedPlan === 'monthly' && Styles.planSelected]}
-    onPress={() => setSelectedPlan('monthly')}>
-    <Text allowFontScaling={false} style={Styles.planTitle}>
-     3 Month Subscription
-    </Text>
-    <Text allowFontScaling={false} style={Styles.planText}>
-     Get quiz session free - $500/ Per Month
-    </Text>
-   </TouchableOpacity>
-
-   {/* Proceed Button */}
    <TouchableOpacity
     onPress={() => navigation?.navigate('PaymentScreen')}
     style={Styles.proceedButton}>

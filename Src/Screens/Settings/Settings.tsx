@@ -40,27 +40,29 @@ const Settings = () => {
 
    if (!token) {
     Alert.alert('Error', 'User not logged in');
+    setLoading(false);
     return;
    }
 
-   const response = await axios.post(BASE_URL + 'logout', {
-    headers: {
-     'Content-Type': 'application/json',
-     Authorization: `Bearer ${token}`
+   const response = await axios.post(
+    `${BASE_URL}logout`,
+    {}, // empty body
+    {
+     headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+     }
     }
-   });
-   console.log('logoutResponse', response);
-   // Clear local storage on success
-   await AsyncStorage.removeItem('token');
-   setLoading(false);
-   showToast('Logged out successfully');
+   );
 
-   // Navigate to login or splash screen
+   console.log('logoutResponse', response?.data);
+
+   await AsyncStorage.removeItem('token');
+   showToast('Logged out successfully');
    navigation?.navigate('Login');
   } catch (error: any) {
-   setLoading(false);
-   console.log('Logout error:', error);
-   showToast('Something went wrong ,Please try again.');
+   console.log('Logout error:', error?.response?.data || error.message);
+   showToast('Something went wrong. Please try again.');
   } finally {
    setLoading(false);
   }

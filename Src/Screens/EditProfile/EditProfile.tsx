@@ -153,6 +153,7 @@ const EditProfile = () => {
   console.log('hjfdhjf', user);
  }, []);
  const handleUpdateProfile = async () => {
+  //  phone: `+${countryCode ? countryCode : '91'}${phone}`,
   console.log('params', name, phone, gender);
   let token = await AsyncStorage?.getItem('token');
   if (!name || !phone || !gender || !email) {
@@ -168,7 +169,7 @@ const EditProfile = () => {
      email: email,
      password: user?.password,
      name,
-     phone: `+${countryCode ? countryCode : '91'}${phone}`,
+     phone: phone,
      gender
     },
     {
@@ -189,37 +190,55 @@ const EditProfile = () => {
  };
  const handleProfileImage = async (image: any) => {
   console.log('params', image);
-  let token = await AsyncStorage?.getItem('token');
+  const token = await AsyncStorage.getItem('token');
+
   if (!image) {
-   showToast('image is required');
+   showToast('Image is required');
    return;
   }
 
   setLoading(true);
+
   try {
+   const formData = new FormData();
+   const uri = image.path || image.uri || image;
+   const fileName = uri.split('/').pop();
+   const fileExtension = fileName?.split('.').pop()?.toLowerCase();
+
+   // Set basic MIME type manually
+   let mimeType = 'image/jpeg';
+   if (fileExtension === 'png') mimeType = 'image/png';
+   else if (fileExtension === 'jpg' || fileExtension === 'jpeg')
+    mimeType = 'image/jpeg';
+   else if (fileExtension === 'webp') mimeType = 'image/webp';
+
+   formData.append('image', {
+    uri,
+    name: fileName,
+    type: mimeType
+   });
+
    const response = await axios.post(
     `${BASE_URL}update-profile-picture`,
-    {
-     image: image
-    },
+    formData,
     {
      headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}`
      }
     }
    );
-
-   console.log('response', response);
    handGetProfile();
+   console.log('Upload Response:', response.data);
+   showToast('Profile updated successfully');
   } catch (error: any) {
-   console.error('Error:', error.response?.data || error.message);
+   console.error('Upload Error:', error.response?.data || error.message);
    showToast('Something went wrong');
   } finally {
    setLoading(false);
-   handGetProfile();
   }
  };
+
  const handleCountrySelect = (selectedCountry: { callingCode: any[] }) => {
   // Safe assignment
   const codes = selectedCountry?.callingCode?.map((item) => `+${item}`);
