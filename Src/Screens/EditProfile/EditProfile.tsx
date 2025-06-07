@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
- View,
- Text,
- TouchableOpacity,
- Image,
- SafeAreaView,
- TextInput,
- Alert,
- ActivityIndicator,
- ScrollView
+ View, Text, TouchableOpacity, Image, SafeAreaView,
+ TextInput, Alert, ActivityIndicator, ScrollView
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CountryPicker from 'react-native-country-picker-modal';
 import {
- DROPDOWNICON,
- EDITPROFILEICON,
- SAMPLEIMAGE
+ DROPDOWNICON, EDITPROFILEICON, SAMPLEIMAGE
 } from '../../Constant/Icons';
 import colors from '../../Constant/colors';
 import { useNavigation } from '@react-navigation/native';
@@ -29,282 +20,201 @@ import { Dropdown } from 'react-native-element-dropdown';
 
 const EditProfile = () => {
  const navigation = useNavigation();
-
  const [date, setDate] = useState(new Date());
  const [callingCode, setCallingCode] = useState('91');
+ const [countryCode, setCountryCode] = useState('IN');
+ const [country, setCountry] = useState(null);
  const [showDatePicker, setShowDatePicker] = useState(false);
+ const [showCountryPicker, setShowCountryPicker] = useState(false);
  const [name, setName] = useState('');
  const [phone, setPhone] = useState('');
  const [gender, setGender] = useState('');
- const [userInfo, setUserInfo] = useState('');
  const [email, setEmail] = useState('');
- const [value, setValue] = useState(null);
- const [isFocus, setIsFocus] = useState(false);
  const [image, setImage] = useState('');
  const [loading, setLoading] = useState(false);
- const [countryCode, setCountryCode] = useState('');
- const [country, setCountry] = useState(null);
- const [showCountryPicker, setShowCountryPicker] = useState(false);
- const [user, setUser] = useState<any>(null);
- const data = [
-  { label: 'male', value: '1' },
-  { label: 'female', value: '2' }
- ];
- useEffect(() => {
-  const loadUser = async () => {
-   try {
-    const jsonValue = await AsyncStorage.getItem('user');
-    if (jsonValue != null) {
-     setUser(JSON.parse(jsonValue));
-     console.log('hjfdhjf', user);
-    }
-   } catch (e) {
-    console.error('Failed to load user:', e);
-   }
-  };
+ const [user, setUser] = useState(null);
+ const [isFocus, setIsFocus] = useState(false);
 
-  loadUser();
+ const genderOptions = [
+  { label: 'Male', value: '1' },
+  { label: 'Female', value: '2' }
+ ];
+
+ useEffect(() => {
+  (async () => {
+   const userData = await AsyncStorage.getItem('user');
+   const savedCountry = await AsyncStorage.getItem('selected_country');
+   if (userData) setUser(JSON.parse(userData));
+   if (savedCountry) {
+    const parsed = JSON.parse(savedCountry);
+    setCountry(parsed);
+    setCallingCode(parsed.callingCode?.[0] || '91');
+    setCountryCode(parsed.cca2 || 'IN');
+   }
+  })();
  }, []);
- const showMediaPicker = () => {
-  Alert.alert(
-   'Upload Media',
-   'Choose an option',
-   [
-    {
-     text: 'Open Gallery',
-     onPress: () => {
-      ImagePicker.openPicker({
-       mediaType: 'photo'
-      })
-       .then((image) => {
-        console.log('Picked image:', image);
-        setImage(image?.path);
-        handleProfileImage(image?.path);
-       })
-       .catch((error) => {
-        console.log('Video picking cancelled or failed:', error);
-       });
-     }
-    },
-    {
-     text: 'Take Photo',
-     onPress: () => {
-      ImagePicker.openCamera({
-       width: 300,
-       height: 400,
-       cropping: true
-      })
-       .then((image) => {
-        console.log('Captured image:', image);
-        setImage(image?.path);
-        handleProfileImage(image?.path);
-       })
-       .catch((error) => {
-        console.log('Camera cancelled or failed:', error);
-       });
-     }
-    },
-    {
-     text: 'Cancel',
-     style: 'cancel'
-    }
-   ],
-   { cancelable: true }
-  );
- };
- const handleConfirmDate = (selectedDate: React.SetStateAction<Date>) => {
-  if (selectedDate) {
-   setDate(selectedDate);
-  }
-  setShowDatePicker(false);
- };
+
+ useEffect(() => {
+  handGetProfile();
+ }, []);
+
  const handGetProfile = async () => {
   try {
    const token = await AsyncStorage.getItem('token');
-   console.log('Token:', token);
-
-   const response = await fetch(BASE_URL + 'profile', {
-    method: 'GET',
+   const res = await fetch(BASE_URL + 'profile', {
     headers: {
      'Content-Type': 'application/json',
-     Authorization: `Bearer ${token}` // ✅ Space after "Bearer"
+     Authorization: `Bearer ${token}`
     }
    });
-
-   if (!response.ok) {
-    throw new Error('Failed to fetch profile');
+   const data = await res.json();
+   setName(data?.data?.name || '');
+   setPhone(data?.data?.phone || '');
+   setEmail(data?.data?.email || '');
+   setGender(data?.data?.gender || '');
+   setImage(data?.data?.image || '');
+   if (data?.data?.country) {
+    const selected = {
+     name: data.data.country,
+     cca2: data.data.countryCode || 'IN',
+     callingCode: [data.data.callingCode || '91']
+    };
+    setCountry(selected);
+    setCallingCode(selected.callingCode[0]);
+    setCountryCode(selected.cca2);
+    await AsyncStorage.setItem('selected_country', JSON.stringify(selected));
    }
-
-   const data = await response.json();
-   setUserInfo(data?.data);
-   setPhone(data?.data?.phone);
-   setImage(data?.data?.image);
-   setGender(data?.data.gender);
-   setEmail(data?.data?.email);
-   setName(data?.data?.name);
-   console.log('Profile Data:', data);
-  } catch (error) {
-   console.error('Error fetching profile:', error);
-   // showToast('Something went wrong'); // Optional
+  } catch (err) {
+   console.log('Profile error:', err);
   }
  };
- useEffect(() => {
-  handGetProfile();
-  console.log('hjfdhjf', user);
- }, []);
+
+ const handleConfirmDate = (selectedDate) => {
+  setDate(selectedDate || new Date());
+  setShowDatePicker(false);
+ };
+
  const handleUpdateProfile = async () => {
-  //  phone: `+${countryCode ? countryCode : '91'}${phone}`,
-  console.log('params', name, phone, gender);
-  let token = await AsyncStorage?.getItem('token');
   if (!name || !phone || !gender || !email) {
-   showToast('All Fields are required');
+   showToast('All fields are required');
    return;
   }
 
-  setLoading(true);
-  try {
-   const response = await axios.put(
-    `${BASE_URL}update-profile`,
-    {
-     email: email,
-     password: user?.password,
-     name,
-     phone: phone,
-     gender
-    },
-    {
-     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-     }
-    }
-   );
-
-   console.log('response', response);
-  } catch (error: any) {
-   console.error('Error:', error.response?.data || error.message);
-   showToast('Something went wrong');
-  } finally {
-   setLoading(false);
-  }
- };
- const handleProfileImage = async (image: any) => {
-  console.log('params', image);
   const token = await AsyncStorage.getItem('token');
-
-  if (!image) {
-   showToast('Image is required');
-   return;
-  }
-
   setLoading(true);
 
   try {
-   const formData = new FormData();
-   const uri = image.path || image.uri || image;
-   const fileName = uri.split('/').pop();
-   const fileExtension = fileName?.split('.').pop()?.toLowerCase();
-
-   // Set basic MIME type manually
-   let mimeType = 'image/jpeg';
-   if (fileExtension === 'png') mimeType = 'image/png';
-   else if (fileExtension === 'jpg' || fileExtension === 'jpeg')
-    mimeType = 'image/jpeg';
-   else if (fileExtension === 'webp') mimeType = 'image/webp';
-
-   formData.append('image', {
-    uri,
-    name: fileName,
-    type: mimeType
-   });
-
-   const response = await axios.post(
-    `${BASE_URL}update-profile-picture`,
-    formData,
-    {
-     headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`
-     }
+   await axios.put(`${BASE_URL}update-profile`, {
+    email, name, phone, gender,
+    country: country?.name
+   }, {
+    headers: {
+     'Content-Type': 'application/json',
+     Authorization: `Bearer ${token}`
     }
-   );
-   handGetProfile();
-   console.log('Upload Response:', response.data);
+   });
    showToast('Profile updated successfully');
-  } catch (error: any) {
-   console.error('Upload Error:', error.response?.data || error.message);
+  } catch (err) {
+   console.error('Update error:', err);
    showToast('Something went wrong');
   } finally {
    setLoading(false);
   }
  };
 
- const handleCountrySelect = (selectedCountry: { callingCode: any[] }) => {
-  // Safe assignment
-  const codes = selectedCountry?.callingCode?.map((item) => `+${item}`);
-  setCountryCode(codes[0]);
+ const handleCountrySelect = async (selectedCountry) => {
+  setCallingCode(selectedCountry?.callingCode?.[0] || '91');
+  setCountryCode(selectedCountry.cca2);
+  setCountry(selectedCountry);
+  setShowCountryPicker(false);
+  await AsyncStorage.setItem('selected_country', JSON.stringify(selectedCountry));
  };
+
+ const showMediaPicker = () => {
+  Alert.alert('Upload Media', 'Choose an option', [
+   {
+    text: 'Open Gallery',
+    onPress: () => {
+     ImagePicker.openPicker({ mediaType: 'photo' })
+      .then((img) => {
+       setImage(img?.path);
+       handleProfileImage(img?.path);
+      });
+    }
+   },
+   {
+    text: 'Take Photo',
+    onPress: () => {
+     ImagePicker.openCamera({ width: 300, height: 400, cropping: true })
+      .then((img) => {
+       setImage(img?.path);
+       handleProfileImage(img?.path);
+      });
+    }
+   },
+   { text: 'Cancel', style: 'cancel' }
+  ]);
+ };
+
+ const handleProfileImage = async (imagePath) => {
+  const token = await AsyncStorage.getItem('token');
+  const uri = imagePath;
+  const fileName = uri.split('/').pop();
+  const fileType = fileName.endsWith('png') ? 'image/png' : 'image/jpeg';
+
+  const formData = new FormData();
+  formData.append('image', { uri, name: fileName, type: fileType });
+
+  try {
+   await axios.post(`${BASE_URL}update-profile-picture`, formData, {
+    headers: {
+     'Content-Type': 'multipart/form-data',
+     Authorization: `Bearer ${token}`
+    }
+   });
+   showToast('Image updated');
+   handGetProfile();
+  } catch (err) {
+   console.error('Image upload error:', err);
+   showToast('Image upload failed');
+  }
+ };
+
+ const renderLabel = (label) => (
+  <Text allowFontScaling={true} style={Styles.label}>{label}</Text>
+ );
+
  return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
    <ScrollView>
     <View style={Styles.contentWrapper}>
-     {/* Header */}
-     {/* <View style={Styles.header}>
-      <Image style={Styles.logo} source={APP_LOGO} />
-      <Image source={USER} style={Styles.userAvatar} />
-     </View> */}
-
-     {/* Avatar */}
      <View style={Styles.avatarRow}>
-      {/* <TouchableOpacity onPress={() => navigation.goBack()}>
-       <Image source={BACKICON} style={Styles.backIcon} />
-      </TouchableOpacity> */}
       <View style={Styles.avatarWrapper}>
        <View style={Styles.avatarInner}>
-        {image == '' ? (
-         <Image source={SAMPLEIMAGE} style={Styles.avatarImage} />
-        ) : (
-         <Image
-          source={{ uri: IMAGE_URL + image }}
-          style={Styles.avatarImage}
-         />
-        )}
+        <Image
+         source={image ? { uri: IMAGE_URL + image } : SAMPLEIMAGE}
+         style={Styles.avatarImage}
+        />
        </View>
        <TouchableOpacity onPress={showMediaPicker} style={Styles.editIcon}>
         <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
        </TouchableOpacity>
       </View>
-      {/* <View style={{ width: ms(18), height: mvs(16) }} /> */}
      </View>
 
-     {/* Input Fields */}
      {renderLabel('Name')}
-     <TextInput
-      style={Styles.inputBox}
-      value={name}
-      placeholder="Enter name"
-      onChangeText={(text) => setName(text)}
-     />
+     <TextInput style={Styles.inputBox} value={name} placeholder="Name" onChangeText={setName} />
 
      {renderLabel('Email')}
-     <TextInput
-      style={Styles.inputBox}
-      value={email}
-      placeholder="Enter email"
-      autoCapitalize="none"
-      // editable={false}
-      onChangeText={(text) => setEmail(text)}
-     />
+     <TextInput style={Styles.inputBox} value={email} placeholder="Email" onChangeText={setEmail} />
 
      {renderLabel('Gender')}
      <View style={Styles.inputBox}>
       <Dropdown
-       style={[Styles.dropdown]}
+       style={Styles.dropdown}
        placeholderStyle={Styles.placeholderStyle}
        selectedTextStyle={Styles.selectedTextStyle}
-       inputSearchStyle={Styles.inputSearchStyle}
-       iconStyle={Styles.iconStyle}
-       data={data}
+       data={genderOptions}
        maxHeight={150}
        labelField="label"
        valueField="value"
@@ -321,35 +231,32 @@ const EditProfile = () => {
 
      {renderLabel('Phone')}
      <View style={Styles.phoneInputWrapper}>
-      <TouchableOpacity
-       style={Styles.callingCodeBox}
-       onPress={() => setShowCountryPicker(true)}>
+      <TouchableOpacity style={Styles.callingCodeBox} onPress={() => setShowCountryPicker(true)}>
        <Text style={Styles.callingCodeText}>+{callingCode}</Text>
       </TouchableOpacity>
       <TextInput
        style={Styles.phoneInput}
+       placeholder="Phone"
        value={phone}
-       placeholder="Phone number"
        keyboardType="phone-pad"
-       onChangeText={(text) => setPhone(text)}
+       onChangeText={setPhone}
       />
      </View>
 
-     {/* Country Picker for phone code */}
+     {renderLabel('Country/Region')}
+     <TouchableOpacity onPress={() => setShowCountryPicker(true)} style={Styles.dropdownBox}>
+      <Text>{country?.name || 'Select country'}</Text>
+      <Image source={DROPDOWNICON} style={Styles.dropdownIcon} />
+     </TouchableOpacity>
+
      {showCountryPicker && (
       <CountryPicker
        countryCode={countryCode}
        withFilter
        withFlag
        withCallingCode
-       withEmoji
-       onSelect={(selectedCountry) => {
-        console.log('selectedCountry', selectedCountry);
-        handleCountrySelect(selectedCountry);
-        // setCountry(selectedCountry);
-        // setCallingCode(selectedCountry.callingCode);
-        setShowCountryPicker(false);
-       }}
+       withCountryNameButton
+       onSelect={handleCountrySelect}
        onClose={() => setShowCountryPicker(false)}
        visible
       />
@@ -361,48 +268,16 @@ const EditProfile = () => {
       onConfirm={handleConfirmDate}
       onCancel={() => setShowDatePicker(false)}
       maximumDate={new Date()}
-      display="spinner"
-      locale="en_US"
-      pickerContainerStyleIOS={{ backgroundColor: '#fff' }}
      />
 
-     {renderLabel('Country/Region')}
-     <TouchableOpacity
-      disabled={false}
-      // onPress={() => setShowCountryPicker(true)}
-      style={Styles.dropdownBox}>
-      <Text>{country?.name || 'Select country'}</Text>
-      <Image style={Styles.dropdownIcon} source={DROPDOWNICON} />
-     </TouchableOpacity>
-
-     {/* {showCountryPicker && (
-      <CountryPicker
-       countryCode={countryCode}
-       withFilter
-       withFlag
-       withCountryNameButton={false}
-       withAlphaFilter
-       withCallingCodeButton={false}
-       withEmoji
-       onSelect={(selectedCountry) => {
-        // setCountryCode(selectedCountry.cca2);
-        setCountry(selectedCountry);
-        setShowCountryPicker(false);
-       }}
-       onClose={() => setShowCountryPicker(false)}
-       visible
-      />
-     )} */}
      <TouchableOpacity
       disabled={loading}
-      onPress={() => handleUpdateProfile()}
+      onPress={handleUpdateProfile}
       style={Styles.loginButton}>
       {loading ? (
        <ActivityIndicator size={20} color={colors.white} />
       ) : (
-       <Text allowFontScaling={false} style={Styles.loginText}>
-        Submit
-       </Text>
+       <Text allowFontScaling={false} style={Styles.loginText}>Submit</Text>
       )}
      </TouchableOpacity>
     </View>
@@ -410,32 +285,5 @@ const EditProfile = () => {
   </SafeAreaView>
  );
 };
-
-const renderLabel = (
- label:
-  | string
-  | number
-  | bigint
-  | boolean
-  | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
-  | Iterable<React.ReactNode>
-  | Promise<
-     | string
-     | number
-     | bigint
-     | boolean
-     | React.ReactPortal
-     | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
-     | Iterable<React.ReactNode>
-     | null
-     | undefined
-    >
-  | null
-  | undefined
-) => (
- <Text allowFontScaling={true} style={Styles.label}>
-  {label}
- </Text>
-);
 
 export default EditProfile;

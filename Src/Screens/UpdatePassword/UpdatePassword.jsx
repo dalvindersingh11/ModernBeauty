@@ -38,7 +38,7 @@ const UpdatePassword = () => {
   setLoading(true);
   try {
    const response = await axios.post(
-    `${BASE_URL}forgot-password`,
+    `${BASE_URL}forget-password`,
     {
      email: email
     },
