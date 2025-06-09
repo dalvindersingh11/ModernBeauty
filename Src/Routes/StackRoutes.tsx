@@ -21,6 +21,7 @@ import AddTicket from '../Screens/AddTicket/AddTicket';
 import UpdatePassword from '../Screens/UpdatePassword/UpdatePassword';
 
 import TopHeader from '../Component/TopHeader/TopHeader';
+import ForgotPassword from '../Screens/ForgotPassword/ForgotPassword';
 
 const Stack = createStackNavigator();
 
@@ -63,11 +64,11 @@ const MyStack = () => {
       component={SignUpScreen}
       options={{ headerShown: false }}
      />
-     {/* <Stack.Screen
-      name="OtpScreen"
-      component={OtpScreen}
+     <Stack.Screen
       options={{ headerShown: false }}
-     /> */}
+      name="ForgotPassword"
+      component={ForgotPassword}
+     />
      <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
      <Stack.Screen name="PlanScreen" component={PlanScreen} />
      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
@@ -101,6 +102,11 @@ const MyStack = () => {
      <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
      <Stack.Screen name="AddTicket" component={AddTicket} />
      <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+     <Stack.Screen
+      name="Login"
+      component={LoginScreen}
+      options={{ headerShown: false }}
+     />
     </>
    )}
   </Stack.Navigator>

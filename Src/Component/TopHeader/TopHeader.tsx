@@ -8,7 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 import colors from '../../Constant/colors';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 
-const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
+const TopHeader = ({
+ backOnPress,
+ backPress
+}: {
+ backOnPress?: () => void;
+ backPress?: () => void;
+}) => {
  const [user, setUser] = useState<any>(null);
  const [image, setImage] = useState<any>('');
 
@@ -62,7 +68,10 @@ const TopHeader = ({ backOnPress }: { backOnPress?: () => void }) => {
      marginTop: responsiveScreenHeight(2)
     }}>
     {backOnPress ? (
-     <TouchableOpacity onPress={() => navigation.goBack()}>
+     <TouchableOpacity
+      onPress={() => {
+       navigation.goBack(), backPress;
+      }}>
       <Image
        source={BACKICON}
        style={{

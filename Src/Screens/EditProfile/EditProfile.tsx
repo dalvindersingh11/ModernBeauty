@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
- View, Text, TouchableOpacity, Image, SafeAreaView,
- TextInput, Alert, ActivityIndicator, ScrollView
+ View,
+ Text,
+ TouchableOpacity,
+ Image,
+ SafeAreaView,
+ TextInput,
+ Alert,
+ ActivityIndicator,
+ ScrollView
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CountryPicker from 'react-native-country-picker-modal';
 import {
- DROPDOWNICON, EDITPROFILEICON, SAMPLEIMAGE
+ DROPDOWNICON,
+ EDITPROFILEICON,
+ SAMPLEIMAGE
 } from '../../Constant/Icons';
 import colors from '../../Constant/colors';
 import { useNavigation } from '@react-navigation/native';
@@ -89,7 +98,7 @@ const EditProfile = () => {
   }
  };
 
- const handleConfirmDate = (selectedDate) => {
+ const handleConfirmDate = (selectedDate: any) => {
   setDate(selectedDate || new Date());
   setShowDatePicker(false);
  };
@@ -104,15 +113,22 @@ const EditProfile = () => {
   setLoading(true);
 
   try {
-   await axios.put(`${BASE_URL}update-profile`, {
-    email, name, phone, gender,
-    country: country?.name
-   }, {
-    headers: {
-     'Content-Type': 'application/json',
-     Authorization: `Bearer ${token}`
+   await axios.put(
+    `${BASE_URL}update-profile`,
+    {
+     email,
+     name,
+     phone,
+     gender
+     //  country: country?.name
+    },
+    {
+     headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+     }
     }
-   });
+   );
    showToast('Profile updated successfully');
   } catch (err) {
    console.error('Update error:', err);
@@ -122,12 +138,17 @@ const EditProfile = () => {
   }
  };
 
- const handleCountrySelect = async (selectedCountry) => {
+ const handleCountrySelect = async (
+  selectedCountry: React.SetStateAction<null>
+ ) => {
   setCallingCode(selectedCountry?.callingCode?.[0] || '91');
   setCountryCode(selectedCountry.cca2);
   setCountry(selectedCountry);
   setShowCountryPicker(false);
-  await AsyncStorage.setItem('selected_country', JSON.stringify(selectedCountry));
+  await AsyncStorage.setItem(
+   'selected_country',
+   JSON.stringify(selectedCountry)
+  );
  };
 
  const showMediaPicker = () => {
@@ -135,31 +156,31 @@ const EditProfile = () => {
    {
     text: 'Open Gallery',
     onPress: () => {
-     ImagePicker.openPicker({ mediaType: 'photo' })
-      .then((img) => {
-       setImage(img?.path);
-       handleProfileImage(img?.path);
-      });
+     ImagePicker.openPicker({ mediaType: 'photo' }).then((img) => {
+      setImage(img?.path);
+      handleProfileImage(img?.path);
+     });
     }
    },
    {
     text: 'Take Photo',
     onPress: () => {
-     ImagePicker.openCamera({ width: 300, height: 400, cropping: true })
-      .then((img) => {
+     ImagePicker.openCamera({ width: 300, height: 400, cropping: true }).then(
+      (img) => {
        setImage(img?.path);
        handleProfileImage(img?.path);
-      });
+      }
+     );
     }
    },
    { text: 'Cancel', style: 'cancel' }
   ]);
  };
 
- const handleProfileImage = async (imagePath) => {
+ const handleProfileImage = async (imagePath: string) => {
   const token = await AsyncStorage.getItem('token');
   const uri = imagePath;
-  const fileName = uri.split('/').pop();
+  const fileName: any = uri.split('/').pop();
   const fileType = fileName.endsWith('png') ? 'image/png' : 'image/jpeg';
 
   const formData = new FormData();
@@ -181,7 +202,9 @@ const EditProfile = () => {
  };
 
  const renderLabel = (label) => (
-  <Text allowFontScaling={true} style={Styles.label}>{label}</Text>
+  <Text allowFontScaling={true} style={Styles.label}>
+   {label}
+  </Text>
  );
 
  return (
@@ -203,10 +226,20 @@ const EditProfile = () => {
      </View>
 
      {renderLabel('Name')}
-     <TextInput style={Styles.inputBox} value={name} placeholder="Name" onChangeText={setName} />
+     <TextInput
+      style={Styles.inputBox}
+      value={name}
+      placeholder="Name"
+      onChangeText={setName}
+     />
 
      {renderLabel('Email')}
-     <TextInput style={Styles.inputBox} value={email} placeholder="Email" onChangeText={setEmail} />
+     <TextInput
+      style={Styles.inputBox}
+      value={email}
+      placeholder="Email"
+      onChangeText={setEmail}
+     />
 
      {renderLabel('Gender')}
      <View style={Styles.inputBox}>
@@ -231,7 +264,9 @@ const EditProfile = () => {
 
      {renderLabel('Phone')}
      <View style={Styles.phoneInputWrapper}>
-      <TouchableOpacity style={Styles.callingCodeBox} onPress={() => setShowCountryPicker(true)}>
+      <TouchableOpacity
+       style={Styles.callingCodeBox}
+       onPress={() => setShowCountryPicker(true)}>
        <Text style={Styles.callingCodeText}>+{callingCode}</Text>
       </TouchableOpacity>
       <TextInput
@@ -244,7 +279,10 @@ const EditProfile = () => {
      </View>
 
      {renderLabel('Country/Region')}
-     <TouchableOpacity onPress={() => setShowCountryPicker(true)} style={Styles.dropdownBox}>
+     <TouchableOpacity
+      disabled={true}
+      onPress={() => setShowCountryPicker(true)}
+      style={Styles.dropdownBox}>
       <Text>{country?.name || 'Select country'}</Text>
       <Image source={DROPDOWNICON} style={Styles.dropdownIcon} />
      </TouchableOpacity>
@@ -277,7 +315,9 @@ const EditProfile = () => {
       {loading ? (
        <ActivityIndicator size={20} color={colors.white} />
       ) : (
-       <Text allowFontScaling={false} style={Styles.loginText}>Submit</Text>
+       <Text allowFontScaling={false} style={Styles.loginText}>
+        Submit
+       </Text>
       )}
      </TouchableOpacity>
     </View>

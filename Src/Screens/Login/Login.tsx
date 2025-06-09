@@ -78,7 +78,7 @@ export default function LoginScreen() {
    showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);
-   showToast('Login Failed Something went wrong');
+   showToast(error?.response?.data?.message);
   } finally {
    setLoading(false);
   }
@@ -141,13 +141,13 @@ export default function LoginScreen() {
      />
     </View>
    </View>
-   {/* <TouchableOpacity
+   <TouchableOpacity
     style={{ alignSelf: 'flex-end', right: responsiveScreenWidth(15) }}
-    onPress={() => navigation?.navigate('UpdatePassword')}>
+    onPress={() => navigation?.navigate('ForgotPassword')}>
     <Text allowFontScaling={false} style={Styles.registerText}>
      Forgot Password
     </Text>
-   </TouchableOpacity> */}
+   </TouchableOpacity>
    <TouchableOpacity
     disabled={loading}
     onPress={() => handleLogin()}

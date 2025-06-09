@@ -90,7 +90,11 @@ export default function PlanScreen() {
     source={PREMIUM} // replace with your image
     style={Styles.giftImage}
    />
-   <View style={{ height: responsiveScreenHeight(30) }}>
+   <View
+    style={{
+     height: responsiveScreenHeight(22),
+     marginTop: responsiveScreenHeight(3)
+    }}>
     <FlatList data={arrData} renderItem={renderPlans} />
    </View>
 

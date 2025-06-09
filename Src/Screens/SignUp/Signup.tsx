@@ -68,7 +68,7 @@ export default function SignUpScreen() {
    //    saveUser(response.data.user);
   } catch (error: any) {
    console.log('SignUp Error:', error);
-   showToast('Something went wrong');
+   showToast(error?.response?.data?.message);
   } finally {
    setLoading(false);
   }
