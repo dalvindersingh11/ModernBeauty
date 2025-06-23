@@ -101,6 +101,7 @@ export default function LoginScreen() {
     </Text>
     <TextInput
      allowFontScaling={false}
+     autoCapitalize="none" 
      placeholder="E-mail"
      editable={loading == true ? false : true}
      style={[Styles.input]}

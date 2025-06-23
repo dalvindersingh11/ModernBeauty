@@ -55,7 +55,7 @@ function App() {
    ) : (
     <Provider store={store}>
      <NavigationContainer>
-      <MyStack />
+      <AppNavigator initialRouteName={isAuthenticated ? "main" : "auth"}/>
      </NavigationContainer>
     </Provider>
    )}

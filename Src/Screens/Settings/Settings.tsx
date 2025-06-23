@@ -29,7 +29,7 @@ import axios from 'axios';
 import { showToast } from '../../Constant/showToast';
 import fonts from '../../Constant/Fonts';
 import { BASE_URL } from '../../Constant/apiUrl';
-
+import RNRestart from 'react-native-restart';
 const Settings = () => {
  const navigation = useNavigation<any>();
  const [loading, setLoading] = useState(false);
@@ -59,7 +59,10 @@ const Settings = () => {
 
    await AsyncStorage.removeItem('token');
    showToast('Logged out successfully');
-   navigation?.navigate('Login');
+//    navigation?.navigate('Login');
+// 🔁 Restart app so App.tsx reruns and redirects to 'auth'
+    RNRestart.Restart();
+
   } catch (error: any) {
    console.log('Logout error:', error?.response?.data || error.message);
    showToast('Something went wrong. Please try again.');

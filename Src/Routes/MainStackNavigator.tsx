@@ -22,17 +22,17 @@ const MainStackNavigator = () => {
  return (
   <Stack.Navigator
    //    initialRouteName="landingMeal"
-   //    screenOptions={({ navigation }) => ({
-   //     header: () => <Header backOnPress={() => navigation.goBack()} />,
-   //    })}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
-   }}>
+   }}
+// screenOptions={{headerShown:false}}
+   >
    <Stack.Screen
     name="TrialAccessScreen"
     component={TrialAccessScreen}
+     options={{ headerShown: false }}
     // options={({ navigation }) => ({
     //  header: () =>
     //   isAuthenticated ? (

@@ -43,6 +43,7 @@ const EditProfile = () => {
  const [loading, setLoading] = useState(false);
  const [user, setUser] = useState(null);
  const [isFocus, setIsFocus] = useState(false);
+const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
 
  const genderOptions = [
   { label: 'Male', value: '1' },
@@ -68,6 +69,7 @@ const EditProfile = () => {
  }, []);
 
  const handGetProfile = async () => {
+     setProfileLoading(true); 
   try {
    const token = await AsyncStorage.getItem('token');
    const res = await fetch(BASE_URL + 'profile', {
@@ -95,6 +97,8 @@ const EditProfile = () => {
    }
   } catch (err) {
    console.log('Profile error:', err);
+  }finally{
+     setProfileLoading(false);
   }
  };
 
@@ -193,6 +197,7 @@ const EditProfile = () => {
      Authorization: `Bearer ${token}`
     }
    });
+   await AsyncStorage.setItem('profile_image', fileName);
    showToast('Image updated');
    handGetProfile();
   } catch (err) {
@@ -209,6 +214,11 @@ const EditProfile = () => {
 
  return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
+     {profileLoading ? (
+   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ActivityIndicator size="large" color={colors.themeColor || 'black'} />
+   </View>
+  ) : (
    <ScrollView>
     <View style={Styles.contentWrapper}>
      <View style={Styles.avatarRow}>
@@ -322,6 +332,7 @@ const EditProfile = () => {
      </TouchableOpacity>
     </View>
    </ScrollView>
+  )}
   </SafeAreaView>
  );
 };
