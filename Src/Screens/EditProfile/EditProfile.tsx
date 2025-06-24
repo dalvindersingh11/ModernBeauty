@@ -8,7 +8,8 @@ import {
  TextInput,
  Alert,
  ActivityIndicator,
- ScrollView
+ ScrollView,
+ DeviceEventEmitter
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -43,7 +44,7 @@ const EditProfile = () => {
  const [loading, setLoading] = useState(false);
  const [user, setUser] = useState(null);
  const [isFocus, setIsFocus] = useState(false);
-const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
+ const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
 
  const genderOptions = [
   { label: 'Male', value: '1' },
@@ -69,7 +70,7 @@ const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
  }, []);
 
  const handGetProfile = async () => {
-     setProfileLoading(true); 
+  setProfileLoading(true);
   try {
    const token = await AsyncStorage.getItem('token');
    const res = await fetch(BASE_URL + 'profile', {
@@ -97,8 +98,8 @@ const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
    }
   } catch (err) {
    console.log('Profile error:', err);
-  }finally{
-     setProfileLoading(false);
+  } finally {
+   setProfileLoading(false);
   }
  };
 
@@ -199,6 +200,7 @@ const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
    });
    await AsyncStorage.setItem('profile_image', fileName);
    showToast('Image updated');
+   DeviceEventEmitter.emit('profileUpdate', { message: 'Hello from event' });
    handGetProfile();
   } catch (err) {
    console.error('Image upload error:', err);
@@ -214,125 +216,125 @@ const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
 
  return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
-     {profileLoading ? (
-   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <ActivityIndicator size="large" color={colors.themeColor || 'black'} />
-   </View>
-  ) : (
-   <ScrollView>
-    <View style={Styles.contentWrapper}>
-     <View style={Styles.avatarRow}>
-      <View style={Styles.avatarWrapper}>
-       <View style={Styles.avatarInner}>
-        <Image
-         source={image ? { uri: IMAGE_URL + image } : SAMPLEIMAGE}
-         style={Styles.avatarImage}
-        />
-       </View>
-       <TouchableOpacity onPress={showMediaPicker} style={Styles.editIcon}>
-        <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
-       </TouchableOpacity>
-      </View>
-     </View>
-
-     {renderLabel('Name')}
-     <TextInput
-      style={Styles.inputBox}
-      value={name}
-      placeholder="Name"
-      onChangeText={setName}
-     />
-
-     {renderLabel('Email')}
-     <TextInput
-      style={Styles.inputBox}
-      value={email}
-      placeholder="Email"
-      onChangeText={setEmail}
-     />
-
-     {renderLabel('Gender')}
-     <View style={Styles.inputBox}>
-      <Dropdown
-       style={Styles.dropdown}
-       placeholderStyle={Styles.placeholderStyle}
-       selectedTextStyle={Styles.selectedTextStyle}
-       data={genderOptions}
-       maxHeight={150}
-       labelField="label"
-       valueField="value"
-       placeholder={!isFocus ? 'Gender' : '...'}
-       value={gender}
-       onFocus={() => setIsFocus(true)}
-       onBlur={() => setIsFocus(false)}
-       onChange={(item) => {
-        setGender(item.value);
-        setIsFocus(false);
-       }}
-      />
-     </View>
-
-     {renderLabel('Phone')}
-     <View style={Styles.phoneInputWrapper}>
-      <TouchableOpacity
-       style={Styles.callingCodeBox}
-       onPress={() => setShowCountryPicker(true)}>
-       <Text style={Styles.callingCodeText}>+{callingCode}</Text>
-      </TouchableOpacity>
-      <TextInput
-       style={Styles.phoneInput}
-       placeholder="Phone"
-       value={phone}
-       keyboardType="phone-pad"
-       onChangeText={setPhone}
-      />
-     </View>
-
-     {renderLabel('Country/Region')}
-     <TouchableOpacity
-      disabled={true}
-      onPress={() => setShowCountryPicker(true)}
-      style={Styles.dropdownBox}>
-      <Text>{country?.name || 'Select country'}</Text>
-      <Image source={DROPDOWNICON} style={Styles.dropdownIcon} />
-     </TouchableOpacity>
-
-     {showCountryPicker && (
-      <CountryPicker
-       countryCode={countryCode}
-       withFilter
-       withFlag
-       withCallingCode
-       withCountryNameButton
-       onSelect={handleCountrySelect}
-       onClose={() => setShowCountryPicker(false)}
-       visible
-      />
-     )}
-
-     <DateTimePickerModal
-      isVisible={showDatePicker}
-      mode="date"
-      onConfirm={handleConfirmDate}
-      onCancel={() => setShowDatePicker(false)}
-      maximumDate={new Date()}
-     />
-
-     <TouchableOpacity
-      disabled={loading}
-      onPress={handleUpdateProfile}
-      style={Styles.loginButton}>
-      {loading ? (
-       <ActivityIndicator size={20} color={colors.white} />
-      ) : (
-       <Text allowFontScaling={false} style={Styles.loginText}>
-        Submit
-       </Text>
-      )}
-     </TouchableOpacity>
+   {profileLoading ? (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+     <ActivityIndicator size="large" color={colors.themeColor || 'black'} />
     </View>
-   </ScrollView>
-  )}
+   ) : (
+    <ScrollView>
+     <View style={Styles.contentWrapper}>
+      <View style={Styles.avatarRow}>
+       <View style={Styles.avatarWrapper}>
+        <View style={Styles.avatarInner}>
+         <Image
+          source={image ? { uri: IMAGE_URL + image } : SAMPLEIMAGE}
+          style={Styles.avatarImage}
+         />
+        </View>
+        <TouchableOpacity onPress={showMediaPicker} style={Styles.editIcon}>
+         <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
+        </TouchableOpacity>
+       </View>
+      </View>
+
+      {renderLabel('Name')}
+      <TextInput
+       style={Styles.inputBox}
+       value={name}
+       placeholder="Name"
+       onChangeText={setName}
+      />
+
+      {renderLabel('Email')}
+      <TextInput
+       style={Styles.inputBox}
+       value={email}
+       placeholder="Email"
+       onChangeText={setEmail}
+      />
+
+      {renderLabel('Gender')}
+      <View style={Styles.inputBox}>
+       <Dropdown
+        style={Styles.dropdown}
+        placeholderStyle={Styles.placeholderStyle}
+        selectedTextStyle={Styles.selectedTextStyle}
+        data={genderOptions}
+        maxHeight={150}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? 'Gender' : '...'}
+        value={gender}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+         setGender(item.value);
+         setIsFocus(false);
+        }}
+       />
+      </View>
+
+      {renderLabel('Phone')}
+      <View style={Styles.phoneInputWrapper}>
+       <TouchableOpacity
+        style={Styles.callingCodeBox}
+        onPress={() => setShowCountryPicker(true)}>
+        <Text style={Styles.callingCodeText}>+{callingCode}</Text>
+       </TouchableOpacity>
+       <TextInput
+        style={Styles.phoneInput}
+        placeholder="Phone"
+        value={phone}
+        keyboardType="phone-pad"
+        onChangeText={setPhone}
+       />
+      </View>
+
+      {renderLabel('Country/Region')}
+      <TouchableOpacity
+       disabled={true}
+       onPress={() => setShowCountryPicker(true)}
+       style={Styles.dropdownBox}>
+       <Text>{country?.name || 'Select country'}</Text>
+       <Image source={DROPDOWNICON} style={Styles.dropdownIcon} />
+      </TouchableOpacity>
+
+      {showCountryPicker && (
+       <CountryPicker
+        countryCode={countryCode}
+        withFilter
+        withFlag
+        withCallingCode
+        withCountryNameButton
+        onSelect={handleCountrySelect}
+        onClose={() => setShowCountryPicker(false)}
+        visible
+       />
+      )}
+
+      <DateTimePickerModal
+       isVisible={showDatePicker}
+       mode="date"
+       onConfirm={handleConfirmDate}
+       onCancel={() => setShowDatePicker(false)}
+       maximumDate={new Date()}
+      />
+
+      <TouchableOpacity
+       disabled={loading}
+       onPress={handleUpdateProfile}
+       style={Styles.loginButton}>
+       {loading ? (
+        <ActivityIndicator size={20} color={colors.white} />
+       ) : (
+        <Text allowFontScaling={false} style={Styles.loginText}>
+         Submit
+        </Text>
+       )}
+      </TouchableOpacity>
+     </View>
+    </ScrollView>
+   )}
   </SafeAreaView>
  );
 };

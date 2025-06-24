@@ -16,6 +16,7 @@ import AddTicket from '../Screens/AddTicket/AddTicket';
 import UpdatePassword from '../Screens/UpdatePassword/UpdatePassword';
 import TopHeader from '../Component/TopHeader/TopHeader';
 import CourseListIndex from '../Screens/CourseList/CourseListIndex';
+import OtpScreen from '../Screens/OtpScreen/OtpScreens';
 
 const Stack = createStackNavigator();
 const MainStackNavigator = () => {
@@ -27,12 +28,12 @@ const MainStackNavigator = () => {
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
    }}
-// screenOptions={{headerShown:false}}
-   >
+   // screenOptions={{headerShown:false}}
+  >
    <Stack.Screen
     name="TrialAccessScreen"
     component={TrialAccessScreen}
-     options={{ headerShown: false }}
+    options={{ headerShown: false }}
     // options={({ navigation }) => ({
     //  header: () =>
     //   isAuthenticated ? (
@@ -44,6 +45,8 @@ const MainStackNavigator = () => {
    />
 
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
+   <Stack.Screen name="OtpScreen" component={OtpScreen} />
+
    <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
    <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
    <Stack.Screen name="HairCourses" component={HairCourses} />

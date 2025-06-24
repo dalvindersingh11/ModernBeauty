@@ -50,7 +50,7 @@ export default function PaymentMethod(props: any) {
       </View>
      </View>
      <Text allowFontScaling={true} style={Styles.title}>
-      Enter Shipping Details
+      Enter Billing Details
      </Text>
      <View style={{ height: moderateScale(38) }} />
      <Image
@@ -68,6 +68,7 @@ export default function PaymentMethod(props: any) {
        placeholder="Enter Username"
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeName}
       />
      </View>
      <View style={Styles.inputContainer}>
@@ -80,8 +81,10 @@ export default function PaymentMethod(props: any) {
        allowFontScaling={false}
        placeholder="0000 0000 0000 "
        keyboardType="number-pad"
+       maxLength={16}
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeCard}
       />
      </View>
      <View style={Styles.bottomView}>
@@ -100,6 +103,8 @@ export default function PaymentMethod(props: any) {
         keyboardType="number-pad"
         style={[Styles.input]}
         placeholderTextColor={colors.gray}
+        value={props?.value}
+        onChangeText={props?.onChangeMonthYear}
        />
       </View>
       <View style={[Styles.inputContainer, { width: '30%' }]}>
@@ -109,7 +114,7 @@ export default function PaymentMethod(props: any) {
          Styles.label,
          { marginTop: '5%', marginLeft: responsiveScreenWidth(4) }
         ]}>
-        CVV
+        CVC
        </Text>
        <TextInput
         allowFontScaling={false}
@@ -118,6 +123,7 @@ export default function PaymentMethod(props: any) {
         keyboardType="number-pad"
         style={[Styles.input]}
         placeholderTextColor={colors.gray}
+        onChangeText={props?.onChangeCVV}
        />
       </View>
      </View>

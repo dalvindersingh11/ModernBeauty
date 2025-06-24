@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
 import TopHeader from '../TopHeader/TopHeader';
-import { CountryPicker } from 'react-native-country-codes-picker';
+import CountryPicker, { Country } from 'react-native-country-picker-modal';
 export default function ShippingAddress(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -67,7 +67,7 @@ export default function ShippingAddress(props: any) {
       </View>
      </View>
      <Text allowFontScaling={true} style={Styles.title}>
-      Enter Shipping Details
+      Enter Billing Details
      </Text>
      {/* <View style={{ height: 90 }} /> */}
      <View style={Styles.inputContainer}>
@@ -81,6 +81,7 @@ export default function ShippingAddress(props: any) {
        placeholder="Enter Username"
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeUserName}
       />
      </View>
      <View style={Styles.inputContainer}>
@@ -90,35 +91,31 @@ export default function ShippingAddress(props: any) {
       <View style={Styles.phoneInputWrapper}>
        <TouchableOpacity
         style={Styles.callingCodeBox}
-        onPress={() => setShowCountryPicker(true)}>
+        onPress={props?.openPicker}>
         <Text style={Styles.callingCodeText}>+{callingCode}</Text>
        </TouchableOpacity>
        <TextInput
         style={Styles.phoneInput}
         placeholder="Phone number"
         keyboardType="phone-pad"
-        onChangeText={(text) => setPhone(text)}
-        value={phone}
+        onChangeText={props?.onChangePhoneNumber}
+        // value={phone}
        />
       </View>
      </View>
 
      {/* Country Picker for phone code */}
-     {showCountryPicker && (
+     {props?.openPicker && (
       <CountryPicker
-       countryCode={countryCode}
        withFilter
        withFlag
        withCallingCode
        withEmoji
-       onSelect={(selectedCountry) => {
-        setCountryCode(selectedCountry.cca2);
-        setCountry(selectedCountry);
-        setCallingCode(selectedCountry.callingCode[0]);
-        setShowCountryPicker(false);
-       }}
-       onClose={() => setShowCountryPicker(false)}
-       visible
+       withModal
+       visible={props?.visible}
+       onClose={props?.onClose}
+       onSelect={props?.onSelect}
+       countryCode={props?.countryCode}
       />
      )}
 
@@ -141,18 +138,17 @@ export default function ShippingAddress(props: any) {
         selectedTextStyle={Styles.selectedTextStyle}
         inputSearchStyle={Styles.inputSearchStyle}
         iconStyle={Styles.iconStyle}
-        data={data}
+        search
+        searchPlaceholder="search"
+        data={props?.countryData}
         maxHeight={200}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? 'Select Province' : '...'}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={(item) => {
-         setValue(item.value);
-         setIsFocus(false);
-        }}
+        labelField={props?.labelField}
+        valueField={props?.valueField}
+        placeholder={props?.placeHolder}
+        value={props?.value}
+        onFocus={props?.onFocus}
+        onBlur={props?.onBlur}
+        onChange={props?.onChange}
        />
       </View>
      </View>
@@ -164,18 +160,17 @@ export default function ShippingAddress(props: any) {
         selectedTextStyle={Styles.selectedTextStyle}
         inputSearchStyle={Styles.inputSearchStyle}
         iconStyle={Styles.iconStyle}
-        data={data}
+        search
+        searchPlaceholder="search"
+        data={props?.cityData}
         maxHeight={moderateScale(200)}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? 'Select City' : '...'}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={(item) => {
-         setValue(item.value);
-         setIsFocus(false);
-        }}
+        labelField={props?.citylabelField}
+        valueField={props?.cityvalueField}
+        placeholder={props?.cityplaceholder}
+        value={props?.cityvalue}
+        onFocus={props?.cityOnFocus}
+        onBlur={props?.cityOnBlur}
+        onChange={props?.onChangeCity}
        />
       </View>
      </View>
@@ -188,6 +183,7 @@ export default function ShippingAddress(props: any) {
        placeholder="Enter  Street Address"
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeStreet}
       />
      </View>
      <View style={Styles.inputContainer}>
@@ -199,6 +195,7 @@ export default function ShippingAddress(props: any) {
        placeholder="Enter  Postal Code"
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeCode}
       />
      </View>
      <TouchableOpacity
@@ -214,30 +211,3 @@ export default function ShippingAddress(props: any) {
   </View>
  );
 }
-
-const renderLabel = (
- label:
-  | string
-  | number
-  | bigint
-  | boolean
-  | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
-  | Iterable<React.ReactNode>
-  | Promise<
-     | string
-     | number
-     | bigint
-     | boolean
-     | React.ReactPortal
-     | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
-     | Iterable<React.ReactNode>
-     | null
-     | undefined
-    >
-  | null
-  | undefined
-) => (
- <Text allowFontScaling={false} style={{ marginBottom: 5 }}>
-  {label}
- </Text>
-);

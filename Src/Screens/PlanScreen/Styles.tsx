@@ -95,8 +95,25 @@ export default StyleSheet.create({
   width: moderateScale(285),
   padding: moderateScale(15)
  },
+ disableButton: {
+  backgroundColor: colors.backgrounColor,
+  borderRadius: 10,
+  borderWidth: 1,
+  borderColor: colors.black,
+  justifyContent: 'center',
+  alignItems: 'center',
+  //   marginTop: responsiveScreenHeight(4),
+  width: moderateScale(285),
+  padding: moderateScale(15)
+ },
  proceedText: {
   color: colors.white,
+  fontSize: 16,
+  textAlign: 'center',
+  fontFamily: fonts.medium
+ },
+ disableText: {
+  color: colors.black,
   fontSize: 16,
   textAlign: 'center',
   fontFamily: fonts.medium

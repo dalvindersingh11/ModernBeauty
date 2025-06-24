@@ -56,8 +56,8 @@ export default function PlanScreen() {
   return (
    <View>
     <TouchableOpacity
-     style={[Styles.planBox, selectedPlan === index && Styles.planSelected]}
-     onPress={() => setSelectedPlan(index)}>
+     style={[Styles.planBox, selectedPlan === item && Styles.planSelected]}
+     onPress={() => setSelectedPlan(item)}>
      <View style={Styles.planTop}>
       <Text allowFontScaling={false} style={Styles.planTitle}>
        {item?.title}
@@ -99,9 +99,14 @@ export default function PlanScreen() {
    </View>
 
    <TouchableOpacity
-    onPress={() => navigation?.navigate('PaymentScreen')}
-    style={Styles.proceedButton}>
-    <Text allowFontScaling={false} style={Styles.proceedText}>
+    disabled={selectedPlan == null}
+    onPress={() =>
+     navigation?.navigate('PaymentScreen', { paymentData: selectedPlan })
+    }
+    style={selectedPlan == null ? Styles.disableButton : Styles.proceedButton}>
+    <Text
+     allowFontScaling={false}
+     style={selectedPlan == null ? Styles.disableText : Styles.proceedText}>
      Proceed
     </Text>
    </TouchableOpacity>

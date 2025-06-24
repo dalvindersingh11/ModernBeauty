@@ -7,7 +7,8 @@ import {
  TouchableOpacity,
  Image,
  Alert,
- Linking
+ Linking,
+ ActivityIndicator
 } from 'react-native';
 import colors from '../../Constant/colors';
 import { APP_LOGO } from '../../Constant/Icons';
@@ -60,15 +61,16 @@ export default function SignUpScreen() {
 
    console.log('Signup Success:', response);
 
-   setModalVisible(!modalVisible);
+   //  setModalVisible(!modalVisible);
    //    saveUser(response.data.user);
-   //    navigation?.navigate('OtpScreen');
+   navigation?.navigate('OtpScreen');
    //    showToast('SignUp successful!');
    //    await AsyncStorage.setItem('token', response?.data?.token);
    //    saveUser(response.data.user);
   } catch (error: any) {
    console.log('SignUp Error:', error);
    showToast(error?.response?.data?.message);
+   setLoading(false);
   } finally {
    setLoading(false);
   }
@@ -152,10 +154,17 @@ export default function SignUpScreen() {
       Linking.openURL('https://gmail.app.goo.gl');
     }}
    />
-   <TouchableOpacity onPress={() => handleSignUp()} style={Styles.loginButton}>
-    <Text allowFontScaling={false} style={Styles.loginText}>
-     Sign Up
-    </Text>
+   <TouchableOpacity
+    disabled={loading}
+    onPress={() => handleSignUp()}
+    style={Styles.loginButton}>
+    {loading ? (
+     <ActivityIndicator size={20} color={colors.white} />
+    ) : (
+     <Text allowFontScaling={false} style={Styles.loginText}>
+      Sign Up
+     </Text>
+    )}
    </TouchableOpacity>
 
    <Text allowFontScaling={false} style={Styles.orText}>

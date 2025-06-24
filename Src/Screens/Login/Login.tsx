@@ -9,7 +9,8 @@ import {
  Image,
  ScrollView,
  Alert,
- ActivityIndicator
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 import colors from '../../Constant/colors';
 import { APP_LOGO } from '../../Constant/Icons';
@@ -32,6 +33,20 @@ export default function LoginScreen() {
  const [otpVerified, setOtpVerified] = useState<string | null>(null);
  const isAuthenticated = token && otpVerified === 'true';
  const [user, setUser] = useState(null);
+
+ useEffect(() => {
+  const backAction = () => {
+   BackHandler.exitApp(); // 👈 Exit app immediately
+   return true;
+  };
+
+  const backHandler = BackHandler.addEventListener(
+   'hardwareBackPress',
+   backAction
+  );
+
+  return () => backHandler.remove(); // Cleanup on unmount
+ }, []);
  useEffect(() => {
   const checkStorage = async () => {
    const storedToken = await AsyncStorage.getItem('token');
@@ -101,7 +116,7 @@ export default function LoginScreen() {
     </Text>
     <TextInput
      allowFontScaling={false}
-     autoCapitalize="none" 
+     autoCapitalize="none"
      placeholder="E-mail"
      editable={loading == true ? false : true}
      style={[Styles.input]}

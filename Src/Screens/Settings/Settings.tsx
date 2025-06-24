@@ -58,11 +58,11 @@ const Settings = () => {
    console.log('logoutResponse', response?.data);
 
    await AsyncStorage.removeItem('token');
+   await AsyncStorage?.clear();
    showToast('Logged out successfully');
    navigation?.navigate('auth');
-// 🔁 Restart app so App.tsx reruns and redirects to 'auth'
-    // RNRestart.Restart();
-
+   // 🔁 Restart app so App.tsx reruns and redirects to 'auth'
+   // RNRestart.Restart();
   } catch (error: any) {
    console.log('Logout error:', error?.response?.data || error.message);
    showToast('Something went wrong. Please try again.');
