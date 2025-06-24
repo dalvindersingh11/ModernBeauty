@@ -59,9 +59,9 @@ const Settings = () => {
 
    await AsyncStorage.removeItem('token');
    showToast('Logged out successfully');
-//    navigation?.navigate('Login');
+   navigation?.navigate('auth');
 // 🔁 Restart app so App.tsx reruns and redirects to 'auth'
-    RNRestart.Restart();
+    // RNRestart.Restart();
 
   } catch (error: any) {
    console.log('Logout error:', error?.response?.data || error.message);
