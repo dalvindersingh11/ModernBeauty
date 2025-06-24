@@ -74,7 +74,7 @@ export default function LoginScreen() {
    //    setUser(response.data.user_id); // Or store token, etc.
    await AsyncStorage.setItem('token', response?.data?.bearer_token);
    //    saveUser(response.data.user);
-   navigation?.navigate('TrialAccessScreen');
+   navigation?.navigate('main');
    showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);

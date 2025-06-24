@@ -35,7 +35,7 @@ export default function TrialAccessScreen() {
 
  return (
   <View style={styles.container}>
-      <TopHeader backOnPress={() => navigation.goBack()} />
+      <TopHeader  />
    <View style={{ height: mvs(25) }} />
    <Text allowFontScaling={false} style={styles.welcome}>
     Welcome {user?.name}!

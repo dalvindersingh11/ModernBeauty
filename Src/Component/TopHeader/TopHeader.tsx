@@ -77,7 +77,8 @@ useFocusEffect(
         {backOnPress ? (
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              // navigation.goBack();
+              backOnPress();
               backPress && backPress();
             }}>
             <Image
@@ -88,7 +89,11 @@ useFocusEffect(
               }}
             />
           </TouchableOpacity>
-        ) : null}
+        ) : <View
+         style={{
+                width: ms(18),
+                height: mvs(16)
+              }}/>}
 
         <Image
           style={{
