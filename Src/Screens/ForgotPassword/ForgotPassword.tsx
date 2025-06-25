@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
@@ -12,7 +12,6 @@ import {
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import colors from '../../Constant/colors';
 import { BASE_URL } from '../../Constant/apiUrl';
@@ -27,15 +26,20 @@ const ForgotPassword = () => {
  const [isStatus, setIsStatus] = useState(0);
  const [loading, setLoading] = useState(false);
  const [userToken, seUserToken] = useState('');
-
+ useEffect(() => {
+  if (isStatus === 0) {
+   setNewPassword('');
+   setConfirmPassword('');
+  } else {
+   setEmail('');
+  }
+ }, [isStatus]);
  const handleForgotPassword = async () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
    showToast('Please enter a valid email address');
    return;
   }
-
-  setLoading(true);
 
   setLoading(true);
   try {
@@ -51,7 +55,7 @@ const ForgotPassword = () => {
     }
    );
 
-   console.log('responseff', response);
+   console.log('response', response);
    seUserToken(response?.data?.forget_password_token);
    setIsStatus(1);
   } catch (error) {
@@ -72,7 +76,7 @@ const ForgotPassword = () => {
    const response = await axios.post(
     `${BASE_URL}reset-password`,
     {
-     email: email,
+     //  email: email,
      forget_password_token: userToken,
      password: newPassword,
      password_confirmation: confirmPassword
@@ -100,21 +104,21 @@ const ForgotPassword = () => {
     <TouchableOpacity onPress={() => navigation.goBack()}>
      <Image source={BACKICON} style={Styles.backIcon} />
     </TouchableOpacity>
-
     <Text allowFontScaling style={Styles.title}>
      Forgot Password
     </Text>
    </View>
    <View style={{ height: responsiveScreenHeight(5) }} />
-   {isStatus == 0 ? (
-    <View>
+   {isStatus === 0 ? (
+    <View key="status0">
      <Text allowFontScaling style={[Styles.label, { marginTop: '5%' }]}>
       Enter E-mail
      </Text>
      <TextInput
       placeholder="Enter E-mail"
       style={Styles.inputBox}
-      onChangeText={(text) => setEmail(text)}
+      onChangeText={setEmail}
+      value={email}
      />
      <TouchableOpacity
       disabled={loading}
@@ -130,14 +134,16 @@ const ForgotPassword = () => {
      </TouchableOpacity>
     </View>
    ) : (
-    <View>
+    <View key="status1">
      <Text allowFontScaling style={[Styles.label, { marginTop: '5%' }]}>
       New Password
      </Text>
      <TextInput
       placeholder="New password"
       style={Styles.inputBox}
-      onChangeText={(text) => setNewPassword(text)}
+      onChangeText={setNewPassword}
+      value={newPassword}
+      secureTextEntry
      />
      <Text allowFontScaling style={[Styles.label, { marginTop: '5%' }]}>
       Confirm Password
@@ -145,7 +151,9 @@ const ForgotPassword = () => {
      <TextInput
       placeholder="Confirm password"
       style={Styles.inputBox}
-      onChangeText={(text) => setConfirmPassword(text)}
+      onChangeText={setConfirmPassword}
+      value={confirmPassword}
+      secureTextEntry
      />
      <TouchableOpacity
       disabled={loading}

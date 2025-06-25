@@ -35,7 +35,7 @@ export default function TrialAccessScreen() {
 
  return (
   <View style={styles.container}>
-      <TopHeader  />
+   <TopHeader />
    <View style={{ height: mvs(25) }} />
    <Text allowFontScaling={false} style={styles.welcome}>
     Welcome {user?.name}!
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
-  paddingTop: moderateScale(21)
+  paddingTop: moderateScale(11)
  },
  header: {
   width: '90%',

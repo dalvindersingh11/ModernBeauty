@@ -47,7 +47,11 @@ const MainStackNavigator = () => {
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
    <Stack.Screen name="OtpScreen" component={OtpScreen} />
 
-   <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+   <Stack.Screen
+    options={{ headerShown: false }}
+    name="PaymentScreen"
+    component={PaymentScreen}
+   />
    <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
    <Stack.Screen name="HairCourses" component={HairCourses} />
    <Stack.Screen name="ViewFolder" component={ViewFolder} />

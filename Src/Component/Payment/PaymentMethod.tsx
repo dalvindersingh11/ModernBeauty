@@ -23,7 +23,7 @@ export default function PaymentMethod(props: any) {
 
  return (
   <View style={{ flex: 1, width: '100%' }}>
-   {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+   <TopHeader backOnPress={props?.onBackStep} />
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
      {/* Top branding */}

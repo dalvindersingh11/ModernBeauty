@@ -45,6 +45,7 @@ const EditProfile = () => {
  const [user, setUser] = useState(null);
  const [isFocus, setIsFocus] = useState(false);
  const [profileLoading, setProfileLoading] = useState(true); // ⬅️ ADD this
+ const [imageLoading, setImageLoading] = useState(false); // ⬅️ ADD this
 
  const genderOptions = [
   { label: 'Male', value: '1' },
@@ -190,7 +191,7 @@ const EditProfile = () => {
 
   const formData = new FormData();
   formData.append('image', { uri, name: fileName, type: fileType });
-
+  setImageLoading(true);
   try {
    await axios.post(`${BASE_URL}update-profile-picture`, formData, {
     headers: {
@@ -203,8 +204,12 @@ const EditProfile = () => {
    DeviceEventEmitter.emit('profileUpdate', { message: 'Hello from event' });
    handGetProfile();
   } catch (err) {
+   setImageLoading(false);
+
    console.error('Image upload error:', err);
    showToast('Image upload failed');
+  } finally {
+   setImageLoading(false);
   }
  };
 
@@ -225,13 +230,20 @@ const EditProfile = () => {
      <View style={Styles.contentWrapper}>
       <View style={Styles.avatarRow}>
        <View style={Styles.avatarWrapper}>
-        <View style={Styles.avatarInner}>
-         <Image
-          source={image ? { uri: IMAGE_URL + image } : SAMPLEIMAGE}
-          style={Styles.avatarImage}
-         />
-        </View>
-        <TouchableOpacity onPress={showMediaPicker} style={Styles.editIcon}>
+        {imageLoading == true ? (
+         <ActivityIndicator size={25} color={colors.black} />
+        ) : (
+         <View style={Styles.avatarInner}>
+          <Image
+           source={image ? { uri: IMAGE_URL + image } : SAMPLEIMAGE}
+           style={Styles.avatarImage}
+          />
+         </View>
+        )}
+        <TouchableOpacity
+         disabled={imageLoading}
+         onPress={showMediaPicker}
+         style={Styles.editIcon}>
          <Image source={EDITPROFILEICON} style={Styles.editIconImage} />
         </TouchableOpacity>
        </View>

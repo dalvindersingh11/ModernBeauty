@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from './Styles';
 import TopHeader from '../TopHeader/TopHeader';
 import CountryPicker, { Country } from 'react-native-country-picker-modal';
+import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 export default function ShippingAddress(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -41,7 +42,7 @@ export default function ShippingAddress(props: any) {
  ];
  return (
   <View style={{ flex: 1, width: '100%' }}>
-   {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+   <TopHeader backOnPress={() => navigation.goBack()} />
 
    <ScrollView
     showsVerticalScrollIndicator={false}
@@ -78,7 +79,7 @@ export default function ShippingAddress(props: any) {
       </Text>
       <TextInput
        allowFontScaling={false}
-       placeholder="Enter Username"
+       placeholder="Enter name"
        style={[Styles.input]}
        placeholderTextColor={colors.gray}
        onChangeText={props?.onChangeUserName}
@@ -88,36 +89,44 @@ export default function ShippingAddress(props: any) {
       <Text allowFontScaling={false} style={[Styles.label]}>
        Phone Number
       </Text>
+
       <View style={Styles.phoneInputWrapper}>
+       {/* Touchable for Country Code */}
        <TouchableOpacity
         style={Styles.callingCodeBox}
         onPress={props?.openPicker}>
-        <Text style={Styles.callingCodeText}>+{callingCode}</Text>
+        <Text style={Styles.callingCodeText}>
+         {props?.callingCode ? `+${props?.callingCode}` : '+91'}
+        </Text>
        </TouchableOpacity>
+
+       {/* Country Picker Modal */}
+       {props?.visible && (
+        <CountryPicker
+         withFilter
+         withCallingCode
+         withFlag
+         withFlagButton={false}
+         withEmoji={false}
+         visible
+         onClose={props?.onClose}
+         onSelect={props?.onSelect}
+         countryCode={props?.countryCode}
+        />
+       )}
+
+       {/* Phone Number Input */}
        <TextInput
         style={Styles.phoneInput}
         placeholder="Phone number"
         keyboardType="phone-pad"
         onChangeText={props?.onChangePhoneNumber}
-        // value={phone}
+        value={props?.phone}
        />
       </View>
      </View>
 
      {/* Country Picker for phone code */}
-     {props?.openPicker && (
-      <CountryPicker
-       withFilter
-       withFlag
-       withCallingCode
-       withEmoji
-       withModal
-       visible={props?.visible}
-       onClose={props?.onClose}
-       onSelect={props?.onSelect}
-       countryCode={props?.countryCode}
-      />
-     )}
 
      {/* <View style={Styles.inputContainer}>
       <Text allowFontScaling={false} style={[Styles.label]}>
@@ -130,7 +139,7 @@ export default function ShippingAddress(props: any) {
        placeholderTextColor={colors.gray}
       />
      </View> */}
-     <View style={Styles.inputContainer}>
+     {/* <View style={Styles.inputContainer}>
       <View style={[Styles.viewInput]}>
        <Dropdown
         style={[Styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -162,6 +171,27 @@ export default function ShippingAddress(props: any) {
         iconStyle={Styles.iconStyle}
         search
         searchPlaceholder="search"
+        data={props?.stateData}
+        maxHeight={moderateScale(200)}
+        labelField={props?.statelabelField}
+        valueField={props?.statevalueField}
+        placeholder={props?.stateplaceholder}
+        value={props?.statevalue}
+        onFocus={props?.stateOnFocus}
+        onBlur={props?.stateOnBlur}
+        onChange={props?.onChangeState}
+       />
+      </View>
+      <View
+       style={[Styles.viewInput, { marginTop: responsiveScreenHeight(5) }]}>
+       <Dropdown
+        style={[Styles.dropdown, isFocus && { borderColor: 'blue' }]}
+        placeholderStyle={Styles.placeholderStyle}
+        selectedTextStyle={Styles.selectedTextStyle}
+        inputSearchStyle={Styles.inputSearchStyle}
+        iconStyle={Styles.iconStyle}
+        search
+        searchPlaceholder="search"
         data={props?.cityData}
         maxHeight={moderateScale(200)}
         labelField={props?.citylabelField}
@@ -173,8 +203,44 @@ export default function ShippingAddress(props: any) {
         onChange={props?.onChangeCity}
        />
       </View>
+     </View> */}
+     <View style={Styles.inputContainer}>
+      <Text allowFontScaling={false} style={[Styles.label]}>
+       Country*
+      </Text>
+      <TextInput
+       allowFontScaling={false}
+       placeholder="Enter Country"
+       style={[Styles.input]}
+       placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeCountry}
+      />
      </View>
      <View style={Styles.inputContainer}>
+      <Text allowFontScaling={false} style={[Styles.label]}>
+       State*
+      </Text>
+      <TextInput
+       allowFontScaling={false}
+       placeholder="Enter State"
+       style={[Styles.input]}
+       placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeState}
+      />
+     </View>
+     <View style={Styles.inputContainer}>
+      <Text allowFontScaling={false} style={[Styles.label]}>
+       City*
+      </Text>
+      <TextInput
+       allowFontScaling={false}
+       placeholder="Enter City"
+       style={[Styles.input]}
+       placeholderTextColor={colors.gray}
+       onChangeText={props?.onChangeCity}
+      />
+     </View>
+     {/* <View style={Styles.inputContainer}>
       <Text allowFontScaling={false} style={[Styles.label]}>
        Street Address*
       </Text>
@@ -185,7 +251,7 @@ export default function ShippingAddress(props: any) {
        placeholderTextColor={colors.gray}
        onChangeText={props?.onChangeStreet}
       />
-     </View>
+     </View> */}
      <View style={Styles.inputContainer}>
       <Text allowFontScaling={false} style={[Styles.label]}>
        Postal Code*

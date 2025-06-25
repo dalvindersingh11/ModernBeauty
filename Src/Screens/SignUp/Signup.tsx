@@ -98,7 +98,7 @@ export default function SignUpScreen() {
      editable={loading == true ? false : true}
      placeholder="Enter Username"
      style={[Styles.input]}
-     placeholderTextColor={colors.black}
+     placeholderTextColor={colors.gray}
      onChangeText={(text) => setName(text)}
     />
    </View>
@@ -111,7 +111,7 @@ export default function SignUpScreen() {
      editable={loading == true ? false : true}
      placeholder="Enter E-mail"
      style={[Styles.input]}
-     placeholderTextColor={colors.black}
+     placeholderTextColor={colors.gray}
      onChangeText={(text) => setEmail(text)}
     />
    </View>

@@ -22,11 +22,10 @@ export default function OrderSuccess(props: any) {
  const navigation = useNavigation<any>();
 
  return (
-    <View style={{flex:1,width:'100%'}}>
-       {/* <TopHeader backOnPress={() => navigation.goBack()} /> */}
+  <View style={{ flex: 1, width: '100%' }}>
+   <TopHeader backOnPress={() => navigation.goBack()} />
    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={[Styles.container, { padding: 0 }]}>
-
      <View style={{ height: moderateScale(38) }} />
      <Image
       style={{ width: moderateScale(240), height: moderateScale(240) }}

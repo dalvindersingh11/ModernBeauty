@@ -54,7 +54,7 @@ const UpdatePassword = () => {
 
    await AsyncStorage.removeItem('token');
    //    showToast('Logged out successfully');
-   navigation?.navigate('Login');
+   navigation?.navigate('auth');
   } catch (error) {
    console.log('Logout error:', error?.response?.data || error.message);
    showToast('Something went wrong. Please try again.');
