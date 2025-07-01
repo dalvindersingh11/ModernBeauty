@@ -41,6 +41,7 @@ export default StyleSheet.create({
  input: {
   backgroundColor: '#fff',
   borderRadius: 9,
+  color: colors.black,
   fontFamily: fonts.regular,
   height: moderateScale(45),
   paddingHorizontal: 11,

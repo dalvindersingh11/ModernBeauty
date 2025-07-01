@@ -80,6 +80,7 @@ export default StyleSheet.create({
  inputBox: {
   backgroundColor: '#fff',
   borderRadius: ms(6),
+  color: colors.black,
   gap: mvs(10),
   paddingHorizontal: mvs(10),
   alignItems: 'flex-start',
@@ -136,6 +137,7 @@ export default StyleSheet.create({
  },
  phoneInput: {
   flex: 1,
+  color: colors.black,
   paddingLeft: 10,
   fontSize: 16
  },

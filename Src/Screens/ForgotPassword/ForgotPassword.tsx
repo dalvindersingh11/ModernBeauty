@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
  View,
  Text,
@@ -9,7 +9,6 @@ import {
  ActivityIndicator,
  Alert
 } from 'react-native';
-import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -17,7 +16,10 @@ import colors from '../../Constant/colors';
 import { BASE_URL } from '../../Constant/apiUrl';
 import { showToast } from '../../Constant/showToast';
 import { BACKICON } from '../../Constant/Icons';
-import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
+import {
+ responsiveScreenHeight,
+ responsiveScreenWidth
+} from 'react-native-responsive-dimensions';
 const ForgotPassword = () => {
  const navigation = useNavigation<any>();
  const [email, setEmail] = useState('');
@@ -26,6 +28,8 @@ const ForgotPassword = () => {
  const [isStatus, setIsStatus] = useState(0);
  const [loading, setLoading] = useState(false);
  const [userToken, seUserToken] = useState('');
+ const [otp, setOtp] = useState(['', '', '', '']);
+ const inputRefs = useRef([]);
  useEffect(() => {
   if (isStatus === 0) {
    setNewPassword('');
@@ -65,9 +69,58 @@ const ForgotPassword = () => {
    setLoading(false);
   }
  };
+ const handleChange = (text: string, index: number) => {
+  const newOtp = [...otp];
+  newOtp[index] = text;
+  setOtp(newOtp);
+
+  if (text && index < 3) {
+   inputRefs.current[index + 1].focus();
+  }
+ };
+
+ const handleKeyPress = ({ nativeEvent }: any, index: any) => {
+  if (nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
+   inputRefs.current[index - 1].focus();
+  }
+ };
+
+ //https://api.addmelocal.in/api/verify-otp?otp=1234
+ const handleOtp = async () => {
+  //   setIsStatus(2);
+  const joinedOtp = otp.join('').trim();
+
+  if (!joinedOtp) {
+   showToast('enter 4 digit otp');
+   return;
+  }
+  setLoading(true);
+  try {
+   const response = await axios.post(
+    `${BASE_URL}verify-otp`,
+    { otp: joinedOtp }, // Send in body as JSON
+    {
+     headers: {
+      'Content-Type': 'application/json'
+     }
+    }
+   );
+
+   console.log('OTP Success:', response.data);
+   showToast('Verification successful!');
+   setIsStatus(2);
+   //    navigation?.navigate('Login');
+  } catch (error: any) {
+   setLoading(false);
+   console.error('OTP Error:', error.response?.data || error.message);
+   showToast(error?.response?.data?.message || 'OTP verification failed');
+  } finally {
+   setLoading(false);
+  }
+ };
  const handlePassword = async () => {
   if (!confirmPassword || !newPassword) {
-   Alert.alert('Validation', 'All Fields are required');
+   showToast('All Fields are required');
    return;
   }
 
@@ -91,7 +144,7 @@ const ForgotPassword = () => {
    console.log('response', response);
    navigation?.navigate('Login');
    showToast(response?.data?.message);
-  } catch (error) {
+  } catch (error: any) {
    console.error('Error:', error.response?.data || error.message);
    showToast('Something went wrong');
   } finally {
@@ -129,6 +182,49 @@ const ForgotPassword = () => {
       ) : (
        <Text allowFontScaling={false} style={Styles.loginText}>
         Submit
+       </Text>
+      )}
+     </TouchableOpacity>
+    </View>
+   ) : isStatus == 1 ? (
+    <View style={{ right: 2 }}>
+     <Text
+      allowFontScaling={false}
+      style={[
+       Styles.label,
+       {
+        marginLeft: responsiveScreenWidth(15),
+        top: responsiveScreenHeight(2.5)
+       }
+      ]}>
+      Enter OTP
+     </Text>
+
+     <View style={Styles.otpContainer}>
+      {[0, 1, 2, 3].map((_, index) => (
+       <TextInput
+        allowFontScaling={false}
+        key={index}
+        ref={(ref) => (inputRefs.current[index] = ref)}
+        style={Styles.otpInput}
+        keyboardType="numeric"
+        placeholderTextColor={colors.black}
+        maxLength={1}
+        value={otp[index]}
+        onChangeText={(text) => handleChange(text, index)}
+        onKeyPress={(e) => handleKeyPress(e, index)}
+       />
+      ))}
+     </View>
+     <TouchableOpacity
+      disabled={loading}
+      onPress={() => handleOtp()}
+      style={Styles.loginButton}>
+      {loading ? (
+       <ActivityIndicator size={20} color={colors.white} />
+      ) : (
+       <Text allowFontScaling={false} style={Styles.verifyText}>
+        Verify
        </Text>
       )}
      </TouchableOpacity>

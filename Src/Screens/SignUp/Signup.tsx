@@ -69,7 +69,13 @@ export default function SignUpScreen() {
    //    saveUser(response.data.user);
   } catch (error: any) {
    console.log('SignUp Error:', error);
-   showToast(error?.response?.data?.message);
+   const errorMessage = error?.response?.data?.message;
+
+   showToast(
+    typeof errorMessage === 'string'
+     ? errorMessage
+     : JSON.stringify(errorMessage) || 'Something went wrong. Please try again.'
+   );
    setLoading(false);
   } finally {
    setLoading(false);
@@ -91,12 +97,12 @@ export default function SignUpScreen() {
    <Image style={Styles.logoStyle} source={APP_LOGO} />
    <View style={Styles.inputContainer}>
     <Text allowFontScaling={false} style={[Styles.label, { marginTop: '5%' }]}>
-     FullName
+     Full Name
     </Text>
     <TextInput
      allowFontScaling={false}
      editable={loading == true ? false : true}
-     placeholder="Enter Username"
+     placeholder="Enter Full Name"
      style={[Styles.input]}
      placeholderTextColor={colors.gray}
      onChangeText={(text) => setName(text)}

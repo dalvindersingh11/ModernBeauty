@@ -47,6 +47,7 @@ const Styles = StyleSheet.create({
  inputBox: {
   backgroundColor: '#fff',
   borderRadius: ms(6),
+  color: colors.black,
   gap: mvs(10),
   alignSelf: 'center',
   paddingHorizontal: mvs(10),

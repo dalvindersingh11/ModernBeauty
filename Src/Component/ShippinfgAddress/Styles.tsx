@@ -10,7 +10,7 @@ import {
 export default StyleSheet.create({
  container: {
   flex: 1,
-//   backgroundColor: colors.backgrounColor,
+  //   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
   paddingTop: moderateScale(8),
   padding: 1
@@ -57,15 +57,15 @@ export default StyleSheet.create({
  },
  checkoutText: {
   fontSize: 20,
-  fontWeight: 'bold',
+  fontWeight: 'bold'
  },
  stepContainer: {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
   //   marginVertical: 15,
-//   marginTop: '-3%',
-  padding:ms(12)
+  //   marginTop: '-3%',
+  padding: ms(12)
  },
  step: {
   alignItems: 'center'
@@ -82,6 +82,7 @@ export default StyleSheet.create({
  input: {
   backgroundColor: '#fff',
   borderRadius: 9,
+  color: colors.black,
   fontFamily: fonts.regular,
   height: moderateScale(45),
   paddingHorizontal: 11,
@@ -148,13 +149,14 @@ export default StyleSheet.create({
   height: 40,
   fontSize: 16
  },
-  phoneInputWrapper: {
+ phoneInputWrapper: {
   flexDirection: 'row',
   alignItems: 'center',
   borderRadius: 8,
- //  paddingHorizontal: 10,
+  //  paddingHorizontal: 10,
   marginBottom: 16,
-  backgroundColor: '#fff',height:mvs(44),
+  backgroundColor: '#fff',
+  height: mvs(44)
  },
  callingCodeBox: {
   paddingHorizontal: 10,
@@ -168,7 +170,8 @@ export default StyleSheet.create({
  },
  phoneInput: {
   flex: 1,
+  color: colors.black,
   paddingLeft: 10,
   fontSize: 16
- },
+ }
 });

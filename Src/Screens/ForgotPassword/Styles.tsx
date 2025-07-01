@@ -48,6 +48,7 @@ const Styles = StyleSheet.create({
   backgroundColor: '#fff',
   borderRadius: ms(6),
   gap: mvs(10),
+  color: colors.black,
   alignSelf: 'center',
   paddingHorizontal: mvs(10),
   alignItems: 'center',
@@ -66,6 +67,42 @@ const Styles = StyleSheet.create({
   marginTop: '12%'
  },
  loginText: {
+  color: colors.white,
+  fontFamily: fonts.medium,
+  fontSize: 16
+ },
+ otpContainer: {
+  flexDirection: 'row',
+  gap: 30,
+  marginBottom: 25,
+  marginTop: responsiveScreenHeight(6),
+  alignSelf: 'center'
+ },
+ otpInput: {
+  width: moderateScale(47),
+  height: moderateScale(47),
+  padding: 5,
+  borderWidth: 4.5,
+  borderColor: '#000',
+  borderRadius: 6,
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+  fontSize: 18,
+  // right: 16,
+  backgroundColor: colors.backgrounColor
+ },
+ verifyButton: {
+  width: '58%',
+  height: moderateScale(38),
+  backgroundColor: '#000',
+  justifyContent: 'center',
+  alignSelf: 'center',
+  alignItems: 'center',
+  borderRadius: 9,
+  marginTop: '5%'
+ },
+ verifyText: {
   color: colors.white,
   fontFamily: fonts.medium,
   fontSize: 16

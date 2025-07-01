@@ -11,8 +11,9 @@ export default StyleSheet.create({
  container: {
   flex: 1,
   backgroundColor: colors.backgrounColor,
-  alignItems: 'center',width:'90%',alignSelf:'center'
-
+  alignItems: 'center',
+  width: '90%',
+  alignSelf: 'center'
  },
  header: {
   // width: '90%',
@@ -57,8 +58,8 @@ export default StyleSheet.create({
  checkoutText: {
   fontSize: 20,
   fontWeight: 'bold',
-  marginVertical:mvs(10)
-//   marginLeft: 12
+  marginVertical: mvs(10)
+  //   marginLeft: 12
  },
  stepContainer: {
   flexDirection: 'row',
@@ -101,6 +102,7 @@ export default StyleSheet.create({
  input: {
   backgroundColor: '#fff',
   borderRadius: 13,
+  color: colors.black,
   fontFamily: fonts.regular,
   height: moderateScale(45),
   paddingHorizontal: 11,
