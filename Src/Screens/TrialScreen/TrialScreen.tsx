@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TopHeader from '../../Component/TopHeader/TopHeader';
 import { IMAGE_URL } from '../../Constant/apiUrl';
+import Orientation from 'react-native-orientation-locker';
 export default function TrialAccessScreen() {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -47,12 +48,21 @@ export default function TrialAccessScreen() {
    {/* Video or Play Button */}
    <View style={styles.videoBox}>
     {playVideo ? (
-     <Video
-      source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }} // replace with your video
-      style={styles.video}
-      resizeMode="contain"
-      controls
-     />
+   <Video
+  source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }}
+  style={styles.video}
+  controls
+  resizeMode="contain"
+  onFullscreenPlayerWillPresent={() => {
+    Orientation.unlockAllOrientations(); // allow auto landscape
+    Orientation.lockToLandscape();
+
+  }}
+  onFullscreenPlayerWillDismiss={() => {
+    Orientation.lockToPortrait(); // restore app orientation
+
+  }}
+/>
     ) : (
      <TouchableOpacity
       onPress={() => setPlayVideo(true)}

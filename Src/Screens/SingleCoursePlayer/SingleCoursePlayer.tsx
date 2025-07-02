@@ -21,6 +21,7 @@ import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Styles from './Styles';
+import Orientation from 'react-native-orientation-locker';
 export default function SingleCoursePlayer() {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -35,12 +36,24 @@ export default function SingleCoursePlayer() {
     {/* Video or Play Button */}
     <View style={Styles.videoBox}>
      {playVideo ? (
-      <Video
-       source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }} // replace with your video
-       style={Styles.video}
-       resizeMode="contain"
-       controls
-      />
+         <Video
+  source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }}
+  style={{
+  width: '100%',
+  height: '100%'
+ }}
+  controls
+  resizeMode="contain"
+  onFullscreenPlayerWillPresent={() => {
+    Orientation.unlockAllOrientations(); // allow auto landscape
+    Orientation.lockToLandscape();
+
+  }}
+  onFullscreenPlayerWillDismiss={() => {
+    Orientation.lockToPortrait(); // restore app orientation
+
+  }}
+/>
      ) : (
       <TouchableOpacity
        onPress={() => setPlayVideo(true)}

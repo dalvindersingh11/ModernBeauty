@@ -6,9 +6,13 @@ import { Provider } from 'react-redux';
 import store from './Src/store.tsx/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './Src/Routes/AppNavigator';
+import Orientation from 'react-native-orientation-locker';
 
 function App() {
  const [showSplash, setShowSplash] = useState(true);
+useEffect(() => {
+  Orientation.lockToPortrait();
+}, []);
 
  useEffect(() => {
   // Wait for 3 seconds then hide splash
