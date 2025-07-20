@@ -5,6 +5,8 @@ import SignUpScreen from '../Screens/SignUp/Signup';
 import OtpScreen from '../Screens/OtpScreen/OtpScreens';
 import TrialAccessScreen from '../Screens/TrialScreen/TrialScreen';
 import ForgotPassword from '../Screens/ForgotPassword/ForgotPassword';
+import StudentCourseList from '../Screens/StudentCourseList/StudentCourseList';
+import StudentCode from '../Screens/StudentCode.tsx/StudentCode';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +18,16 @@ const AuthNavigator = () => {
    <Stack.Screen
     name="Login"
     component={LoginScreen}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="StudentCourseList"
+    component={StudentCourseList}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="StudentCode"
+    component={StudentCode}
     options={{ headerShown: false }}
    />
    <Stack.Screen

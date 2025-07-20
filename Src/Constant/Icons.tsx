@@ -24,5 +24,6 @@ export const SAMPLEIMAGE = require('../../Src/Images/sampleImage.jpg');
 export const EDITPROFILEICON = require('../../Src/Images/EditProfileIcon.png');
 export const DROPDOWNICON = require('../../Src/Images/dropDown.png');
 export const HELPPLUS = require('../../Src/Images/helpPlus.png');
-
-
+export const LIST_IMAGE = require('../../Src/Images/listImage.png');
+export const GRID_VIEW = require('../../Src/Images/gridView.png');
+export const LIST_VIEW = require('../../Src/Images/listView.png');

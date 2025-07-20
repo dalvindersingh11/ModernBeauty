@@ -125,8 +125,6 @@ const CourseList = () => {
  return (
   <View style={Styles.container}>
    <View style={[Styles.container, { padding: 20 }]}>
-
-
     <Text allowFontScaling={true} style={Styles.title}>
      List of Courses
     </Text>

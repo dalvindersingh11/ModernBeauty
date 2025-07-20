@@ -268,65 +268,8 @@ export default function PaymentScreen(props: any) {
  return (
   <SafeAreaView style={Styles.container}>
    {isStatus == 1 ? (
-    <ShippingAddress
-     onPressFirstStep={() => handleStepFirst()}
-     onChangeUserName={(text: any) => setName(text)}
-     onChangePhoneNumber={(text: any) => setPhone(text)}
-     onChangeStreet={(text: any) => setStreet(text)}
-     onChangeCode={(text: any) => setPostalCode(text)}
-     onChangeCountry={(text: any) => setCountryName(text)}
-     onChangeState={(text: any) => setStateName(text)}
-     onChangeCity={(text: any) => setCityName(text)}
-     countryData={countryData}
-     maxHeight={200}
-     labelField="label"
-     valueField="value"
-     placeholder={!isFocus ? 'Select Province' : '...'}
-     value={value}
-     onFocus={() => setIsFocus(true)}
-     onBlur={() => setIsFocus(false)}
-     onChange={(item: { value: React.SetStateAction<null> }) => {
-      setCountryName(item?.label);
-      setValue(item.value);
-      setIsFocus(false);
-     }}
-     //city
-     cityData={cityArrData}
-     citylabelField="label"
-     cityvalueField="value"
-     cityplaceholder={!cityisFocus ? 'Select City' : '...'}
-     cityvalue={cityValue}
-     cityOnFocus={() => setcityIsFocus(true)}
-     cityOnBlur={() => setcityIsFocus(false)}
-     //  onChangeCity={(item: { value: React.SetStateAction<null> }) => {
-     //   console.log('item', item);
-     //   setCityName(item?.label);
-     //   setCityValue(item.value);
-     //   setcityIsFocus(false);
-     //  }}
-     stateData={stateArrData}
-     statelabelField="label"
-     statevalueField="value"
-     stateplaceholder={!stateisFocus ? 'Select State' : '...'}
-     statevalue={stateValue}
-     stateOnFocus={() => setStateIsFocus(true)}
-     stateOnBlur={() => setStateIsFocus(false)}
-     //  onChangeState={(item: { value: React.SetStateAction<null> }) => {
-     //   console.log('item', item);
-     //   seStateName(item?.label);
-     //   setStateValue(item.value);
-     //   setStateIsFocus(false);
-     //  }}
-     visible={visible}
-     openPicker={() => setVisible(true)}
-     onClose={() => setVisible(false)}
-     onSelect={onSelect}
-     countryCode={countryCode}
-     callingCode={callingCode}
-    />
-   ) : isStatus == 2 ? (
     <PaymentMethod
-     onBackStep={() => setIsStatus(1)}
+     onBackStep={() => setIsStatus(2)}
      onPressSecondStep={() => handleStepTwo()}
      onChangeCard={(text: any) => setCardNumber(text)}
      onChangeName={(text: any) => setHolderName(text)}
@@ -334,9 +277,68 @@ export default function PaymentScreen(props: any) {
      onChangeMonthYear={handleMonthYearChange}
      onChangeCVV={(text: any) => setCvv(text)}
     />
-   ) : isStatus == 3 ? (
+   ) : isStatus == 2 ? (
     <OrderSuccess />
    ) : null}
   </SafeAreaView>
  );
 }
+
+// isStatus == 1 ? (
+//   <ShippingAddress
+//    onPressFirstStep={() => handleStepFirst()}
+//    onChangeUserName={(text: any) => setName(text)}
+//    onChangePhoneNumber={(text: any) => setPhone(text)}
+//    onChangeStreet={(text: any) => setStreet(text)}
+//    onChangeCode={(text: any) => setPostalCode(text)}
+//    onChangeCountry={(text: any) => setCountryName(text)}
+//    onChangeState={(text: any) => setStateName(text)}
+//    onChangeCity={(text: any) => setCityName(text)}
+//    countryData={countryData}
+//    maxHeight={200}
+//    labelField="label"
+//    valueField="value"
+//    placeholder={!isFocus ? 'Select Province' : '...'}
+//    value={value}
+//    onFocus={() => setIsFocus(true)}
+//    onBlur={() => setIsFocus(false)}
+//    onChange={(item: { value: React.SetStateAction<null> }) => {
+//     setCountryName(item?.label);
+//     setValue(item.value);
+//     setIsFocus(false);
+//    }}
+//    //city
+//    cityData={cityArrData}
+//    citylabelField="label"
+//    cityvalueField="value"
+//    cityplaceholder={!cityisFocus ? 'Select City' : '...'}
+//    cityvalue={cityValue}
+//    cityOnFocus={() => setcityIsFocus(true)}
+//    cityOnBlur={() => setcityIsFocus(false)}
+//    //  onChangeCity={(item: { value: React.SetStateAction<null> }) => {
+//    //   console.log('item', item);
+//    //   setCityName(item?.label);
+//    //   setCityValue(item.value);
+//    //   setcityIsFocus(false);
+//    //  }}
+//    stateData={stateArrData}
+//    statelabelField="label"
+//    statevalueField="value"
+//    stateplaceholder={!stateisFocus ? 'Select State' : '...'}
+//    statevalue={stateValue}
+//    stateOnFocus={() => setStateIsFocus(true)}
+//    stateOnBlur={() => setStateIsFocus(false)}
+//    //  onChangeState={(item: { value: React.SetStateAction<null> }) => {
+//    //   console.log('item', item);
+//    //   seStateName(item?.label);
+//    //   setStateValue(item.value);
+//    //   setStateIsFocus(false);
+//    //  }}
+//    visible={visible}
+//    openPicker={() => setVisible(true)}
+//    onClose={() => setVisible(false)}
+//    onSelect={onSelect}
+//    countryCode={countryCode}
+//    callingCode={callingCode}
+//   />
+//  ) :
