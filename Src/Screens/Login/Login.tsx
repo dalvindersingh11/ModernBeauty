@@ -87,6 +87,8 @@ export default function LoginScreen() {
 
    console.log('Login Success:', response.data);
    //    setUser(response.data.user_id); // Or store token, etc.
+    await AsyncStorage.setItem('userType', response?.data?.user_type);
+
    await AsyncStorage.setItem('token', response?.data?.bearer_token);
    //    saveUser(response.data.user);
    navigation?.navigate('StudentCode');

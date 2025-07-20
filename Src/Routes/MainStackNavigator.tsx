@@ -17,6 +17,8 @@ import UpdatePassword from '../Screens/UpdatePassword/UpdatePassword';
 import TopHeader from '../Component/TopHeader/TopHeader';
 import CourseListIndex from '../Screens/CourseList/CourseListIndex';
 import OtpScreen from '../Screens/OtpScreen/OtpScreens';
+import StudentCourseList from '../Screens/StudentCourseList/StudentCourseList';
+import NonStudentTrialScreen from '../Screens/NonStudentTrialScreen/NonStudentTrialScreen';
 
 const Stack = createStackNavigator();
 const MainStackNavigator = () => {
@@ -30,6 +32,17 @@ const MainStackNavigator = () => {
    }}
    // screenOptions={{headerShown:false}}
   >
+      <Stack.Screen
+    name="StudentCourseList"
+    component={StudentCourseList}
+    options={{ headerShown: false }}
+   />
+         <Stack.Screen
+    name="NonStudentTrialScreen"
+    component={NonStudentTrialScreen}
+    options={{ headerShown: false }}
+   />
+   
    <Stack.Screen
     name="TrialAccessScreen"
     component={TrialAccessScreen}
