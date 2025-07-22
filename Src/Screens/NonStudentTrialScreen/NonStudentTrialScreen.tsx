@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
  courseCard: {
   padding: 12,
   marginVertical: 10,
-  backgroundColor: '#fff',
+  // backgroundColor: '#fff',
   borderRadius: 10,
   elevation: 3,
   flexDirection: 'row',

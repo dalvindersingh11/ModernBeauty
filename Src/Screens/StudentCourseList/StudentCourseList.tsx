@@ -18,6 +18,7 @@ import colors from '../../Constant/colors';
 import TopHeader from '../../Component/TopHeader/TopHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, IMAGE_URL } from '../../Constant/apiUrl';
+import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -42,6 +43,7 @@ const enrolledCourses = [
 ];
 
 const StudentCourseList = () => {
+    const navigation= useNavigation();
  const [isGrid, setIsGrid] = useState(true);
  const [arrData, setArrData] = useState([]);
 
@@ -78,7 +80,10 @@ const StudentCourseList = () => {
   getAllCourse();
  }, []);
  const renderCourse = ({ item }: any) => (
-  <View style={isGrid ? styles.gridItem : styles.listItem}>
+  <TouchableOpacity 
+  
+onPress={() => navigation.navigate('main', { screen: 'ContentCourse' })}
+  style={isGrid ? styles.gridItem : styles.listItem}>
    <Image
     source={{ uri: IMAGE_URL + item?.thumbnail }}
     style={isGrid ? styles.gridImage : styles.listImage}
@@ -99,7 +104,7 @@ const StudentCourseList = () => {
      </Text>
     </View>
    )}
-  </View>
+  </TouchableOpacity>
  );
 
  return (

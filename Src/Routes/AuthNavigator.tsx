@@ -21,11 +21,7 @@ const AuthNavigator = () => {
     options={{ headerShown: false }}
    />
  
-   <Stack.Screen
-    name="StudentCode"
-    component={StudentCode}
-    options={{ headerShown: false }}
-   />
+  
    <Stack.Screen
     name="SignUp"
     component={SignUpScreen}

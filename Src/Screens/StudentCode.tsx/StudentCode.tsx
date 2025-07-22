@@ -64,7 +64,7 @@ const StudentCode = () => {
    showToast('Code verification successful!');
 
    // Navigate based on userType
-   await checkUserTypeAndNavigate();
+   //    await checkUserTypeAndNavigate();
   } catch (error: any) {
    console.error('❌ Code API Error:', error.response?.data || error.message);
    showToast(error?.response?.data?.message || 'Something went wrong');
@@ -96,7 +96,7 @@ const StudentCode = () => {
      //  onPress={() => handleVerifyCode()}
      onPress={() =>
       navigation?.navigate('main', {
-       screen: 'NonStudentTrialScreen'
+       screen: 'StudentCourseList'
       })
      }
      style={{
@@ -113,6 +113,24 @@ const StudentCode = () => {
       allowFontScaling
       style={{ color: colors.white, fontFamily: fonts.medium, fontSize: 14 }}>
       Submit
+     </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+     onPress={() =>
+      navigation?.navigate('main', {
+       screen: 'NonStudentTrialScreen'
+      })
+     }
+     style={{ alignSelf: 'center' }}>
+     <Text
+      allowFontScaling
+      style={{
+       color: 'blue',
+       fontFamily: fonts.medium,
+       fontSize: 14,
+       textDecorationLine: 'underline'
+      }}>
+      Don't have code! Skip
      </Text>
     </TouchableOpacity>
    </View>

@@ -131,6 +131,24 @@ export default function ContentCourse() {
      </TouchableOpacity>
     )}
    </View>
+   <TouchableOpacity
+    onPress={() =>
+     navigation?.navigate('main', {
+      screen: 'StudentQuiz'
+     })
+    }
+    style={{ alignSelf: 'center' }}>
+    <Text
+     allowFontScaling
+     style={{
+      color: 'blue',
+      fontFamily: fonts.medium,
+      fontSize: 14,
+      textDecorationLine: 'underline'
+     }}>
+     STUDENT QUIZ SCREEN
+    </Text>
+   </TouchableOpacity>
    <View style={{ marginTop: responsiveScreenHeight(5) }}>
     <FlatList
      data={DATA}
@@ -139,6 +157,7 @@ export default function ContentCourse() {
      contentContainerStyle={{ padding: 16 }}
     />
    </View>
+
    {/* Level 2 Button */}
    {/* <TouchableOpacity style={styles.levelButton}>
     <Text allowFontScaling={false} style={styles.levelText}>

@@ -23,7 +23,7 @@ import {
 } from '../../Constant/Icons';
 import colors from '../../Constant/colors';
 import Styles from './Styles';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { showToast } from '../../Constant/showToast';
@@ -60,7 +60,13 @@ const Settings = () => {
    await AsyncStorage.removeItem('token');
    await AsyncStorage?.clear();
    showToast('Logged out successfully');
-   navigation?.navigate('auth');
+//    navigation?.navigate('auth');
+   navigation.dispatch(
+  CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'auth' }],
+  })
+);
    // 🔁 Restart app so App.tsx reruns and redirects to 'auth'
    // RNRestart.Restart();
   } catch (error: any) {
