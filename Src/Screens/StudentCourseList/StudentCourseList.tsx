@@ -22,30 +22,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 
-const enrolledCourses = [
- {
-  id: '1',
-  title: 'Building Scalable Microservices',
-  image: 'https://example.com/image1.jpg'
- },
- {
-  id: '2',
-  title: 'Artificial Intelligence and Machine',
-  image: 'https://example.com/image2.jpg'
- },
- {
-  id: '3',
-  title: 'Personal Branding: Building Your Online',
-  image: 'https://example.com/image3.jpg'
- }
-
- // Add more dummy items here
-];
-
 const StudentCourseList = () => {
     const navigation= useNavigation();
  const [isGrid, setIsGrid] = useState(true);
  const [arrData, setArrData] = useState([]);
+ const navigation = useNavigation<any>();
 
  const toggleView = () => setIsGrid(!isGrid);
 
@@ -80,10 +61,9 @@ const StudentCourseList = () => {
   getAllCourse();
  }, []);
  const renderCourse = ({ item }: any) => (
-  <TouchableOpacity 
-  
-onPress={() => navigation.navigate('main', { screen: 'ContentCourse' })}
-  style={isGrid ? styles.gridItem : styles.listItem}>
+  <TouchableOpacity
+   onPress={() => navigation.navigate('ContentCourse', { id: item?.id })}
+   style={isGrid ? styles.gridItem : styles.listItem}>
    <Image
     source={{ uri: IMAGE_URL + item?.thumbnail }}
     style={isGrid ? styles.gridImage : styles.listImage}
@@ -145,10 +125,15 @@ onPress={() => navigation.navigate('main', { screen: 'ContentCourse' })}
      }}
     />
    ) : (
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <View
+     style={{
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: responsiveScreenHeight(10)
+     }}>
      <Text
       allowFontScaling={false}
-      style={{ color: colors.black, fontFamily: fonts.regular, fontSize: 12 }}>
+      style={{ color: colors.black, fontFamily: fonts.regular, fontSize: 14 }}>
       No Courses Found
      </Text>
     </View>
