@@ -27,3 +27,5 @@ export const HELPPLUS = require('../../Src/Images/helpPlus.png');
 export const LIST_IMAGE = require('../../Src/Images/listImage.png');
 export const GRID_VIEW = require('../../Src/Images/gridView.png');
 export const LIST_VIEW = require('../../Src/Images/listView.png');
+export const REPLY = require('../../Src/Images/reply.png');
+export const EXPORTICON = require('../../Src/Images/export.png');

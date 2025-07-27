@@ -237,6 +237,7 @@ export default function ContentCourse(props: any) {
      contentContainerStyle={{ padding: 16 }}
     />
    </View>
+
    {/* Level 2 Button */}
    {/* <TouchableOpacity style={styles.levelButton}>
     <Text allowFontScaling={false} style={styles.levelText}>

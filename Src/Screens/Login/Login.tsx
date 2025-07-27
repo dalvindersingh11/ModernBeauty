@@ -15,7 +15,7 @@ import {
 import colors from '../../Constant/colors';
 import { APP_LOGO } from '../../Constant/Icons';
 import Styles from './Styles';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -57,6 +57,7 @@ export default function LoginScreen() {
   };
   checkStorage();
  }, []);
+ 
  const handleLogin = async () => {
   if (!email || !password) {
    showToast('Email and password are required');
@@ -85,11 +86,29 @@ export default function LoginScreen() {
     }
    );
 
-   console.log('Login Success:', response.data);
+   console.log('Login Success:', response.data?.user_type);
    //    setUser(response.data.user_id); // Or store token, etc.
+   await AsyncStorage.setItem('userType', response?.data?.user_type);
+
    await AsyncStorage.setItem('token', response?.data?.bearer_token);
    //    saveUser(response.data.user);
-   navigation?.navigate('StudentCode');
+
+   //    if (Number(response?.data?.user_type) === 1) {
+//        navigation.navigate('main', { screen: 'StudentCourseList' });
+//     } else {
+//         navigation.navigate('main', { screen: 'StudentCode' });
+//     }
+
+const targetScreen = Number(response?.data?.user_type) === 1
+  ? 'StudentCourseList'
+  : 'StudentCode';
+
+navigation.dispatch(
+  CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'main', params: { screen: targetScreen } }],
+  })
+);
    showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);

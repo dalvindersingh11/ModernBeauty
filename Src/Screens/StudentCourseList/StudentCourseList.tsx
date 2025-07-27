@@ -61,7 +61,9 @@ const StudentCourseList = () => {
  }, []);
  const renderCourse = ({ item }: any) => (
   <TouchableOpacity
-   onPress={() => navigation.navigate('ContentCourse', { id: item?.id })}
+   onPress={() =>
+    navigation.navigate('main', { screen: 'ContentCourse', id: item?.id })
+   }
    style={isGrid ? styles.gridItem : styles.listItem}>
    <Image
     source={{ uri: IMAGE_URL + item?.thumbnail }}

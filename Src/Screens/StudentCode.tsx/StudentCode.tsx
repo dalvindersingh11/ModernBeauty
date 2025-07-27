@@ -23,6 +23,23 @@ const StudentCode = () => {
  const navigation = useNavigation<any>();
  const [code, setCode] = useState<any>('');
  const [loading, setLoading] = useState(false);
+ const checkUserTypeAndNavigate = async () => {
+  try {
+   const type = await AsyncStorage.getItem('userType');
+   const userType = parseInt(type || '0', 10);
+
+   console.log('👤 userType:', userType);
+
+   if (userType === 0) {
+    navigation.navigate('main', { screen: 'NonStudentTrialScreen' });
+   } else {
+    navigation.navigate('main', { screen: 'StudentCourseList' });
+   }
+  } catch (error) {
+   console.error('❌ Failed to fetch userType from AsyncStorage:', error);
+  }
+ };
+
  const handleVerifyCode = async () => {
   if (!code) {
    showToast('Enter code');
@@ -34,9 +51,7 @@ const StudentCode = () => {
    const token = await AsyncStorage.getItem('token');
    const response = await axios.post(
     BASE_URL + 'verify-student',
-    {
-     code
-    },
+    { code },
     {
      headers: {
       'Content-Type': 'application/json',
@@ -45,19 +60,19 @@ const StudentCode = () => {
     }
    );
 
-   console.log('verify code Success:', response.data);
-   //    setUser(response.data.user_id); // Or store token, etc.
-   //    await AsyncStorage.setItem('token', response?.data?.bearer_token);
-   //    saveUser(response.data.user);
-   //    navigation?.navigate('StudentCode');
-   showToast('successful');
+   console.log('✅ Verify Code Success:', response.data);
+   showToast('Code verification successful!');
+
+   // Navigate based on userType
+   //    await checkUserTypeAndNavigate();
   } catch (error: any) {
-   console.error('Code api Error:', error.response?.data || error.message);
-   showToast(error?.response?.data?.message);
+   console.error('❌ Code API Error:', error.response?.data || error.message);
+   showToast(error?.response?.data?.message || 'Something went wrong');
   } finally {
    setLoading(false);
   }
  };
+
  return (
   <SafeAreaView style={Styles.safeArea}>
    <View style={{ padding: 15 }}>
@@ -78,7 +93,12 @@ const StudentCode = () => {
     {/* Message */}
 
     <TouchableOpacity
-     onPress={() => navigation?.navigate('StudentCourseList')}
+     //  onPress={() => handleVerifyCode()}
+     onPress={() =>
+      navigation?.navigate('main', {
+       screen: 'StudentCourseList'
+      })
+     }
      style={{
       width: moderateScale(210),
       padding: 14,
@@ -93,6 +113,24 @@ const StudentCode = () => {
       allowFontScaling
       style={{ color: colors.white, fontFamily: fonts.medium, fontSize: 14 }}>
       Submit
+     </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+     onPress={() =>
+      navigation?.navigate('main', {
+       screen: 'NonStudentTrialScreen'
+      })
+     }
+     style={{ alignSelf: 'center' }}>
+     <Text
+      allowFontScaling
+      style={{
+       color: 'blue',
+       fontFamily: fonts.medium,
+       fontSize: 14,
+       textDecorationLine: 'underline'
+      }}>
+      Don't have code! Skip
      </Text>
     </TouchableOpacity>
    </View>
