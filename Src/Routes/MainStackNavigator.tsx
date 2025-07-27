@@ -17,6 +17,9 @@ import UpdatePassword from '../Screens/UpdatePassword/UpdatePassword';
 import TopHeader from '../Component/TopHeader/TopHeader';
 import CourseListIndex from '../Screens/CourseList/CourseListIndex';
 import OtpScreen from '../Screens/OtpScreen/OtpScreens';
+import StudentCode from '../Screens/StudentCode.tsx/StudentCode';
+import StudentCourseList from '../Screens/StudentCourseList/StudentCourseList';
+import ContentCourse from '../Screens/ContentSourse/ContentCourse';
 
 const Stack = createStackNavigator();
 const MainStackNavigator = () => {
@@ -31,8 +34,8 @@ const MainStackNavigator = () => {
    // screenOptions={{headerShown:false}}
   >
    <Stack.Screen
-    name="TrialAccessScreen"
-    component={TrialAccessScreen}
+    name="StudentCourseList"
+    component={StudentCourseList}
     options={{ headerShown: false }}
     // options={({ navigation }) => ({
     //  header: () =>
@@ -43,10 +46,13 @@ const MainStackNavigator = () => {
     //   )
     // })}
    />
-
+   <Stack.Screen
+    name="ContentCourse"
+    options={{ headerShown: false }}
+    component={ContentCourse}
+   />
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
    <Stack.Screen name="OtpScreen" component={OtpScreen} />
-
    <Stack.Screen
     options={{ headerShown: false }}
     name="PaymentScreen"
@@ -54,6 +60,7 @@ const MainStackNavigator = () => {
    />
    <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
    <Stack.Screen name="HairCourses" component={HairCourses} />
+
    <Stack.Screen name="ViewFolder" component={ViewFolder} />
    <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
    <Stack.Screen name="Settings" component={Settings} />

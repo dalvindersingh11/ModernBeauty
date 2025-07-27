@@ -20,7 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const StudentCode = () => {
- const navigation = useNavigation();
+ const navigation = useNavigation<any>();
  const [code, setCode] = useState<any>('');
  const [loading, setLoading] = useState(false);
  const handleVerifyCode = async () => {
@@ -78,7 +78,7 @@ const StudentCode = () => {
     {/* Message */}
 
     <TouchableOpacity
-     onPress={() => handleVerifyCode()}
+     onPress={() => navigation?.navigate('StudentCourseList')}
      style={{
       width: moderateScale(210),
       padding: 14,
