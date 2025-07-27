@@ -26,7 +26,8 @@ const Styles = StyleSheet.create({
  title: {
   fontSize: ms(24),
   fontWeight: '700',
-  color: '#000',alignSelf:'center'
+  color: '#000',
+  alignSelf: 'center'
  },
  emptySpace: {
   width: ms(18),
@@ -52,6 +53,18 @@ const Styles = StyleSheet.create({
   padding: mvs(10),
   alignItems: 'flex-start',
   minHeight: mvs(161)
+ },
+ bottomButton: {
+  backgroundColor: colors.black,
+  borderRadius: 10,
+  padding: 10,
+  marginTop:20,
+  justifyContent: 'center',
+  alignItems: 'center'
+ },
+ buttonText: {
+  color: '#fff',
+  fontSize: 16
  }
 });
 

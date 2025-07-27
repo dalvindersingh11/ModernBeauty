@@ -28,6 +28,7 @@ import StudentCode from '../Screens/StudentCode.tsx/StudentCode';
 import TopHeader from '../Component/TopHeader/TopHeader';
 import ContentCourse from '../Screens/ContentSourse/ContentCourse';
 import StudentQuiz from '../Screens/StudentQuiz/StudentQuiz';
+import TicketReply from '../Screens/TicketReply/TicketReply';
 
 const Stack = createStackNavigator();
 
@@ -85,6 +86,7 @@ const MainStackNavigator = () => {
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="ManageSubscription" component={ManageSubscription} />
       <Stack.Screen name="HelpSupport" component={HelpSupport} />
+      <Stack.Screen name="TicketReply" component={TicketReply} />
       <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
       <Stack.Screen name="AddTicket" component={AddTicket} />
       <Stack.Screen name="UpdatePassword" component={UpdatePassword} />

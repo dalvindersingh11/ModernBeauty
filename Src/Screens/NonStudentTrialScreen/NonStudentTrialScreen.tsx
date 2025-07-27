@@ -94,6 +94,8 @@ export default function NonStudentTrialScreen() {
    </View>
    <View style={{ flex: 1, marginLeft: 12 }}>
     <Text style={styles.title}>{item.title}</Text>
+  
+
     <Text style={styles.duration}>Duration: {item.duration} min</Text>
     <Text style={styles.description} numberOfLines={4}>
      {item.description?.replace(/<[^>]*>?/gm, '')}
@@ -105,6 +107,9 @@ export default function NonStudentTrialScreen() {
  return (
   <View style={styles.container}>
    <TopHeader />
+     <Text style={{ fontFamily: 'Oswald-Bold', fontSize: 23 }}>
+  This is Oswald
+</Text>
    <Text style={styles.welcome}>For non Student</Text>
    <Text style={styles.subtitle}>
     This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!
@@ -202,7 +207,8 @@ const styles = StyleSheet.create({
   fontSize: 16,
   fontWeight: 'bold',
   marginBottom: 4,
-  color: '#333'
+  color: '#333',
+  
  },
  duration: {
   fontSize: 14,

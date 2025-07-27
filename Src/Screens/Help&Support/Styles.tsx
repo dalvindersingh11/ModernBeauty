@@ -43,7 +43,78 @@ const Styles = StyleSheet.create({
   fontSize: ms(12),
   fontWeight: '400',
   color: '#000'
- }
+ },ticketContainer: {
+  backgroundColor: '#f0f0f0',
+  borderRadius: 8,
+  overflow: 'hidden',
+  marginBottom: 10,
+},
+ticketRow: {
+  flexDirection: 'row',
+},
+statusBar: {
+  backgroundColor: '#544C4C',
+  width: 20,
+},
+ticketContent: {
+  padding: 12,
+  flex: 1,
+  gap: 5,
+},
+subjectRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+subjectLabel: {
+  fontWeight: 'bold',
+},
+subjectText: {
+  fontWeight: '500',
+},
+statusBox: {
+  paddingVertical: 2,
+  paddingHorizontal: 5,
+  borderRadius: 5,
+},
+statusText: {
+  fontWeight: '600',
+  fontSize: 10,
+  color: '#fff',
+},
+messageLabel: {
+  fontWeight: 'bold',
+},
+messageText: {
+  color: '#000',
+},
+replyRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+replyCountRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+replyIcon: {
+  width: 12,
+  height: 8,
+  marginLeft: 10,
+},
+replyButton: {
+  backgroundColor: '#000',
+  paddingVertical: 2,
+  paddingHorizontal: 5,
+  borderRadius: 5,
+  alignSelf: 'flex-end',
+},
+replyButtonText: {
+  fontWeight: '600',
+  fontSize: 10,
+  color: '#fff',
+},
 });
 
 export default Styles;
