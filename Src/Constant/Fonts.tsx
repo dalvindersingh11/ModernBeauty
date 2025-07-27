@@ -1,10 +1,10 @@
 const fonts = {
- regular: 'Roboto-Regualar',
- thin: 'Roboto-Thin',
- bold: 'Roboto-Bold',
- medium: 'Roboto-Medium',
- light: 'Roboto-Light',
- black: 'Roboto-Black',
- semiBold: 'Roboto-SemiBold'
+ regular: 'Montserrat-Regular',
+ thin: 'Montserrat-Thin',
+ bold: 'Oswald-Bold',
+ medium: 'Oswald-Medium',
+ light: 'Montserrat-Light',
+ black: 'Montserrat-Black',
+ semiBold: 'Montserrat-SemiBold'
 };
 export default fonts;

@@ -73,22 +73,22 @@ const response = await axios.post(
        <Text style={{
         fontSize: 15,
         fontWeight: '600',
-        color: '#000'
+        color: '#fff'
        }}>
         {ticket.subject}{' '}
-        <Text style={{ fontWeight: '700' }}>#{ticket.id}</Text>
+        <Text style={{ fontWeight: '700' , color: '#fff'}}>#{ticket.id}</Text>
        </Text>
        <TouchableOpacity>
-        <Image source={EXPORTICON} style={{ width: 16, height: 9, tintColor: '#000' }} />
+        <Image source={EXPORTICON} style={{ width: 16, height: 9, tintColor: '#fff' }} />
        </TouchableOpacity>
       </View>
 
-      <Text style={{ fontSize: 13, color: '#333' }}>
+      <Text style={{ fontSize: 13, color: '#fff' }}>
        Status:{' '}
        {ticket.status.replace(/^./, ticket.status[0].toUpperCase())}
       </Text>
 
-      <Text style={{ fontSize: 13, color: '#333', lineHeight: 20 }}>
+      <Text style={{ fontSize: 13, color: '#fff', lineHeight: 20 }}>
        {ticket.message}
       </Text>
      </View>
