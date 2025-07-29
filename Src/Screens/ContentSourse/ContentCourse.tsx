@@ -9,7 +9,8 @@ import {
  Image,
  FlatList,
  SafeAreaView,
- Alert
+ Alert,
+ Platform
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
@@ -20,12 +21,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { VIDEOICON } from '../../Constant/Icons';
+import { DOCUMENT, DURATION, VIDEOICON } from '../../Constant/Icons';
 import TopHeader from '../../Component/TopHeader/TopHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, IMAGE_URL } from '../../Constant/apiUrl';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import WebView from 'react-native-webview';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 export default function ContentCourse(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
@@ -92,11 +95,16 @@ export default function ContentCourse(props: any) {
  useEffect(() => {
   getAllCourse();
  }, []);
- const getVideoType = (url: string): 'youtube' | 'mp4' | 'm3u8' | 'unknown' => {
+ const getFileType = (
+  url: string
+ ): 'youtube' | 'mp4' | 'm3u8' | 'pdf' | 'docx' | 'txt' | 'unknown' => {
   if (!url) return 'unknown';
   if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
   if (url.endsWith('.mp4')) return 'mp4';
   if (url.endsWith('.m3u8')) return 'm3u8';
+  if (url.endsWith('.pdf')) return 'pdf';
+  if (url.endsWith('.docx')) return 'docx';
+  if (url.endsWith('.txt')) return 'txt';
   return 'unknown';
  };
 
@@ -107,14 +115,53 @@ export default function ContentCourse(props: any) {
   const match = url.match(regExp);
   return match ? match[1] : '';
  };
+ const openDocumentFile = async (fileUrl: string) => {
+  const fileName = fileUrl.split('/').pop();
+  const filePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+
+  try {
+   // Download the file
+   const result = await RNFS.downloadFile({
+    fromUrl: fileUrl,
+    toFile: filePath
+   }).promise;
+
+   if (result.statusCode === 200) {
+    // Open the downloaded file
+    await FileViewer.open(filePath, { showOpenWithDialog: true });
+   } else {
+    Alert.alert('Download Failed', 'Could not download the file.');
+   }
+  } catch (err) {
+   console.error('File open error:', err);
+   Alert.alert('Open Failed', 'Could not open the file.');
+  }
+ };
+ const formatDuration = (durationInMinutes: number) => {
+  const totalSeconds = Math.round(durationInMinutes * 60);
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${mins > 0 ? `${mins} min ` : ''}${secs} sec`;
+ };
+
  const renderItem = ({ item, index }: any) => {
   const getVideoData = (item: any) => {
    const url = item?.file_path;
-   const type = getVideoType(url);
+   const type = getFileType(url);
    setVideoUrl(url);
    setFileType(type);
    setPlayVideo(false); // reset player state
   };
+  const handleFilePress = (item: any) => {
+   const type = getFileType(item?.file_path);
+
+   if (['pdf', 'docx', 'txt'].includes(type)) {
+    openDocumentFile(IMAGE_URL + item?.file_path);
+   } else {
+    Alert.alert('Unsupported', 'This file type is not supported.');
+   }
+  };
+
   const isOpen = openIndex === index;
   const toggle = (index: number) =>
    setOpenIndex(openIndex === index ? null : index);
@@ -123,9 +170,7 @@ export default function ContentCourse(props: any) {
     <TouchableOpacity
      style={styles.header}
      activeOpacity={0.7}
-     onPress={() => {
-      toggle(index), getVideoData(item);
-     }}>
+     onPress={() => toggle(index)}>
      <View style={{ width: moderateScale(250) }}>
       <Text allowFontScaling={false} style={styles.title}>
        {item.title}
@@ -139,19 +184,81 @@ export default function ContentCourse(props: any) {
     </TouchableOpacity>
 
     {isOpen && (
-     <TouchableOpacity activeOpacity={0.7} style={styles.body}>
-      <Image
+     <TouchableOpacity
+      onPress={() => {
+       const isDocument =
+        item?.file_path?.endsWith('.pdf') ||
+        item?.file_path?.endsWith('.docx') ||
+        item?.file_type === 'file';
+
+       if (isDocument) {
+        handleFilePress(item);
+       } else {
+        getVideoData(item);
+       }
+      }}
+      activeOpacity={0.7}
+      style={styles.body}>
+      <View
        style={{
-        height: moderateScale(35),
-        width: moderateScale(35),
-        borderRadius: 2
-       }}
-       source={VIDEOICON}
-      />
-      <View style={{ width: moderateScale(210) }}>
+        width: moderateScale(20),
+        height: moderateScale(20),
+        borderWidth: 1
+       }}></View>
+      <View
+       style={{
+        width: moderateScale(260),
+        justifyContent: 'center'
+       }}>
        <Text allowFontScaling={false} style={styles.bodyText}>
         {item.description || 'No description available'}
        </Text>
+       {item?.file_type == 'video' ? (
+        <View
+         style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          width: moderateScale(130),
+          marginTop: moderateScale(4),
+          right: moderateScale(4)
+         }}>
+         <Image
+          style={{
+           height: moderateScale(17),
+           width: moderateScale(17)
+          }}
+          source={DURATION}
+         />
+         <View style={{ width: moderateScale(100) }}>
+          <Text allowFontScaling={false} style={[styles.bodyText]}>
+           {formatDuration(Number(item.duration))}
+          </Text>
+         </View>
+        </View>
+       ) : (
+        <View
+         style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          width: moderateScale(50),
+          marginTop: moderateScale(5),
+          right: moderateScale(3)
+         }}>
+         <Image
+          style={{
+           height: moderateScale(20),
+           width: moderateScale(20),
+           borderRadius: 2
+          }}
+          source={DOCUMENT}
+         />
+         <Text allowFontScaling={false} style={styles.bodyText}>
+          {'-------'}
+         </Text>
+        </View>
+       )}
       </View>
      </TouchableOpacity>
     )}
@@ -165,7 +272,7 @@ export default function ContentCourse(props: any) {
    </View>
    <View style={{ height: responsiveScreenHeight(5) }} />
 
-   <View style={{ width: moderateScale(300) }}>
+   <View style={{ width: moderateScale(335) }}>
     <Text allowFontScaling={false} style={styles.subtitle}>
      Content Course
     </Text>
@@ -264,7 +371,7 @@ const styles = StyleSheet.create({
  },
  header: {
   backgroundColor: '#000',
-  width: moderateScale(290),
+  width: moderateScale(340),
   height: moderateScale(40),
   padding: 12,
   flexDirection: 'row',
@@ -282,7 +389,7 @@ const styles = StyleSheet.create({
   color: colors.textColor
  },
  videoBox: {
-  width: moderateScale(300),
+  width: moderateScale(330),
   height: moderateScale(180),
   backgroundColor: '#000',
   justifyContent: 'center',
@@ -336,7 +443,7 @@ const styles = StyleSheet.create({
  },
  body: {
   backgroundColor: '#f7e3d9',
-  width: moderateScale(290),
+  width: moderateScale(340),
   //   height: moderateScale(40),
   padding: 12,
   flexDirection: 'row',
