@@ -94,7 +94,6 @@ export default function NonStudentTrialScreen() {
    </View>
    <View style={{ flex: 1, marginLeft: 12 }}>
     <Text style={styles.title}>{item.title}</Text>
-  
 
     <Text style={styles.duration}>Duration: {item.duration} min</Text>
     <Text style={styles.description} numberOfLines={4}>
@@ -107,17 +106,14 @@ export default function NonStudentTrialScreen() {
  return (
   <View style={styles.container}>
    <TopHeader />
+
    <Text style={styles.welcome}>For non Student</Text>
    <Text style={styles.subtitle}>
     This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!
    </Text>
 
    {loading ? (
-    <ActivityIndicator
-     size="large"
-     color={colors.primary}
-     style={{ marginTop: 30 }}
-    />
+    <ActivityIndicator size="large" color={'blue'} style={{ marginTop: 30 }} />
    ) : courses.length === 0 ? (
     <Text style={{ marginTop: 40, color: 'gray' }}>
      No trial courses available.
@@ -127,14 +123,19 @@ export default function NonStudentTrialScreen() {
      data={courses}
      keyExtractor={(item) => item.id.toString()}
      renderItem={renderItem}
-     style={{flex:1}}
-     contentContainerStyle={{ paddingBottom: 80,flex:1,width:"100%" }}
+     style={{ flex: 1 }}
+     contentContainerStyle={{ paddingBottom: 80, flex: 1, width: '100%' }}
      showsVerticalScrollIndicator={false}
-bounces={false}
+     bounces={false}
     />
    )}
 
-   <View style={{ flexDirection: 'row',justifyContent:'space-between', marginBottom:mvs(30)}}>
+   <View
+    style={{
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+     marginBottom: mvs(30)
+    }}>
     <TouchableOpacity
      onPress={() => navigation?.navigate('PlanScreen')}
      style={styles.levelButton}>
@@ -142,7 +143,7 @@ bounces={false}
     </TouchableOpacity>
     <TouchableOpacity
      onPress={() => navigation?.navigate('PlanScreen')}
-     style={[styles.levelButton,{flex:1,marginLeft:10}]}>
+     style={[styles.levelButton, { flex: 1, marginLeft: 10 }]}>
      <Text style={styles.levelText}>Access to Quiz</Text>
     </TouchableOpacity>
    </View>
@@ -159,7 +160,9 @@ const styles = StyleSheet.create({
  },
  welcome: {
   fontSize: 34,
-  fontFamily: fonts.semiBold,alignSelf:'center',marginTop:mvs(30)
+  fontFamily: fonts.semiBold,
+  alignSelf: 'center',
+  marginTop: mvs(30)
  },
  subtitle: {
   fontFamily: fonts.regular,
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'center',
-  width:'100%'
+  width: '100%'
  },
  videoBox: {
   width: 106,
@@ -217,12 +220,12 @@ const styles = StyleSheet.create({
   fontFamily: fonts.regular,
  },
  levelButton: {
-  width:'40%',
+  width: '40%',
   backgroundColor: colors.black,
   borderRadius: 10,
-padding:10,
+  padding: 10,
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'center'
  },
  levelText: {
  color: colors.white,

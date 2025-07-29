@@ -67,7 +67,6 @@ const StudentCourseList = () => {
    <Image
     source={{ uri: IMAGE_URL + item?.thumbnail }}
     style={isGrid ? styles.gridImage : styles.listImage}
-    resizeMode="cover"
    />
    {isGrid && (
     <Text style={styles.courseTitle} numberOfLines={2}>

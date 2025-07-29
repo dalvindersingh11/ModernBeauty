@@ -23,33 +23,37 @@ import OtpScreen from '../Screens/OtpScreen/OtpScreens';
 import StudentCode from '../Screens/StudentCode.tsx/StudentCode';
 import StudentCourseList from '../Screens/StudentCourseList/StudentCourseList';
 import ContentCourse from '../Screens/ContentSourse/ContentCourse';
+import StudentQuiz from '../Screens/StudentQuiz/StudentQuiz';
+import TicketReply from '../Screens/TicketReply/TicketReply';
+import QuizScreen from '../Screens/Quiz/Quiz';
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
  return (
   <Stack.Navigator
-   //    initialRouteName="landingMeal"
+   initialRouteName={'QuizScreen'}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
-   }}
-   // screenOptions={{headerShown:false}}
-  >
+   }}>
+   <Stack.Screen
+    name="QuizScreen"
+    component={QuizScreen}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="StudentCode"
+    component={StudentCode}
+    options={{ headerShown: false }}
+   />
    <Stack.Screen
     name="StudentCourseList"
     component={StudentCourseList}
     options={{ headerShown: false }}
-    // options={({ navigation }) => ({
-    //  header: () =>
-    //   isAuthenticated ? (
-    //    <TopHeader backOnPress={() => navigation.goBack()} />
-    //   ) : (
-    //    <TopHeader />
-    //   )
-    // })}
    />
+
    <Stack.Screen
     name="ContentCourse"
     options={{ headerShown: false }}
