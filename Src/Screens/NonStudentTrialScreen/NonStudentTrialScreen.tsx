@@ -9,7 +9,7 @@ import {
  ActivityIndicator,
  Alert
 } from 'react-native';
-import { moderateScale, mvs } from 'react-native-size-matters';
+import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
 import { useNavigation } from '@react-navigation/native';
@@ -107,9 +107,6 @@ export default function NonStudentTrialScreen() {
  return (
   <View style={styles.container}>
    <TopHeader />
-     <Text style={{ fontFamily: 'Oswald-Bold', fontSize: 23 }}>
-  This is Oswald
-</Text>
    <Text style={styles.welcome}>For non Student</Text>
    <Text style={styles.subtitle}>
     This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   // alignItems: 'center',
-  paddingHorizontal:20
+  paddingHorizontal:ms(10),
  },
  welcome: {
   fontSize: 34,
@@ -176,7 +173,6 @@ const styles = StyleSheet.create({
   marginVertical: 10,
   // backgroundColor: '#fff',
   borderRadius: 10,
-  elevation: 3,
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'center',
@@ -204,20 +200,21 @@ const styles = StyleSheet.create({
   borderRadius: 8
  },
  title: {
-  fontSize: 16,
-  fontWeight: 'bold',
-  marginBottom: 4,
-  color: '#333',
-  
+ color: colors.black,
+  fontSize: 14,
+  fontFamily: fonts.bold,
+  marginBottom: 2,
  },
  duration: {
-  fontSize: 14,
-  color: '#666',
-  marginBottom: 6
+ color: colors.black,
+  fontSize: 11,
+  fontFamily: fonts.regular,
+  marginBottom: 4
  },
  description: {
-  fontSize: 14,
-  color: '#444'
+  color: colors.black,
+  fontSize: 10,
+  fontFamily: fonts.regular,
  },
  levelButton: {
   width:'40%',
@@ -228,7 +225,8 @@ padding:10,
   alignItems: 'center',
  },
  levelText: {
-  color: '#fff',
-  fontSize: 16
+ color: colors.white,
+  fontSize: 14,
+  fontFamily: fonts.regular,
  }
 });

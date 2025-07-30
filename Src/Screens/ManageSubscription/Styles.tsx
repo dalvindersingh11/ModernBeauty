@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
 
 const Styles = StyleSheet.create({
   safeArea: {
@@ -22,9 +23,9 @@ const Styles = StyleSheet.create({
     height: mvs(16),
   },
   headerTitle: {
-    fontSize: ms(24),
-    fontWeight: '700',
-    color: '#000',alignSelf:'center'
+     color: colors.black,
+  fontSize: ms(24),
+  fontFamily: fonts.bold,alignSelf:'center'
   },
   spacer: {
     width: ms(18),
@@ -39,36 +40,37 @@ const Styles = StyleSheet.create({
   },
   subscriptionInfo: {
     gap: 5,
+    
   },
   purchaseDate: {
-    fontSize: ms(10),
-    fontWeight: '600',
-    color: '#000',
+  color: colors.black,
+  fontSize: ms(10),
+  fontFamily: fonts.medium,
   },
   priceRow: {
     flexDirection: 'row',
   },
   price: {
-    fontSize: ms(19),
-    fontWeight: '600',
-    color: '#000',
+  color: colors.black,
+  fontSize: ms(19),
+  fontFamily: fonts.medium,
   },
   perMonth: {
-    fontSize: ms(10),
-    fontWeight: '600',
-    color: '#000',
+     color: colors.black,
+  fontSize: ms(10),
+  fontFamily: fonts.medium,
     marginLeft: ms(3),
   },
   manageBtn: {
     backgroundColor: 'black',
-    paddingVertical: mvs(2),
-    paddingHorizontal: ms(8),
+    paddingVertical: mvs(4),
+    paddingHorizontal: ms(12),
     borderRadius: ms(9),
   },
   manageBtnText: {
-    color: '#fff',
-    fontSize: ms(11),
-    fontWeight: '500',
+     color: colors.white,
+  fontSize: ms(11),
+  fontFamily: fonts.medium,
   },
 });
 

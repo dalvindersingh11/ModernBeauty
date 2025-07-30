@@ -4,7 +4,8 @@ import {
  Text,
  TouchableOpacity,
  Image,
- SafeAreaView
+ SafeAreaView,
+ ScrollView
 } from 'react-native';
 import { APP_LOGO, BACKICON, USER } from '../../Constant/Icons';
 import Styles from './Styles';
@@ -15,7 +16,10 @@ const TermsPolicies = () => {
 
  return (
   <SafeAreaView style={Styles.safeArea}>
-   <View style={Styles.container}>
+   <ScrollView
+   overScrollMode='never'
+   showsVerticalScrollIndicator={false}
+   style={Styles.container}>
     {/* Header */}
     {/* <View style={Styles.headerRow}>
      <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -65,7 +69,7 @@ const TermsPolicies = () => {
      {'\n'}Email: email@gmail.com
      {'\n'}Phone: 9874563210
     </Text>
-   </View>
+   </ScrollView>
   </SafeAreaView>
  );
 };

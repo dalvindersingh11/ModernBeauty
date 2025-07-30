@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import {
   APP_LOGO,
@@ -19,7 +20,9 @@ const PrivacyPolicy = () => {
 
   return (
     <SafeAreaView style={Styles.safeArea}>
-      <View style={Styles.container}>
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={Styles.container}>
     
         {/* Header */}
         {/* <View style={Styles.headerRow}>
@@ -63,7 +66,7 @@ const PrivacyPolicy = () => {
           {"\n"}Email: email@gmail.com
           {"\n"}Phone: 9874563210
         </Text>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

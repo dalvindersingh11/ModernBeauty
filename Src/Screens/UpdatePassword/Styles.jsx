@@ -29,9 +29,9 @@ const Styles = StyleSheet.create({
   right: responsiveScreenWidth(14)
  },
  title: {
+   color: colors.black,
   fontSize: ms(24),
-  fontWeight: '700',
-  color: '#000'
+  fontFamily: fonts.bold,
   //   marginTop: responsiveScreenHeight(3)
  },
  emptySpace: {
@@ -39,9 +39,9 @@ const Styles = StyleSheet.create({
   height: mvs(16)
  },
  label: {
-  fontSize: ms(16),
-  fontWeight: '700',
-  color: '#000',
+  color: colors.black,
+  fontSize: ms(15),
+  fontFamily: fonts.bold,
   marginLeft: responsiveScreenWidth(11)
  },
  inputBox: {
@@ -54,7 +54,9 @@ const Styles = StyleSheet.create({
   alignItems: 'center',
   width: '80%',
   marginTop: '5%',
-  height: mvs(44)
+  height: mvs(44),  color: colors.black,
+  fontSize: ms(12),
+  fontFamily: fonts.regular,
  },
  loginButton: {
   backgroundColor: '#000',

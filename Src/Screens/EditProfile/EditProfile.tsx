@@ -226,7 +226,7 @@ const EditProfile = () => {
      <ActivityIndicator size="large" color={colors.themeColor || 'black'} />
     </View>
    ) : (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
      <View style={Styles.contentWrapper}>
       <View style={Styles.avatarRow}>
        <View style={Styles.avatarWrapper}>
