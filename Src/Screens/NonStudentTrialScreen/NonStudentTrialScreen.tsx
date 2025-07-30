@@ -106,7 +106,6 @@ export default function NonStudentTrialScreen() {
  return (
   <View style={styles.container}>
    <TopHeader />
-
    <Text style={styles.welcome}>For non Student</Text>
    <Text style={styles.subtitle}>
     This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!
