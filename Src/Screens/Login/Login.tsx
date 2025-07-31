@@ -101,7 +101,7 @@ export default function LoginScreen() {
 
 const targetScreen = Number(response?.data?.user_type) === 1
   ? 'StudentCourseList'
-  : 'StudentCode';
+  : 'QuizScreen';
 
 navigation.dispatch(
   CommonActions.reset({

@@ -26,13 +26,14 @@ import ContentCourse from '../Screens/ContentSourse/ContentCourse';
 import StudentQuiz from '../Screens/StudentQuiz/StudentQuiz';
 import TicketReply from '../Screens/TicketReply/TicketReply';
 import QuizScreen from '../Screens/Quiz/Quiz';
+import TopHeader from '../Component/TopHeader/TopHeader';
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
  return (
   <Stack.Navigator
-   initialRouteName={'QuizScreen'}
+   initialRouteName={'StudentCode'}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />

@@ -23,7 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 const screenWidth = Dimensions.get('window').width;
 
 const StudentCourseList = () => {
-    const navigation= useNavigation();
+
  const [isGrid, setIsGrid] = useState(true);
  const [arrData, setArrData] = useState([]);
  const navigation = useNavigation<any>();
