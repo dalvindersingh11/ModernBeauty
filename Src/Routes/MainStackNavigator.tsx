@@ -61,17 +61,12 @@ const MainStackNavigator = () => {
 
  return (
   <Stack.Navigator
-   initialRouteName={'QuizScreen'}
+   initialRouteName={'StudentCourseList'}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
    }}>
-   <Stack.Screen
-    name="QuizScreen"
-    component={QuizScreen}
-    options={{ headerShown: false }}
-   />
    <Stack.Screen
     name="StudentCode"
     component={StudentCode}
@@ -89,8 +84,8 @@ const MainStackNavigator = () => {
     options={{ headerShown: false }}
    />
    <Stack.Screen
-    name="StudentQuiz"
-    component={StudentQuiz}
+    name="QuizScreen"
+    component={QuizScreen}
     options={{ headerShown: false }}
    />
 

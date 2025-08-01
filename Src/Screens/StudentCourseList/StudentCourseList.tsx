@@ -7,7 +7,8 @@ import {
  TouchableOpacity,
  StyleSheet,
  Dimensions,
- SafeAreaView
+ SafeAreaView,
+ ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { GRID_VIEW, LIST_IMAGE, LIST_VIEW } from '../../Constant/Icons';
@@ -26,10 +27,11 @@ const StudentCourseList = () => {
  const [isGrid, setIsGrid] = useState(true);
  const [arrData, setArrData] = useState([]);
  const navigation = useNavigation<any>();
-
+ const [loading, setLoading] = useState(false);
  const toggleView = () => setIsGrid(!isGrid);
 
  const getAllCourse = async () => {
+  setLoading(true);
   try {
    const token = await AsyncStorage.getItem('token');
    console.log('Token:', token);
@@ -49,9 +51,10 @@ const StudentCourseList = () => {
    const data = await response.json();
 
    setArrData(data?.data);
-
+   setLoading(false);
    console.log('course list Data:', data);
   } catch (error) {
+   setLoading(false);
    console.error('Error fetching profile:', error);
    // showToast('Something went wrong'); // Optional
   }
@@ -110,7 +113,11 @@ const StudentCourseList = () => {
      </TouchableOpacity>
     </View>
    </View>
-   {arrData?.length > 0 ? (
+   {loading ? (
+    <View style={{ top: responsiveScreenHeight(10) }}>
+     <ActivityIndicator size={30} color={colors.black} />
+    </View>
+   ) : (
     <FlatList
      data={arrData}
      key={isGrid ? 'g' : 'l'} // Forces re-render on layout change
@@ -121,20 +128,25 @@ const StudentCourseList = () => {
       paddingBottom: 100,
       marginTop: responsiveScreenHeight(3)
      }}
+     ListEmptyComponent={
+      <View
+       style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: responsiveScreenHeight(10)
+       }}>
+       <Text
+        allowFontScaling={false}
+        style={{
+         color: colors.black,
+         fontFamily: fonts.regular,
+         fontSize: 14
+        }}>
+        No Courses Found
+       </Text>
+      </View>
+     }
     />
-   ) : (
-    <View
-     style={{
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: responsiveScreenHeight(10)
-     }}>
-     <Text
-      allowFontScaling={false}
-      style={{ color: colors.black, fontFamily: fonts.regular, fontSize: 14 }}>
-      No Courses Found
-     </Text>
-    </View>
    )}
   </SafeAreaView>
  );

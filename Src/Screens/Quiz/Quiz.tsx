@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
@@ -6,7 +6,9 @@ import {
  ScrollView,
  StyleSheet,
  Image,
- FlatList
+ FlatList,
+ Modal,
+ ActivityIndicator
 } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
@@ -17,34 +19,122 @@ import {
  responsiveScreenWidth
 } from 'react-native-responsive-dimensions';
 import { SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '../../Constant/apiUrl';
+import { showToast } from '../../Constant/showToast';
+import axios from 'axios';
+import Icon from 'react-native-vector-icons/Feather';
 
-const questions = [
- {
-  id: 3,
-  question: 'What tool is commonly used to curl hair?',
-  options: [
-   { id: 9, text: 'Curling iron' },
-   { id: 10, text: 'Curling Iron' },
-   { id: 11, text: 'Curling iron' },
-   { id: 12, text: 'Curling Iron' }
-  ]
- },
- {
-  id: 4,
-  question: 'Which is a styling tool?',
-  options: [
-   { id: 13, text: 'Straightener' },
-   { id: 14, text: 'Shampoo' },
-   { id: 15, text: 'Conditioner' },
-   { id: 16, text: 'Serum' }
-  ]
- }
- // Add more questions like this...
-];
-
-const QuizScreen = () => {
+const QuizScreen = (props: any) => {
+ const [quizData, setQuizData] = useState<any>([]);
+ const [quizDetail, setQuizDetail] = useState<any>([]);
+ const [modalVisible, setModalVisible] = useState(false);
  const [selectedAnswers, setSelectedAnswers] = useState<any>({});
+ const [loading, setLoading] = useState(false);
+ const quizId = props?.route?.params?.id;
  console.log('selectedId', selectedAnswers);
+ const getQuiz = async () => {
+  setLoading(true);
+  try {
+   const token = await AsyncStorage.getItem('token');
+   console.log('Token:', token);
+
+   const response = await fetch(
+    `https://api.addmelocal.in/api/course/${quizId}/quizzes`,
+    {
+     method: 'GET',
+     headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}` // ✅ Space after "Bearer"
+     }
+    }
+   );
+
+   if (!response.ok) {
+    throw new Error('Failed to fetch profile');
+   }
+
+   const data = await response.json();
+   setLoading(false);
+
+   setQuizData(data?.data[0]?.questions);
+   setQuizDetail(data?.data[0]);
+   console.log('quiz list Data:', data?.data);
+  } catch (error) {
+   setLoading(false);
+
+   console.error('Error fetching profile:', error);
+   // showToast('Something went wrong'); // Optional
+  }
+ };
+ useEffect(() => {
+  getQuiz();
+ }, []);
+
+ const submitQuiz = async () => {
+  const token = await AsyncStorage.getItem('token');
+
+  const payload = {
+   answers: selectedAnswers // 👈 Must be in the form { "3": [9], "4": [14], ... }
+  };
+
+  try {
+   const response = await axios.post(
+    `${BASE_URL}quizzes/${quizId}/submit`, // 👈 Your actual endpoint
+    payload,
+    {
+     headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+     }
+    }
+   );
+
+   console.log('✅ Quiz Submitted:', response.data);
+   showToast(response?.data?.message);
+   setModalVisible(!modalVisible);
+  } catch (error: any) {
+   console.error(
+    '❌ Quiz Submit Error:',
+    error.response?.data || error.message
+   );
+   showToast(error?.response?.data?.message || 'Submission failed!');
+  }
+ };
+ const [remainingTime, setRemainingTime] = useState<number>(0);
+ const [timerStarted, setTimerStarted] = useState(false);
+ // Start timer AFTER quizDetail is set
+ useEffect(() => {
+  if (quizDetail?.time && !timerStarted) {
+   const quizTimeInSeconds = Number(quizDetail.time) * 60;
+   setRemainingTime(quizTimeInSeconds);
+   setTimerStarted(true);
+  }
+ }, [quizDetail]);
+
+ useEffect(() => {
+  if (remainingTime <= 0 || !timerStarted) return;
+
+  const interval = setInterval(() => {
+   setRemainingTime((prev) => {
+    if (prev <= 1) {
+     clearInterval(interval);
+     submitQuiz(); // Auto submit here
+     return 0;
+    }
+    return prev - 1;
+   });
+  }, 1000);
+
+  return () => clearInterval(interval);
+ }, [remainingTime, timerStarted]);
+
+ const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+ };
+
  const renderAnswer = ({
   item,
   index,
@@ -61,8 +151,8 @@ const QuizScreen = () => {
     const isAlreadySelected = currentSelections.includes(optionId);
 
     const updatedSelections = isAlreadySelected
-     ? currentSelections.filter((id) => id !== optionId) // unselect if already selected
-     : [...currentSelections, optionId]; // select if not selected
+     ? currentSelections.filter((id) => id !== optionId) // Unselect
+     : [...currentSelections, optionId]; // Select
 
     return {
      ...prev,
@@ -71,7 +161,7 @@ const QuizScreen = () => {
    });
   };
 
-  const isOptionSelected = (questionId: number, optionId: number) => {
+  const isOptionSelected = (questionId: number, optionId: number): boolean => {
    return selectedAnswers[questionId]?.includes(optionId);
   };
 
@@ -103,14 +193,16 @@ const QuizScreen = () => {
        }
       ]}
      />
-     <Text
-      allowFontScaling={false}
-      style={[
-       styles.optionText,
-       { color: selected ? colors.white : colors.black }
-      ]}>
-      {item.text}
-     </Text>
+     <View style={{ width: moderateScale(100) }}>
+      <Text
+       allowFontScaling={false}
+       style={[
+        styles.optionText,
+        { color: selected ? colors.white : colors.black }
+       ]}>
+       {item.title}
+      </Text>
+     </View>
     </TouchableOpacity>
    </View>
   );
@@ -120,12 +212,10 @@ const QuizScreen = () => {
   return (
    <View>
     <View style={styles.questionCard}>
-     <Text style={styles.questionText}>{`${index + 1}. ${
-      item?.question
-     }`}</Text>
+     <Text style={styles.questionText}>{`${index + 1}. ${item?.title}`}</Text>
      <View style={{ right: 12 }}>
       <FlatList
-       data={item?.options}
+       data={item?.answers}
        keyExtractor={(item) => item.id.toString()}
        numColumns={2}
        renderItem={({ item: optionItem, index: optionIndex }) =>
@@ -146,84 +236,135 @@ const QuizScreen = () => {
  return (
   <SafeAreaView style={styles.container}>
    {/* Header Info */}
-   <View style={{ width: moderateScale(335) }}>
-    <Text allowFontScaling={false} style={styles.subtitle}>
-     Quiz
-    </Text>
-   </View>
-   <View style={styles.headerRow}>
-    <View style={styles.headerBox}>
-     <Image style={styles.topImage} source={MARKS} />
-     <Text allowFontScaling={false} style={styles.headerBigText}>
-      7/10
-     </Text>
-     <Text allowFontScaling={false} style={styles.headerLabel}>
-      Minimum Marks
-     </Text>
+   {/* <ScrollView showsVerticalScrollIndicator={false}>/ */}
+   <Text allowFontScaling={false} style={styles.subtitle}>
+    Quiz
+   </Text>
+   {loading == true ? (
+    <View style={{ top: responsiveScreenHeight(20) }}>
+     <ActivityIndicator size={30} color={colors.black} />
     </View>
-    <View style={styles.headerBox}>
-     <Image style={styles.topImage} source={ATTEMPT} />
-     <Text allowFontScaling={false} style={styles.headerBigText}>
-      1/5
-     </Text>
-     <Text allowFontScaling={false} style={styles.headerLabel}>
-      Attempts
-     </Text>
+   ) : (
+    <View>
+     <View style={{ width: moderateScale(335) }}></View>
+     <View style={styles.headerRow}>
+      <View style={styles.headerBox}>
+       <Image style={styles.topImage} source={MARKS} />
+       <Text allowFontScaling={false} style={styles.headerBigText}>
+        {quizDetail?.pass_mark || '0'}/{quizDetail?.total_mark || '0'}
+       </Text>
+       <Text allowFontScaling={false} style={styles.headerLabel}>
+        Minimum Marks
+       </Text>
+      </View>
+      <View style={styles.headerBox}>
+       <Image style={styles.topImage} source={ATTEMPT} />
+       <Text allowFontScaling={false} style={styles.headerBigText}>
+        {quizDetail?.attempt || '0'}/{quizDetail?.total_mark || '0'}
+       </Text>
+       <Text allowFontScaling={false} style={styles.headerLabel}>
+        Attempts
+       </Text>
+      </View>
+      <View style={styles.headerBox}>
+       <Image style={styles.topImage} source={QUESTION} />
+
+       <Text allowFontScaling={false} style={styles.headerBigText}>
+        {quizData?.length || '0'}
+       </Text>
+       <Text allowFontScaling={false} style={styles.headerLabel}>
+        Questions
+       </Text>
+      </View>
+      <View style={styles.headerBox}>
+       <Image style={styles.topImage} source={TIMER} />
+
+       <Text allowFontScaling={false} style={styles.headerBigText}>
+        {formatTime(remainingTime)}
+       </Text>
+       <Text allowFontScaling={false} style={styles.headerLabel}>
+        Remaining time
+       </Text>
+      </View>
+     </View>
+
+     <View style={styles.warningBox}>
+      <Image style={styles.warningImage} source={WARNING} />
+      <Text allowFontScaling={false} style={styles.warningText}>
+       Please note that you have to complete all the questions and submit before
+       remaining time. The form will be submitted automatically if remaining
+       time ends.
+      </Text>
+     </View>
+
+     <View
+      style={{
+       height: responsiveScreenHeight(60),
+       backgroundColor: colors.white,
+       borderRadius: 9,
+       borderWidth: 1,
+       justifyContent: 'center',
+       //  alignItems: 'center',
+       width: '100%'
+      }}>
+      <FlatList
+       data={quizData}
+       showsVerticalScrollIndicator={false}
+       keyExtractor={(item) => item.id?.toString()}
+       renderItem={renderItem}
+       contentContainerStyle={{ padding: 5 }}
+       ListEmptyComponent={
+        <View
+         style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: responsiveScreenHeight(10)
+         }}>
+         <Text
+          allowFontScaling={false}
+          style={{
+           color: colors.black,
+           fontFamily: fonts.regular,
+           fontSize: 14
+          }}>
+          No Quiz Found
+         </Text>
+        </View>
+       }
+      />
+     </View>
+     <Modal transparent={true} visible={modalVisible}>
+      <View
+       style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)'
+       }}>
+       <View style={styles.popupContainer}>
+        <Icon name="check-circle" size={60} color="green" />
+        <Text allowFontScaling={false} style={styles.successText}>
+         Quiz Submitted Successfully!
+        </Text>
+        <TouchableOpacity
+         style={styles.button}
+         onPress={() => setModalVisible(!modalVisible)}>
+         <Text allowFontScaling={false} style={styles.buttonText}>
+          OK
+         </Text>
+        </TouchableOpacity>
+       </View>
+      </View>
+     </Modal>
+     <TouchableOpacity onPress={() => submitQuiz()} style={styles.loginButton}>
+      <Text allowFontScaling={false} style={styles.loginText}>
+       Submit
+      </Text>
+     </TouchableOpacity>
+     <View style={{ height: responsiveScreenHeight(5) }} />
     </View>
-    <View style={styles.headerBox}>
-     <Image style={styles.topImage} source={QUESTION} />
-
-     <Text allowFontScaling={false} style={styles.headerBigText}>
-      10
-     </Text>
-     <Text allowFontScaling={false} style={styles.headerLabel}>
-      Questions
-     </Text>
-    </View>
-    <View style={styles.headerBox}>
-     <Image style={styles.topImage} source={TIMER} />
-
-     <Text allowFontScaling={false} style={styles.headerBigText}>
-      10:10:00
-     </Text>
-     <Text allowFontScaling={false} style={styles.headerLabel}>
-      Remaining time
-     </Text>
-    </View>
-   </View>
-
-   <View style={styles.warningBox}>
-    <Image style={styles.warningImage} source={WARNING} />
-    <Text allowFontScaling={false} style={styles.warningText}>
-     Please note that you have to complete all the questions and submit before
-     remaining time. The form will be submitted automatically if remaining time
-     ends.
-    </Text>
-   </View>
-
-   <View
-    style={{
-     height: responsiveScreenHeight(60),
-     backgroundColor: colors.white,
-     borderRadius: 9,
-     borderWidth: 1,
-     justifyContent: 'center',
-     //  alignItems: 'center',
-     width: '100%'
-    }}>
-    <FlatList
-     data={questions}
-     showsVerticalScrollIndicator={false}
-     keyExtractor={(item) => item.id?.toString()}
-     renderItem={renderItem}
-     contentContainerStyle={{ padding: 5 }}
-    />
-   </View>
-   <TouchableOpacity style={styles.loginButton}>
-    <Text allowFontScaling={false} style={styles.loginText}>
-     Submit
-    </Text>
-   </TouchableOpacity>
+   )}
+   {/* </ScrollView> */}
   </SafeAreaView>
  );
 };
@@ -231,7 +372,7 @@ const QuizScreen = () => {
 const styles = StyleSheet.create({
  container: {
   flex: 1,
-  backgroundColor: '#f5d6be',
+  backgroundColor: colors.backgrounColor,
   padding: moderateScale(22)
  },
  headerRow: {
@@ -334,6 +475,28 @@ const styles = StyleSheet.create({
   fontFamily: fonts.regular,
   color: colors.textColor
  },
+ popupContainer: {
+  backgroundColor: 'white',
+  padding: 24,
+  borderRadius: 12,
+  alignItems: 'center'
+ },
+ successText: {
+  fontSize: 18,
+  marginVertical: 16,
+  color: 'green',
+  textAlign: 'center'
+ },
+ button: {
+  backgroundColor: '#4CAF50',
+  paddingHorizontal: 24,
+  paddingVertical: 10,
+  borderRadius: 8
+ },
+ buttonText: {
+  color: 'white',
+  fontWeight: 'bold'
+ },
  loginButton: {
   backgroundColor: '#000',
   paddingVertical: moderateScale(12),
@@ -343,7 +506,7 @@ const styles = StyleSheet.create({
   alignSelf: 'center',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '7%'
+  marginTop: '4%'
  },
  loginText: {
   color: colors.white,

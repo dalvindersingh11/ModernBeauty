@@ -10,7 +10,9 @@ import {
  FlatList,
  SafeAreaView,
  Alert,
- Platform
+ Platform,
+ ActivityIndicator,
+ Modal
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
@@ -21,7 +23,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { DOCUMENT, DURATION, VIDEOICON } from '../../Constant/Icons';
+import { APP_LOGO, DOCUMENT, DURATION, VIDEOICON } from '../../Constant/Icons';
 import TopHeader from '../../Component/TopHeader/TopHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, IMAGE_URL } from '../../Constant/apiUrl';
@@ -32,37 +34,17 @@ import FileViewer from 'react-native-file-viewer';
 export default function ContentCourse(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
- const [user, setUser] = useState<any>(null);
+ const [modalVisible, setModalVisible] = useState(false);
  const [arrData, setArrData] = useState<any>([]);
  const courseId = props?.route?.params?.id;
- console.warn('idExist', courseId);
- const DATA = [
-  {
-   id: '1',
-   title: 'Title',
-   body:
-    'Answer the frequently asked question in a simple sentence, a longish paragraph, or even in a list.'
-  },
-  {
-   id: '2',
-   title: 'Title',
-   body:
-    'Content for item two. Replace with anything – bullet list, paragraph, etc.'
-  },
-  {
-   id: '3',
-   title: 'Title',
-   body: 'Content for item three goes here.'
-  }
- ];
  const [openIndex, setOpenIndex] = useState<number | null>(0); // default open first
- const [playYouTube, setPlayYouTube] = useState(false);
- const [videoType, setVideoType] = useState('');
  const [videoUrl, setVideoUrl] = useState('');
- const [videoId, setVideoId] = useState('');
  const [fileType, setFileType] = useState('');
+ const [loading, setLoading] = useState(false);
+ const [isStatus, setisStatus] = useState(0);
 
  const getAllCourse = async () => {
+  setLoading(true);
   try {
    const token = await AsyncStorage.getItem('token');
    console.log('Token:', token);
@@ -83,11 +65,14 @@ export default function ContentCourse(props: any) {
    }
 
    const data = await response.json();
+   setLoading(false);
 
    setArrData(data?.data);
 
    console.log('content course list Data:', data);
   } catch (error) {
+   setLoading(false);
+
    console.error('Error fetching profile:', error);
    // showToast('Something went wrong'); // Optional
   }
@@ -117,14 +102,19 @@ export default function ContentCourse(props: any) {
  };
  const openDocumentFile = async (fileUrl: string) => {
   const fileName = fileUrl.split('/').pop();
-  const filePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+  const filePath =
+   Platform.OS === 'android'
+    ? `${RNFS.DownloadDirectoryPath}/${fileName}`
+    : `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
   try {
+   setModalVisible(true);
    // Download the file
    const result = await RNFS.downloadFile({
     fromUrl: fileUrl,
     toFile: filePath
    }).promise;
+   setModalVisible(false);
 
    if (result.statusCode === 200) {
     // Open the downloaded file
@@ -265,6 +255,35 @@ export default function ContentCourse(props: any) {
    </View>
   );
  };
+ const renderQuiz = ({ item, index }: any) => {
+  return (
+   <View style={styles.quizCard}>
+    <Image
+     source={APP_LOGO} // Replace with your image URL
+     style={styles.image}
+     resizeMode="contain"
+    />
+    <View style={styles.content}>
+     <Text allowFontScaling={false} style={styles.quizTitle}>
+      QUIZ : {item?.title}
+     </Text>
+     {/* <Text allowFontScaling={false} style={styles.description}>
+      Please go to quiz page for more information
+     </Text> */}
+     <View style={{ height: moderateScale(20) }} />
+     <TouchableOpacity
+      onPress={() =>
+       navigation?.navigate('QuizScreen', { id: item?.course_id })
+      }
+      style={styles.button}>
+      <Text allowFontScaling={false} style={styles.buttonText}>
+       Start Quiz
+      </Text>
+     </TouchableOpacity>
+    </View>
+   </View>
+  );
+ };
  return (
   <SafeAreaView style={styles.container}>
    <View style={{ padding: 13 }}>
@@ -272,10 +291,29 @@ export default function ContentCourse(props: any) {
    </View>
    <View style={{ height: responsiveScreenHeight(5) }} />
 
-   <View style={{ width: moderateScale(335) }}>
-    <Text allowFontScaling={false} style={styles.subtitle}>
-     Content Course
-    </Text>
+   <View
+    style={{
+     flexDirection: 'row',
+     justifyContent: 'space-evenly',
+     alignItems: 'center',
+     width: '90%',
+     padding: 12,
+     alignSelf: 'center'
+    }}>
+    <TouchableOpacity onPress={() => setisStatus(0)}>
+     <Text
+      allowFontScaling={false}
+      style={isStatus == 0 ? styles.selectSubtitle : styles.subtitle}>
+      Content Course
+     </Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setisStatus(1)}>
+     <Text
+      allowFontScaling={false}
+      style={isStatus == 1 ? styles.selectSubtitle : styles.subtitle}>
+      Quiz Competition
+     </Text>
+    </TouchableOpacity>
    </View>
 
    {/* Video or Play Button */}
@@ -330,28 +368,79 @@ export default function ContentCourse(props: any) {
      )}
     </View>
    )}
-
-   <View
-    style={{
-     marginTop: responsiveScreenHeight(5),
-     height: moderateScale(350)
-    }}>
-    <FlatList
-     data={arrData[0]?.lessons}
-     showsVerticalScrollIndicator={false}
-     keyExtractor={(item) => item.id}
-     renderItem={renderItem}
-     contentContainerStyle={{ padding: 16 }}
-    />
-   </View>
-
-   {/* Level 2 Button */}
-   {/* <TouchableOpacity style={styles.levelButton}>
-    <Text allowFontScaling={false} style={styles.levelText}>
-     Level 2
-    </Text>
-    <MaterialIcons name="keyboard-arrow-down" size={24} color={colors.white} />
-   </TouchableOpacity> */}
+   {loading ? (
+    <View style={{ top: responsiveScreenHeight(10) }}>
+     <ActivityIndicator size={30} color={colors.black} />
+    </View>
+   ) : (
+    <View
+     style={{
+      marginTop: responsiveScreenHeight(5),
+      height: moderateScale(350)
+     }}>
+     {isStatus == 0 ? (
+      <FlatList
+       data={arrData[0]?.lessons}
+       showsVerticalScrollIndicator={false}
+       keyExtractor={(item) => item.id}
+       renderItem={renderItem}
+       contentContainerStyle={{ padding: 16 }}
+       ListEmptyComponent={
+        <View
+         style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: responsiveScreenHeight(10)
+         }}>
+         <Text
+          allowFontScaling={false}
+          style={{
+           color: colors.black,
+           fontFamily: fonts.regular,
+           fontSize: 14
+          }}>
+          No Courses Found
+         </Text>
+        </View>
+       }
+      />
+     ) : (
+      <FlatList
+       data={arrData[0]?.quizzes}
+       showsVerticalScrollIndicator={false}
+       keyExtractor={(item) => item.id}
+       renderItem={renderQuiz}
+       contentContainerStyle={{ padding: 16 }}
+       ListEmptyComponent={
+        <View
+         style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: responsiveScreenHeight(10)
+         }}>
+         <Text
+          allowFontScaling={false}
+          style={{
+           color: colors.black,
+           fontFamily: fonts.regular,
+           fontSize: 14
+          }}>
+          No Quiz Found
+         </Text>
+        </View>
+       }
+      />
+     )}
+    </View>
+   )}
+   <Modal transparent visible={modalVisible} animationType="fade">
+    <View style={styles.overlay}>
+     <View style={styles.popup}>
+      <ActivityIndicator size="small" color={colors.black} />
+      <Text style={styles.text}>Please wait...</Text>
+     </View>
+    </View>
+   </Modal>
   </SafeAreaView>
  );
 }
@@ -382,11 +471,63 @@ const styles = StyleSheet.create({
   fontSize: 34,
   fontFamily: fonts.semiBold
  },
- subtitle: {
+ quizCard: {
+  flexDirection: 'row',
+  backgroundColor: '#e8cbbf',
+  borderWidth: 1,
+  width: moderateScale(340),
+  // height: moderateScale(40),
+  borderRadius: 10,
+  padding: 8,
+  alignItems: 'center',
+  margin: 10
+ },
+ image: {
+  width: moderateScale(50),
+  height: moderateScale(50),
+  marginRight: 10,
+  borderRadius: 10
+ },
+ content: {
+  width: moderateScale(250),
+  left: moderateScale(12)
+ },
+ quizTitle: {
+  fontFamily: fonts.medium,
+  fontSize: 14,
+  marginBottom: 4
+ },
+ description: {
+  fontSize: 14,
+  color: '#333',
+  marginBottom: 10
+ },
+ button: {
+  backgroundColor: '#000',
+  paddingVertical: 6,
+  paddingHorizontal: 14,
+  borderRadius: 20,
+  alignSelf: 'flex-start'
+ },
+ buttonText: {
+  color: '#fff',
+  fontSize: 13
+ },
+ selectSubtitle: {
   fontFamily: fonts.medium,
   marginVertical: 1,
   fontSize: 18,
-  color: colors.textColor
+  color: colors.textColor,
+  textDecorationLine: 'underline',
+  textDecorationColor: colors.black
+ },
+ subtitle: {
+  fontFamily: fonts.regular,
+  marginVertical: 1,
+  fontSize: 15,
+  color: colors.textColor,
+  textDecorationLine: 'underline',
+  textDecorationColor: colors.black
  },
  videoBox: {
   width: moderateScale(330),
@@ -409,6 +550,25 @@ const styles = StyleSheet.create({
   fontSize: 40,
   bottom: 6,
   left: 1
+ },
+ overlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)', // semi-transparent dark background
+  justifyContent: 'center',
+  alignItems: 'center'
+ },
+ popup: {
+  backgroundColor: 'white', // dark popup
+  paddingVertical: 20,
+  paddingHorizontal: 30,
+  borderRadius: 10,
+  flexDirection: 'row',
+  alignItems: 'center'
+ },
+ text: {
+  color: colors.black,
+  marginLeft: 10,
+  fontSize: 16
  },
  video: {
   width: '100%',
