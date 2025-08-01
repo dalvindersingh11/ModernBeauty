@@ -4,7 +4,8 @@ import {
  TouchableOpacity,
  Image,
  SafeAreaView,
- DeviceEventEmitter
+ DeviceEventEmitter,
+ Platform
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import { APP_LOGO, BACKICON, USER } from '../../Constant/Icons';
@@ -82,7 +83,7 @@ const TopHeader = ({
     backgroundColor: colors.backgrounColor,
     justifyContent: 'center',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',paddingTop:Platform.OS === 'android'?mvs(25):null
    }}>
    <View
     style={{

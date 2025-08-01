@@ -93,12 +93,7 @@ const StudentCode = () => {
     {/* Message */}
 
     <TouchableOpacity
-     //  onPress={() => handleVerifyCode()}
-     onPress={() =>
-      navigation?.navigate('main', {
-       screen: 'StudentCourseList'
-      })
-     }
+     onPress={() => navigation?.navigate('StudentCourseList')}
      style={{
       width: moderateScale(210),
       padding: 14,

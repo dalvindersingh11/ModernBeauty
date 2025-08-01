@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
 
 const Styles = StyleSheet.create({
  safeArea: {
@@ -25,21 +26,22 @@ const Styles = StyleSheet.create({
   height: mvs(16)
  },
  headerTitle: {
+ color: colors.black,
   fontSize: ms(24),
-  fontWeight: '700',
-  color: '#000',alignSelf:"center"
+  fontFamily: fonts.bold,alignSelf:'center'
  },
  headerSpacer: {
   width: ms(18),
   height: mvs(16)
  },
  bodyText: {
+ color: colors.black,
   fontSize: ms(10),
-  fontWeight: '400',
-  color: '#000',
-  paddingHorizontal: 20,
-  marginTop: mvs(20),
-  lineHeight: 18
+  fontFamily: fonts.regular,
+    paddingHorizontal: 20,
+    marginTop: mvs(20),
+    // marginBottom:mvs(40),
+    lineHeight: 15,
  }
 });
 

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
 
 const Styles = StyleSheet.create({
   safeArea: {
@@ -35,21 +36,22 @@ const Styles = StyleSheet.create({
     height: mvs(16),
   },
   title: {
-    fontSize: ms(24),
-    fontWeight: '700',
-    color: '#000',alignSelf:'center'
+     color: colors.black,
+  fontSize: ms(24),
+  fontFamily: fonts.bold,alignSelf:'center'
   },
   emptySpace: {
     width: ms(18),
     height: mvs(16),
   },
   description: {
-    fontSize: ms(10),
-    fontWeight: '400',
-    color: '#000',
+  color: colors.black,
+  fontSize: ms(10),
+  fontFamily: fonts.regular,
     paddingHorizontal: 20,
     marginTop: mvs(20),
-    lineHeight: 18,
+    marginBottom:mvs(40),
+    lineHeight: 15,
   },
 });
 

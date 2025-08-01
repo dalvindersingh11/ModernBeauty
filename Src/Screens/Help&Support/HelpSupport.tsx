@@ -18,16 +18,21 @@ import {
  USER
 } from '../../Constant/Icons';
 import Styles from './Styles';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const HelpSupport = () => {
  const navigation = useNavigation();
 
  const [tickets, setTickets] = useState([]);
  const [loading, setLoading] = useState(false);
- // useEffect(()=>{
- //   fetchTickets(),[navigation]
- // })
+
+ // ✅ Auto fetch on screen load
+useFocusEffect(
+  React.useCallback(() => {
+    fetchTickets();
+  }, [])
+);
+
  const fetchTickets = async () => {
   setLoading(true);
   try {
@@ -46,9 +51,6 @@ const HelpSupport = () => {
 
    if (response.ok) {
     setTickets(data || []);
-    if ((data?.data || []).length === 0) {
-     Alert.alert('API Raw Response', JSON.stringify(data));
-    }
    } else {
     Alert.alert('Error', data?.message || 'Failed to fetch tickets');
     setTickets([]);
@@ -61,46 +63,66 @@ const HelpSupport = () => {
   }
  };
 
- const renderTicket = ({ item }) => (
-  <View style={Styles.ticketContainer}>
-   <View style={Styles.ticketRow}>
-    <View style={Styles.statusBar} />
-    <View style={Styles.ticketContent}>
-     <View style={Styles.subjectRow}>
-      <Text style={Styles.subjectLabel}>
-       Sub: <Text style={Styles.subjectText}>{item?.subject}</Text>
-      </Text>
-      <View
-       style={[
-        Styles.statusBox,
-        { backgroundColor: item.status === 'open' ? '#00A318' : '#FF0000' }
-       ]}>
-       <Text style={Styles.statusText}>
-        {item.status.replace(/^./, item.status[0].toUpperCase())}
+ const renderTicket = ({ item }) => {
+  const replyCount = item?.replies?.length || 0;
+  const latestReply = item?.replies?.[replyCount - 1]?.message;
+
+  return (
+   <View style={Styles.ticketContainer}>
+    <View style={Styles.ticketRow}>
+     <View style={Styles.statusBar} />
+     <View style={Styles.ticketContent}>
+      <View style={Styles.subjectRow}>
+       <Text style={Styles.subjectLabel}>
+        Sub: <Text style={Styles.subjectText}>{item?.subject}</Text>
        </Text>
+       <View
+        style={[
+         Styles.statusBox,
+         { backgroundColor: item.status === 'open' ? '#00A318' : '#FF0000' }
+        ]}>
+        <Text style={Styles.statusText}>
+         {item.status.replace(/^./, item.status[0].toUpperCase())}
+        </Text>
+       </View>
       </View>
-     </View>
 
-     <Text style={Styles.messageLabel}>Message :</Text>
-     <Text style={Styles.messageText}>{item.message}</Text>
+      <Text style={Styles.messageLabel}>Message :</Text>
+      <Text style={Styles.messageText}>{item.message}</Text>
 
-     <View style={Styles.replyRow}>
-      <View style={Styles.replyCountRow}>
-       <Text>0</Text>
-       <TouchableOpacity>
-        <Image source={REPLY} style={Styles.replyIcon} />
+      {/* {replyCount > 0 && (
+       <View style={{ marginTop: 8 }}>
+        <Text style={Styles.messageLabel}>Latest Reply:</Text>
+        <Text style={Styles.messageText}>{latestReply}</Text>
+       </View>
+      )} */}
+
+      <View style={Styles.replyRow}>
+       <View style={Styles.replyCountRow}>
+        {/* ✅ Show actual reply count */}
+        <Text>{replyCount}</Text>
+        <TouchableOpacity>
+         <Image source={REPLY} style={Styles.replyIcon} />
+        </TouchableOpacity>
+       </View>
+
+       <TouchableOpacity
+        onPress={() =>
+         navigation.navigate('TicketReply', {
+          ticket: item,
+          onReplySuccess: fetchTickets // ✅ callback passed
+         })
+        }
+        style={Styles.replyButton}>
+        <Text style={Styles.replyButtonText}>Reply</Text>
        </TouchableOpacity>
       </View>
-    <TouchableOpacity 
-       onPress={() => navigation.navigate('TicketReply', { ticket: item })}
-       style={Styles.replyButton}>
-       <Text style={Styles.replyButtonText}>Reply</Text>
-      </TouchableOpacity>
      </View>
     </View>
    </View>
-  </View>
- );
+  );
+ };
+
  return (
   <SafeAreaView style={Styles.safeArea}>
    <View style={Styles.container}>
@@ -119,18 +141,7 @@ const HelpSupport = () => {
      </TouchableOpacity>
     </View>
 
-    {/* Manual Get Button */}
-    <TouchableOpacity
-     onPress={fetchTickets}
-     style={{
-      backgroundColor: '#007bff',
-      padding: 10,
-      borderRadius: 8,
-      marginTop: 16,
-      alignSelf: 'center'
-     }}>
-     <Text style={{ color: '#fff' }}>Get Tickets</Text>
-    </TouchableOpacity>
+    {/* ❌ Removed Manual Get Button */}
 
     {/* Ticket List or Message */}
     {loading ? (
@@ -146,7 +157,7 @@ const HelpSupport = () => {
       data={tickets}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderTicket}
-      contentContainerStyle={{}}
+      contentContainerStyle={{ paddingBottom: 16 }}
      />
     )}
    </View>

@@ -10,8 +10,7 @@ import {
  SafeAreaView,
  ActivityIndicator
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { GRID_VIEW, LIST_IMAGE, LIST_VIEW } from '../../Constant/Icons';
+import { GRID_VIEW, LIST_VIEW } from '../../Constant/Icons';
 import { moderateScale } from 'react-native-size-matters';
 import fonts from '../../Constant/Fonts';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';

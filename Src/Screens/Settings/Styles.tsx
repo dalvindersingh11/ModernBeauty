@@ -41,18 +41,18 @@ export default StyleSheet.create({
   borderRadius: 20,
  },
  title: {
+color: colors.black,
   fontSize: ms(24),
-  fontWeight: '700',
-  color: '#000',
+  fontFamily: fonts.bold,
  },
 //  placeholder: {
 //   width: ms(18),
 //   height: mvs(16),
 //  },
  sectionTitle: {
-  fontSize: ms(16),
-  fontWeight: '600',
-  color: '#000',
+  color: colors.black,
+  fontSize: ms(15),
+  fontFamily: fonts.bold,
  },
  card: {
   backgroundColor: '#dbbfb4',
@@ -71,9 +71,9 @@ export default StyleSheet.create({
   borderRadius: 20,
  },
  optionText: {
-  fontSize: ms(16),
-  fontWeight: '600',
-  color: '#000',
+ color: colors.black,
+  fontSize: ms(14),
+  fontFamily: fonts.regular,
   marginLeft: ms(20),
  }
 });

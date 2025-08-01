@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
 
 const Styles = StyleSheet.create({
  safeArea: {
@@ -25,9 +26,9 @@ const Styles = StyleSheet.create({
   height: mvs(16)
  },
  headerTitle: {
+  color: colors.black,
   fontSize: ms(24),
-  fontWeight: '700',
-  color: '#000'
+  fontFamily: fonts.bold,
  },
  helpPlusIcon: {
   width: ms(24.22),
@@ -40,9 +41,9 @@ const Styles = StyleSheet.create({
   alignItems: 'center'
  },
  noTicketText: {
+  color: colors.black,
   fontSize: ms(12),
-  fontWeight: '400',
-  color: '#000'
+  fontFamily: fonts.regular,
  },ticketContainer: {
   backgroundColor: '#f0f0f0',
   borderRadius: 8,
@@ -67,26 +68,34 @@ subjectRow: {
   alignItems: 'center',
 },
 subjectLabel: {
-  fontWeight: 'bold',
+  color: colors.black,
+  fontSize: ms(12),
+  fontFamily: fonts.bold,
 },
 subjectText: {
-  fontWeight: '500',
+  color: colors.black,
+  fontSize: ms(12),
+  fontFamily: fonts.regular,
 },
 statusBox: {
-  paddingVertical: 2,
-  paddingHorizontal: 5,
+  paddingVertical: mvs((2)),
+  paddingHorizontal: ms(8),
   borderRadius: 5,
 },
 statusText: {
-  fontWeight: '600',
-  fontSize: 10,
-  color: '#fff',
+   color: colors.white,
+  fontSize: ms(10),
+  fontFamily: fonts.medium,
 },
 messageLabel: {
-  fontWeight: 'bold',
+  color: colors.black,
+  fontSize: ms(12),
+  fontFamily: fonts.bold,
 },
 messageText: {
-  color: '#000',
+  color: colors.black,
+  fontSize: ms(12),
+  fontFamily: fonts.regular,
 },
 replyRow: {
   flexDirection: 'row',
@@ -105,15 +114,15 @@ replyIcon: {
 },
 replyButton: {
   backgroundColor: '#000',
-  paddingVertical: 2,
-  paddingHorizontal: 5,
+  paddingVertical:mvs(2),
+  paddingHorizontal: ms(10),
   borderRadius: 5,
   alignSelf: 'flex-end',
 },
 replyButtonText: {
-  fontWeight: '600',
-  fontSize: 10,
-  color: '#fff',
+   color: colors.white,
+  fontSize: ms(10),
+  fontFamily: fonts.medium,
 },
 });
 
