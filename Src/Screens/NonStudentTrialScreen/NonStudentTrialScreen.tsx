@@ -295,6 +295,7 @@ export default function NonStudentTrialScreen(props: any) {
  };
  return (
   <SafeAreaView style={styles.container}>
+    <TopHeader/>
    <Text
     allowFontScaling={false}
     style={[

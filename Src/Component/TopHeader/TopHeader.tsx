@@ -81,18 +81,18 @@ const TopHeader = ({
   <SafeAreaView
    style={{
     backgroundColor: colors.backgrounColor,
-    justifyContent: 'center',
-    width: '100%',
-    alignItems: 'center',paddingTop:Platform.OS === 'android'?mvs(25):null
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: mvs(25)
    }}>
    <View
     style={{
-     width: '90%',
+     width: '100%',
      flexDirection: 'row',
      justifyContent: 'space-between',
      alignItems: 'center',
-     paddingHorizontal: ms(8),
-     marginTop: responsiveScreenHeight(2)
+     paddingHorizontal: ms(10)
+     //  marginTop: responsiveScreenHeight(2)
     }}>
     {backOnPress ? (
      <TouchableOpacity
@@ -105,15 +105,16 @@ const TopHeader = ({
        source={BACKICON}
        style={{
         width: ms(18),
-        height: mvs(16)
+        height: mvs(16),
+        marginLeft: ms(19)
        }}
       />
      </TouchableOpacity>
     ) : (
      <View
       style={{
-       width: ms(18),
-       height: mvs(16)
+       width: ms(35),
+       height: mvs(35)
       }}
      />
     )}

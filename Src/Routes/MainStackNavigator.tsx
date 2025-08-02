@@ -35,7 +35,7 @@ const Stack = createStackNavigator();
 const MainStackNavigator = () => {
  return (
   <Stack.Navigator
-   initialRouteName={'StudentCourseList'}
+   initialRouteName={'NonStudentTrialScreen'}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
@@ -46,11 +46,7 @@ const MainStackNavigator = () => {
     component={QuizScreen}
     options={{ headerShown: false }}
    />
-   <Stack.Screen
-    name="StudentCode"
-    component={StudentCode}
-    options={{ headerShown: false }}
-   />
+
    <Stack.Screen
     name="StudentCourseList"
     component={StudentCourseList}
@@ -87,6 +83,7 @@ const MainStackNavigator = () => {
    <Stack.Screen
     name="NonStudentTrialScreen"
     component={NonStudentTrialScreen}
+     options={{ headerShown: false }}
    />
   </Stack.Navigator>
  );

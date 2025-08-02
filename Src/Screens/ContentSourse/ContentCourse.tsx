@@ -302,9 +302,9 @@ export default function ContentCourse(props: any) {
   );
  };
  return (
-  <SafeAreaView style={styles.container}>
-   <View style={{ padding: 13 }}>
+   <View style={styles.container}>
     <TopHeader />
+   <View style={{ padding: 13 }}>
    </View>
    <View style={{ height: responsiveScreenHeight(5) }} />
 
@@ -458,7 +458,7 @@ export default function ContentCourse(props: any) {
      </View>
     </View>
    </Modal>
-  </SafeAreaView>
+  </View>
  );
 }
 
@@ -467,7 +467,6 @@ const styles = StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
-  paddingTop: moderateScale(11)
  },
 
  profileIcon: {
@@ -492,7 +491,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   backgroundColor: '#e8cbbf',
   borderWidth: 1,
-  width: moderateScale(340),
+  // width: moderateScale(340),
   // height: moderateScale(40),
   borderRadius: 10,
   padding: 8,

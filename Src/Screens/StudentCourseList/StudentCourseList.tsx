@@ -12,7 +12,7 @@ import {
  BackHandler
 } from 'react-native';
 import { GRID_VIEW, LIST_VIEW } from '../../Constant/Icons';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import fonts from '../../Constant/Fonts';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import colors from '../../Constant/colors';
@@ -102,8 +102,8 @@ const StudentCourseList = () => {
 
  return (
   <SafeAreaView style={styles.container}>
-   <View style={{ padding: 12 }}>
     <TopHeader />
+   <View style={{ padding: 12 }}>
    </View>
    <View style={styles.header}>
     <Text style={styles.heading}>Enrolled Courses</Text>
@@ -168,21 +168,21 @@ const styles = StyleSheet.create({
  container: {
   flex: 1,
   backgroundColor: colors.backgrounColor,
-  paddingHorizontal: 8,
-  paddingTop: 10
+//   paddingHorizontal: 8,
+//   paddingTop: 10
  },
  header: {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: 6,
+  padding: ms(8),
   width: '94%',
   alignSelf: 'center',
-  marginTop: responsiveScreenHeight(5)
+  marginTop: mvs(7)
  },
  heading: {
-  fontSize: 18,
-  fontWeight: 'bold'
+  fontSize: ms(16),
+  fontFamily: fonts.black,
  },
  toggleIcons: {
   flexDirection: 'row',

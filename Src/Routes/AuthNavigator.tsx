@@ -21,13 +21,11 @@ const AuthNavigator = () => {
     component={LoginScreen}
     options={{ headerShown: false }}
    />
- 
-  
-   <Stack.Screen
+   {/* <Stack.Screen
     name="ContentCourse"
     component={ContentCourse}
     options={{ headerShown: false }}
-   />
+   /> */}
    <Stack.Screen
     name="SignUp"
     component={SignUpScreen}
@@ -36,6 +34,11 @@ const AuthNavigator = () => {
    <Stack.Screen
     name="ForgotPassword"
     component={ForgotPassword}
+    options={{ headerShown: false }}
+   />
+   <Stack.Screen
+    name="StudentCode"
+    component={StudentCode}
     options={{ headerShown: false }}
    />
    <Stack.Screen
