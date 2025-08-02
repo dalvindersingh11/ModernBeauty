@@ -9,7 +9,8 @@ import {
  Alert,
  ActivityIndicator,
  ScrollView,
- DeviceEventEmitter
+ DeviceEventEmitter,
+ BackHandler
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -51,7 +52,14 @@ const EditProfile = () => {
   { label: 'Male', value: '1' },
   { label: 'Female', value: '2' }
  ];
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  useEffect(() => {
   (async () => {
    const userData = await AsyncStorage.getItem('user');
@@ -213,7 +221,28 @@ const EditProfile = () => {
   }
  };
 
- const renderLabel = (label) => (
+ const renderLabel = (
+  label:
+   | string
+   | number
+   | bigint
+   | boolean
+   | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+   | Iterable<React.ReactNode>
+   | Promise<
+      | string
+      | number
+      | bigint
+      | boolean
+      | React.ReactPortal
+      | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+      | Iterable<React.ReactNode>
+      | null
+      | undefined
+     >
+   | null
+   | undefined
+ ) => (
   <Text allowFontScaling={true} style={Styles.label}>
    {label}
   </Text>
@@ -223,7 +252,7 @@ const EditProfile = () => {
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgrounColor }}>
    {profileLoading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-     <ActivityIndicator size="large" color={colors.themeColor || 'black'} />
+     <ActivityIndicator size="large" color={'black'} />
     </View>
    ) : (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -260,6 +289,7 @@ const EditProfile = () => {
       {renderLabel('Email')}
       <TextInput
        style={Styles.inputBox}
+       placeholderTextColor={colors.black}
        value={email}
        placeholder="Email"
        onChangeText={setEmail}

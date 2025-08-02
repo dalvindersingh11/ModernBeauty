@@ -12,18 +12,28 @@ import {
  Alert,
  Platform,
  ActivityIndicator,
- Modal
+ Modal,
+ BackHandler
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
-import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
+import {
+ responsiveScreenHeight,
+ responsiveScreenWidth
+} from 'react-native-responsive-dimensions';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { APP_LOGO, DOCUMENT, DURATION, VIDEOICON } from '../../Constant/Icons';
+import {
+ APP_LOGO,
+ DOCUMENT,
+ DURATION,
+ QUIZ,
+ VIDEOICON
+} from '../../Constant/Icons';
 import TopHeader from '../../Component/TopHeader/TopHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, IMAGE_URL } from '../../Constant/apiUrl';
@@ -42,7 +52,14 @@ export default function ContentCourse(props: any) {
  const [fileType, setFileType] = useState('');
  const [loading, setLoading] = useState(false);
  const [isStatus, setisStatus] = useState(0);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const getAllCourse = async () => {
   setLoading(true);
   try {
@@ -259,9 +276,9 @@ export default function ContentCourse(props: any) {
   return (
    <View style={styles.quizCard}>
     <Image
-     source={APP_LOGO} // Replace with your image URL
+     source={QUIZ} // Replace with your image URL
      style={styles.image}
-     resizeMode="contain"
+     //   resizeMode="contain"
     />
     <View style={styles.content}>
      <Text allowFontScaling={false} style={styles.quizTitle}>
@@ -317,7 +334,7 @@ export default function ContentCourse(props: any) {
    </View>
 
    {/* Video or Play Button */}
-   {videoUrl && fileType !== 'unknown' && (
+   {videoUrl && fileType !== 'unknown' && isStatus == 0 && (
     <View style={styles.videoBox}>
      {fileType === 'youtube' ? (
       <View
@@ -336,7 +353,7 @@ export default function ContentCourse(props: any) {
         style={{ flex: 1 }}
        />
       </View>
-     ) : fileType === 'mp4' || fileType === 'm3u8' ? (
+     ) : fileType === 'mp4' || fileType === 'm3u8' || isStatus == 0 ? (
       playVideo ? (
        <Video
         source={{ uri: IMAGE_URL + videoUrl }}
@@ -376,7 +393,7 @@ export default function ContentCourse(props: any) {
     <View
      style={{
       marginTop: responsiveScreenHeight(5),
-      height: moderateScale(350)
+      height: responsiveScreenHeight(60)
      }}>
      {isStatus == 0 ? (
       <FlatList
@@ -485,7 +502,8 @@ const styles = StyleSheet.create({
  image: {
   width: moderateScale(50),
   height: moderateScale(50),
-  marginRight: 10,
+  marginRight: moderateScale(15),
+  left: responsiveScreenWidth(2),
   borderRadius: 10
  },
  content: {
@@ -504,14 +522,18 @@ const styles = StyleSheet.create({
  },
  button: {
   backgroundColor: '#000',
-  paddingVertical: 6,
-  paddingHorizontal: 14,
+  padding: 6,
+  width: moderateScale(80),
   borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
   alignSelf: 'flex-start'
  },
  buttonText: {
   color: '#fff',
-  fontSize: 13
+  fontSize: 13,
+  bottom: moderateScale(1),
+  fontFamily: fonts.medium
  },
  selectSubtitle: {
   fontFamily: fonts.medium,
@@ -525,6 +547,7 @@ const styles = StyleSheet.create({
   fontFamily: fonts.regular,
   marginVertical: 1,
   fontSize: 15,
+  top: 3,
   color: colors.textColor,
   textDecorationLine: 'underline',
   textDecorationColor: colors.black
@@ -599,7 +622,7 @@ const styles = StyleSheet.create({
 
  title: {
   color: '#fff',
-  fontWeight: 'bold'
+  fontFamily: fonts.medium
  },
  body: {
   backgroundColor: '#f7e3d9',

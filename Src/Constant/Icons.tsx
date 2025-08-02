@@ -36,3 +36,4 @@ export const ATTEMPT = require('../../Src/Images/attempts.png');
 export const QUESTION = require('../../Src/Images/questions.png');
 export const TIMER = require('../../Src/Images/time.png');
 export const WARNING = require('../../Src/Images/warning.png');
+export const QUIZ = require('../../Src/Images/laptop.png');

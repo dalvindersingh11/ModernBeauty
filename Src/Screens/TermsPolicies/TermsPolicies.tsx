@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
  View,
  Text,
  TouchableOpacity,
  Image,
  SafeAreaView,
- ScrollView
+ ScrollView,
+ BackHandler
 } from 'react-native';
 import { APP_LOGO, BACKICON, USER } from '../../Constant/Icons';
 import Styles from './Styles';
@@ -13,22 +14,29 @@ import { useNavigation } from '@react-navigation/native';
 
 const TermsPolicies = () => {
  const navigation = useNavigation();
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  return (
   <SafeAreaView style={Styles.safeArea}>
    <ScrollView
-   overScrollMode='never'
-   showsVerticalScrollIndicator={false}
-   style={Styles.container}>
+    overScrollMode="never"
+    showsVerticalScrollIndicator={false}
+    style={Styles.container}>
     {/* Header */}
     {/* <View style={Styles.headerRow}>
      <TouchableOpacity onPress={() => navigation.goBack()}>
       <Image source={BACKICON} style={Styles.backIcon} />
      </TouchableOpacity> */}
-     <Text allowFontScaling={true} style={Styles.headerTitle}>
-      Terms and Policies
-     </Text>
-     {/* <View style={Styles.headerSpacer} />
+    <Text allowFontScaling={true} style={Styles.headerTitle}>
+     Terms and Policies
+    </Text>
+    {/* <View style={Styles.headerSpacer} />
     </View> */}
 
     {/* Body text */}

@@ -8,7 +8,8 @@ import {
  StyleSheet,
  Dimensions,
  SafeAreaView,
- ActivityIndicator
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 import { GRID_VIEW, LIST_VIEW } from '../../Constant/Icons';
 import { moderateScale } from 'react-native-size-matters';
@@ -28,7 +29,19 @@ const StudentCourseList = () => {
  const navigation = useNavigation<any>();
  const [loading, setLoading] = useState(false);
  const toggleView = () => setIsGrid(!isGrid);
+ useEffect(() => {
+  const backAction = () => {
+   BackHandler.exitApp(); // 👈 Exit app immediately
+   return true;
+  };
 
+  const backHandler = BackHandler.addEventListener(
+   'hardwareBackPress',
+   backAction
+  );
+
+  return () => backHandler.remove(); // Cleanup on unmount
+ }, []);
  const getAllCourse = async () => {
   setLoading(true);
   try {

@@ -7,6 +7,7 @@ import {
  SafeAreaView,
  TextInput,
  ActivityIndicator,
+ BackHandler,
  Alert
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
@@ -27,7 +28,14 @@ const UpdatePassword = () => {
  const [isStatus, setIsStatus] = useState(0);
  const [loading, setLoading] = useState(false);
  const [userToken, seUserToken] = useState('');
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const handleLogout = async () => {
   setLoading(true);
   try {
@@ -111,6 +119,7 @@ const UpdatePassword = () => {
     </Text>
     <TextInput
      placeholder="Enter current password"
+     placeholderTextColor={colors.gray}
      style={Styles.inputBox}
      onChangeText={(text) => setCurrentPassword(text)}
     />
@@ -119,6 +128,7 @@ const UpdatePassword = () => {
     </Text>
     <TextInput
      placeholder="Enter new password"
+     placeholderTextColor={colors.gray}
      style={Styles.inputBox}
      onChangeText={(text) => setNewPassword(text)}
     />

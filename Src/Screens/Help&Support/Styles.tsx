@@ -27,13 +27,14 @@ const Styles = StyleSheet.create({
  },
  headerTitle: {
   color: colors.black,
-  fontSize: ms(24),
-  fontFamily: fonts.bold,
+  fontSize: ms(27),
+  fontFamily: fonts.medium
  },
  helpPlusIcon: {
   width: ms(24.22),
   height: ms(24.22),
-  resizeMode: 'contain',padding:1
+  resizeMode: 'contain',
+  padding: 1
  },
  noTicketContainer: {
   flex: 1,
@@ -43,87 +44,88 @@ const Styles = StyleSheet.create({
  noTicketText: {
   color: colors.black,
   fontSize: ms(12),
-  fontFamily: fonts.regular,
- },ticketContainer: {
+  fontFamily: fonts.regular
+ },
+ ticketContainer: {
   backgroundColor: '#f0f0f0',
   borderRadius: 8,
   overflow: 'hidden',
-  marginBottom: 10,
-},
-ticketRow: {
-  flexDirection: 'row',
-},
-statusBar: {
+  marginBottom: 10
+ },
+ ticketRow: {
+  flexDirection: 'row'
+ },
+ statusBar: {
   backgroundColor: '#544C4C',
-  width: 20,
-},
-ticketContent: {
+  width: 20
+ },
+ ticketContent: {
   padding: 12,
   flex: 1,
-  gap: 5,
-},
-subjectRow: {
+  gap: 5
+ },
+ subjectRow: {
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
-},
-subjectLabel: {
+  alignItems: 'center'
+ },
+ subjectLabel: {
   color: colors.black,
   fontSize: ms(12),
-  fontFamily: fonts.bold,
-},
-subjectText: {
+  fontFamily: fonts.bold
+ },
+ subjectText: {
   color: colors.black,
   fontSize: ms(12),
-  fontFamily: fonts.regular,
-},
-statusBox: {
-  paddingVertical: mvs((2)),
+  fontFamily: fonts.regular
+ },
+ statusBox: {
+  paddingVertical: mvs(1),
   paddingHorizontal: ms(8),
-  borderRadius: 5,
-},
-statusText: {
-   color: colors.white,
+  borderRadius: 5
+ },
+ statusText: {
+  color: colors.white,
   fontSize: ms(10),
-  fontFamily: fonts.medium,
-},
-messageLabel: {
+  fontFamily: fonts.medium
+ },
+ messageLabel: {
   color: colors.black,
   fontSize: ms(12),
-  fontFamily: fonts.bold,
-},
-messageText: {
+  fontFamily: fonts.bold
+ },
+ messageText: {
   color: colors.black,
   fontSize: ms(12),
-  fontFamily: fonts.regular,
-},
-replyRow: {
+  fontFamily: fonts.regular
+ },
+ replyRow: {
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
-},
-replyCountRow: {
+  alignItems: 'center'
+ },
+ replyCountRow: {
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
-},
-replyIcon: {
+  alignItems: 'center'
+ },
+ replyIcon: {
   width: 12,
   height: 8,
-  marginLeft: 10,
-},
-replyButton: {
+  marginLeft: 10
+ },
+ replyButton: {
   backgroundColor: '#000',
-  paddingVertical:mvs(2),
+  paddingVertical: mvs(2),
   paddingHorizontal: ms(10),
   borderRadius: 5,
-  alignSelf: 'flex-end',
-},
-replyButtonText: {
-   color: colors.white,
+  alignSelf: 'flex-end'
+ },
+ replyButtonText: {
+  color: colors.white,
   fontSize: ms(10),
-  fontFamily: fonts.medium,
-},
+  fontFamily: fonts.medium
+ }
 });
 
 export default Styles;

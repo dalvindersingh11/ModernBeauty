@@ -7,7 +7,8 @@ import {
  SafeAreaView,
  TextInput,
  ActivityIndicator,
- Alert
+ Alert,
+ BackHandler
 } from 'react-native';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +31,15 @@ const ForgotPassword = () => {
  const [userToken, seUserToken] = useState('');
  const [otp, setOtp] = useState(['', '', '', '']);
  const inputRefs = useRef([]);
+
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  useEffect(() => {
   if (isStatus === 0) {
    setNewPassword('');

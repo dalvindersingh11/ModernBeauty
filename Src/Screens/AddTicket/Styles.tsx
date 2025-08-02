@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
+import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 
 const Styles = StyleSheet.create({
  safeArea: {
@@ -25,7 +27,7 @@ const Styles = StyleSheet.create({
  },
  title: {
   fontSize: ms(24),
-  fontWeight: '700',
+  fontFamily: fonts.medium,
   color: '#000',
   alignSelf: 'center'
  },
@@ -35,13 +37,16 @@ const Styles = StyleSheet.create({
  },
  label: {
   fontSize: ms(16),
-  fontWeight: '700',
-  color: '#000'
+  fontFamily: fonts.medium,
+  color: '#000',
+  marginTop: responsiveScreenHeight(3)
  },
  inputBox: {
   backgroundColor: '#fff',
   borderRadius: ms(6),
   gap: mvs(10),
+  color: colors.black,
+  fontFamily: fonts.regular,
   paddingHorizontal: mvs(10),
   alignItems: 'flex-start',
   height: mvs(44)
@@ -58,13 +63,14 @@ const Styles = StyleSheet.create({
   backgroundColor: colors.black,
   borderRadius: 10,
   padding: 10,
-  marginTop:20,
+  marginTop: 20,
   justifyContent: 'center',
   alignItems: 'center'
  },
  buttonText: {
   color: '#fff',
-  fontSize: 16
+  fontSize: 16,
+  fontFamily: fonts.regular
  }
 });
 

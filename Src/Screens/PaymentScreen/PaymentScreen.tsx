@@ -1,7 +1,7 @@
 // TrialAccessScreen.tsx
 
 import React, { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, Text } from 'react-native';
+import { Alert, BackHandler, SafeAreaView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Styles from './Styles';
 import ShippingAddress from '../../Component/ShippinfgAddress/ShippingAddress';
@@ -48,7 +48,14 @@ export default function PaymentScreen(props: any) {
  const [callingCode, setCallingCode] = useState('91');
  const subscriptionData = props?.route?.params?.paymentData;
  //  console.log('subscriptionData', subscriptionData);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const onSelect = (country: {
   cca2: React.SetStateAction<string>;
   callingCode: React.SetStateAction<string>[];
@@ -269,7 +276,7 @@ export default function PaymentScreen(props: any) {
   <SafeAreaView style={Styles.container}>
    {isStatus == 1 ? (
     <PaymentMethod
-     onBackStep={() => setIsStatus(2)}
+     onBackStep={() => navigation?.goBack()}
      onPressSecondStep={() => handleStepTwo()}
      onChangeCard={(text: any) => setCardNumber(text)}
      onChangeName={(text: any) => setHolderName(text)}
@@ -277,8 +284,8 @@ export default function PaymentScreen(props: any) {
      onChangeMonthYear={handleMonthYearChange}
      onChangeCVV={(text: any) => setCvv(text)}
     />
-   ) : isStatus == 2 ? (
-    <OrderSuccess />
+   ) : isStatus == 3 ? (
+    <OrderSuccess onBackStep={() => navigation?.goBack()} />
    ) : null}
   </SafeAreaView>
  );

@@ -5,7 +5,8 @@ import {
  TouchableOpacity,
  Image,
  ScrollView,
- FlatList
+ FlatList,
+ BackHandler
 } from 'react-native';
 import { APP_LOGO, PREMIUM, USER } from '../../Constant/Icons';
 import { moderateScale } from 'react-native-size-matters';
@@ -22,6 +23,15 @@ export default function PlanScreen() {
  const [arrData, setArrData] = useState([]);
 
  const navigation = useNavigation<any>();
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
+
  const getAllPlans = async () => {
   try {
    const token = await AsyncStorage.getItem('token');
@@ -66,16 +76,20 @@ export default function PlanScreen() {
        {item?.badge}
       </Text>
      </View>
-     <Text allowFontScaling={false} style={Styles.planText}>
-      {item?.description} - {Number(item?.price).toFixed(0)} /
-      {item?.duration_months} months
-     </Text>
+     <View style={{ marginTop: 5 }}>
+      <Text allowFontScaling={false} style={Styles.planText}>
+       {item?.description} - {Number(item?.price).toFixed(0)} /
+       {item?.duration_months} months
+      </Text>
+     </View>
     </TouchableOpacity>
    </View>
   );
  };
  return (
-  <ScrollView contentContainerStyle={Styles.container}>
+  <ScrollView
+   showsVerticalScrollIndicator={false}
+   contentContainerStyle={Styles.container}>
    {/* Title */}
    <Text allowFontScaling={true} style={Styles.title}>
     Go Premium
@@ -95,7 +109,11 @@ export default function PlanScreen() {
      height: responsiveScreenHeight(22),
      marginTop: responsiveScreenHeight(3)
     }}>
-    <FlatList data={arrData} renderItem={renderPlans} />
+    <FlatList
+     data={arrData}
+     showsVerticalScrollIndicator={false}
+     renderItem={renderPlans}
+    />
    </View>
 
    <TouchableOpacity

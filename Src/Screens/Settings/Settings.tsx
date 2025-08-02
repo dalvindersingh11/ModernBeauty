@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
@@ -7,7 +7,8 @@ import {
  SafeAreaView,
  StyleSheet,
  Alert,
- ActivityIndicator
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 import { moderateScale, ms, mvs } from 'react-native-size-matters';
 import {
@@ -33,6 +34,14 @@ import RNRestart from 'react-native-restart';
 const Settings = () => {
  const navigation = useNavigation<any>();
  const [loading, setLoading] = useState(false);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const handleLogout = async () => {
   setLoading(true);
   try {
@@ -60,13 +69,13 @@ const Settings = () => {
    await AsyncStorage.removeItem('token');
    await AsyncStorage?.clear();
    showToast('Logged out successfully');
-//    navigation?.navigate('auth');
+   //    navigation?.navigate('auth');
    navigation.dispatch(
-  CommonActions.reset({
-    index: 0,
-    routes: [{ name: 'auth' }],
-  })
-);
+    CommonActions.reset({
+     index: 0,
+     routes: [{ name: 'auth' }]
+    })
+   );
    // 🔁 Restart app so App.tsx reruns and redirects to 'auth'
    // RNRestart.Restart();
   } catch (error: any) {

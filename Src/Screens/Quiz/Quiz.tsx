@@ -8,7 +8,8 @@ import {
  Image,
  FlatList,
  Modal,
- ActivityIndicator
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
@@ -24,6 +25,7 @@ import { BASE_URL } from '../../Constant/apiUrl';
 import { showToast } from '../../Constant/showToast';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const QuizScreen = (props: any) => {
  const [quizData, setQuizData] = useState<any>([]);
@@ -32,7 +34,17 @@ const QuizScreen = (props: any) => {
  const [selectedAnswers, setSelectedAnswers] = useState<any>({});
  const [loading, setLoading] = useState(false);
  const quizId = props?.route?.params?.id;
- console.log('selectedId', selectedAnswers);
+ const isDisabled = Object.keys(selectedAnswers).length === 0;
+ const navigation = useNavigation<any>();
+ console.log('quizId', quizId);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const getQuiz = async () => {
   setLoading(true);
   try {
@@ -94,10 +106,7 @@ const QuizScreen = (props: any) => {
    showToast(response?.data?.message);
    setModalVisible(!modalVisible);
   } catch (error: any) {
-   console.error(
-    '❌ Quiz Submit Error:',
-    error.response?.data || error.message
-   );
+   showToast(error?.response?.data?.message || error.message);
    showToast(error?.response?.data?.message || 'Submission failed!');
   }
  };
@@ -290,16 +299,18 @@ const QuizScreen = (props: any) => {
 
      <View style={styles.warningBox}>
       <Image style={styles.warningImage} source={WARNING} />
-      <Text allowFontScaling={false} style={styles.warningText}>
-       Please note that you have to complete all the questions and submit before
-       remaining time. The form will be submitted automatically if remaining
-       time ends.
-      </Text>
+      <View style={{ width: moderateScale(300) }}>
+       <Text allowFontScaling={false} style={styles.warningText}>
+        Please note that you have to complete all the questions and submit
+        before remaining time. The form will be submitted automatically if
+        remaining time ends.
+       </Text>
+      </View>
      </View>
 
      <View
       style={{
-       height: responsiveScreenHeight(60),
+       height: responsiveScreenHeight(56),
        backgroundColor: colors.white,
        borderRadius: 9,
        borderWidth: 1,
@@ -339,7 +350,7 @@ const QuizScreen = (props: any) => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)'
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
        }}>
        <View style={styles.popupContainer}>
         <Icon name="check-circle" size={60} color="green" />
@@ -356,7 +367,10 @@ const QuizScreen = (props: any) => {
        </View>
       </View>
      </Modal>
-     <TouchableOpacity onPress={() => submitQuiz()} style={styles.loginButton}>
+     <TouchableOpacity
+      //   disabled={isDisabled}
+      onPress={() => navigation?.navigate('PlanScreen')}
+      style={styles.loginButton}>
       <Text allowFontScaling={false} style={styles.loginText}>
        Submit
       </Text>
@@ -405,7 +419,7 @@ const styles = StyleSheet.create({
   fontSize: 16
  },
  headerLabel: {
-  fontSize: 9,
+  fontSize: 8,
   color: colors.textColor,
   textAlign: 'center',
   fontFamily: fonts.regular
@@ -422,12 +436,12 @@ const styles = StyleSheet.create({
   justifyContent: 'space-evenly',
   backgroundColor: colors.white,
   borderRadius: 8,
-  padding: 10,
+  padding: 14,
   marginBottom: 10
  },
  warningText: {
   color: colors.black,
-  fontSize: 11,
+  fontSize: 12,
   fontFamily: fonts.medium
  },
  warningImage: {
@@ -471,7 +485,7 @@ const styles = StyleSheet.create({
  },
 
  optionText: {
-  fontSize: 12,
+  fontSize: 11,
   fontFamily: fonts.regular,
   color: colors.textColor
  },
@@ -485,6 +499,7 @@ const styles = StyleSheet.create({
   fontSize: 18,
   marginVertical: 16,
   color: 'green',
+  fontFamily: fonts.regular,
   textAlign: 'center'
  },
  button: {
@@ -495,7 +510,8 @@ const styles = StyleSheet.create({
  },
  buttonText: {
   color: 'white',
-  fontWeight: 'bold'
+  fontSize: 14,
+  fontFamily: fonts.medium
  },
  loginButton: {
   backgroundColor: '#000',
@@ -511,7 +527,8 @@ const styles = StyleSheet.create({
  loginText: {
   color: colors.white,
   fontFamily: fonts.medium,
-  fontSize: 16
+  fontSize: 16,
+  bottom: 2
  }
 });
 

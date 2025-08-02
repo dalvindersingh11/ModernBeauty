@@ -39,7 +39,7 @@ const Styles = StyleSheet.create({
   height: mvs(16)
  },
  label: {
-  fontSize: ms(39),
+  fontSize: ms(41),
   fontFamily: fonts.medium,
   color: '#000',
   textAlign: 'center'
@@ -50,7 +50,7 @@ const Styles = StyleSheet.create({
   color: colors.black,
   fontFamily: fonts.regular,
   gap: mvs(10),
-  width: '85%',
+  width: '75%',
   alignSelf: 'center',
   paddingHorizontal: mvs(10),
   alignItems: 'flex-start',

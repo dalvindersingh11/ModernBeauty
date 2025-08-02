@@ -57,7 +57,7 @@ export default function LoginScreen() {
   };
   checkStorage();
  }, []);
- 
+
  const handleLogin = async () => {
   if (!email || !password) {
    showToast('Email and password are required');
@@ -94,21 +94,22 @@ export default function LoginScreen() {
    //    saveUser(response.data.user);
 
    //    if (Number(response?.data?.user_type) === 1) {
-//        navigation.navigate('main', { screen: 'StudentCourseList' });
-//     } else {
-//         navigation.navigate('main', { screen: 'StudentCode' });
-//     }
+   //        navigation.navigate('main', { screen: 'StudentCourseList' });
+   //     } else {
+   //         navigation.navigate('main', { screen: 'StudentCode' });
+   //     }
 
-const targetScreen = Number(response?.data?.user_type) === 1
-  ? 'StudentCourseList'
-  : 'QuizScreen';
+   const targetScreen =
+    Number(response?.data?.user_type) === 1
+     ? 'StudentCode'
+     : 'NonStudentTrialScreen';
 
-navigation.dispatch(
-  CommonActions.reset({
-    index: 0,
-    routes: [{ name: 'main', params: { screen: targetScreen } }],
-  })
-);
+   navigation.dispatch(
+    CommonActions.reset({
+     index: 0,
+     routes: [{ name: 'main', params: { screen: targetScreen } }]
+    })
+   );
    showToast('Login successful!');
   } catch (error: any) {
    console.error('Login Error:', error.response?.data || error.message);

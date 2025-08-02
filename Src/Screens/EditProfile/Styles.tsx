@@ -73,9 +73,9 @@ export default StyleSheet.create({
   height: ms(24)
  },
  label: {
- color: colors.black,
+  color: colors.black,
   fontSize: ms(16),
-  fontFamily: fonts.bold,
+  fontFamily: fonts.medium
  },
  inputBox: {
   backgroundColor: '#fff',
@@ -84,7 +84,8 @@ export default StyleSheet.create({
   gap: mvs(10),
   paddingHorizontal: mvs(10),
   alignItems: 'flex-start',
-  height: mvs(44),fontFamily:fonts.regular
+  height: mvs(44),
+  fontFamily: fonts.regular
  },
  dropdownBox: {
   backgroundColor: '#fff',
@@ -109,7 +110,8 @@ export default StyleSheet.create({
   width: '80%',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '7%',marginBottom:120
+  marginTop: '7%',
+  marginBottom: 120
  },
  loginText: {
   color: colors.white,

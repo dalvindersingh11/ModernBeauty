@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
@@ -7,7 +7,8 @@ import {
  Image,
  ScrollView,
  SafeAreaView,
- Alert
+ Alert,
+ BackHandler
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
@@ -23,6 +24,14 @@ const TicketReply = () => {
  const [reply, setReply] = useState('');
  const [loading, setLoading] = useState(false);
  const navigation = useNavigation();
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const handleReply = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!reply.trim()) return;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
@@ -6,12 +6,16 @@ import {
  TextInput,
  TouchableOpacity,
  Alert,
- ActivityIndicator
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../Constant/colors';
+import fonts from '../../Constant/Fonts';
+import { showToast } from '../../Constant/showToast';
 
 const AddTicket = () => {
  const navigation = useNavigation();
@@ -19,7 +23,14 @@ const AddTicket = () => {
  const [subject, setSubject] = useState('');
  const [message, setMessage] = useState('');
  const [loading, setLoading] = useState(false);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const handleSubmit = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!subject.trim() || !message.trim()) {
@@ -30,7 +41,7 @@ const AddTicket = () => {
   try {
    setLoading(true);
 
-  const response = await fetch('https://api.addmelocal.in/api/store-message',{
+   const response = await fetch('https://api.addmelocal.in/api/store-message', {
     method: 'POST',
     headers: {
      'Content-Type': 'application/json',
@@ -46,7 +57,7 @@ const AddTicket = () => {
    const data = await response.json();
 
    if (response.ok) {
-    Alert.alert('Success', 'Ticket submitted successfully');
+    showToast('Success, Ticket submitted successfully');
     setSubject('');
     setMessage('');
     navigation.goBack();
@@ -74,7 +85,9 @@ const AddTicket = () => {
      Subject
     </Text>
     <TextInput
+     allowFontScaling={false}
      placeholder="Enter subject"
+     placeholderTextColor={colors.gray}
      style={Styles.inputBox}
      value={subject}
      onChangeText={setSubject}
@@ -86,9 +99,16 @@ const AddTicket = () => {
     </Text>
     <View style={Styles.messageBox}>
      <TextInput
+      allowFontScaling={false}
+      placeholderTextColor={colors.gray}
       placeholder="Enter message"
       multiline
-      style={{ flex: 1, textAlignVertical: 'top' }}
+      style={{
+       flex: 1,
+       textAlignVertical: 'top',
+       color: colors.black,
+       fontFamily: fonts.regular
+      }}
       value={message}
       onChangeText={setMessage}
      />
@@ -101,7 +121,9 @@ const AddTicket = () => {
      {loading ? (
       <ActivityIndicator color="#fff" />
      ) : (
-      <Text style={Styles.buttonText}>Submit</Text>
+      <Text allowFontScaling={false} style={Styles.buttonText}>
+       Submit
+      </Text>
      )}
     </TouchableOpacity>
    </View>

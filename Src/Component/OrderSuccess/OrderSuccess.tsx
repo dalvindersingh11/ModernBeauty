@@ -40,7 +40,7 @@ export default function OrderSuccess(props: any) {
       explore our wide range {'\n'} of products. Happy Shopping!
      </Text>
      <TouchableOpacity
-      onPress={() => navigation?.navigate('CourseListIndex')}
+      onPress={() => navigation?.navigate('Settings')}
       style={Styles.levelButton}>
       <Text allowFontScaling={false} style={Styles.levelText}>
        Done

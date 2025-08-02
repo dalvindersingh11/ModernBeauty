@@ -1,87 +1,149 @@
 // TrialAccessScreen.tsx
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+ View,
+ Text,
+ StyleSheet,
+ TouchableOpacity,
+ Image,
+ Platform,
+ Alert
+} from 'react-native';
 import { moderateScale, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import TopHeader from '../../Component/TopHeader/TopHeader';
+import WebView from 'react-native-webview';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 import { IMAGE_URL } from '../../Constant/apiUrl';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
-export default function TrialAccessScreen() {
+export default function TrialAccessScreen(props: any) {
  const [playVideo, setPlayVideo] = useState(false);
  const navigation = useNavigation<any>();
  const [user, setUser] = useState<any>(null);
+ const [modalVisible, setModalVisible] = useState(false);
+ const item = props?.route?.params?.item;
+ const [videoUrl, setVideoUrl] = useState(item?.file_path);
+ const [fileType, setFileType] = useState(item?.file_path);
+ const getFileType = (
+  url: string
+ ): 'youtube' | 'mp4' | 'm3u8' | 'pdf' | 'docx' | 'txt' | 'unknown' => {
+  if (!url) return 'unknown';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+  if (url.endsWith('.mp4')) return 'mp4';
+  if (url.endsWith('.m3u8')) return 'm3u8';
+  if (url.endsWith('.pdf')) return 'pdf';
+  if (url.endsWith('.docx')) return 'docx';
+  if (url.endsWith('.txt')) return 'txt';
+  return 'unknown';
+ };
+ console.log('item123', item);
+ // Utility function to extract YouTube video ID
+ const extractYouTubeId = (url: string) => {
+  const regExp =
+   /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^"&?/ ]{11})/;
+  const match = url.match(regExp);
+  return match ? match[1] : '';
+ };
 
+ const formatDuration = (durationInMinutes: number) => {
+  const totalSeconds = Math.round(durationInMinutes * 60);
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${mins > 0 ? `${mins} min ` : ''}${secs} sec`;
+ };
  useEffect(() => {
-  const loadUser = async () => {
-   try {
-    const jsonValue = await AsyncStorage.getItem('user');
-    if (jsonValue != null) {
-     setUser(JSON.parse(jsonValue));
-    }
-   } catch (e) {
-    console.error('Failed to load user:', e);
-   }
-  };
-
-  loadUser();
+  getFileType(item?.file_path);
  }, []);
-
  return (
   <View style={styles.container}>
-   <TopHeader />
    <View style={{ height: mvs(25) }} />
-   <Text allowFontScaling={false} style={styles.welcome}>
-    Welcome {user?.name}!
+   <Text
+    allowFontScaling={false}
+    style={{ color: colors.black, fontFamily: fonts.medium, fontSize: 17 }}>
+    {item?.title}
    </Text>
-   <Text allowFontScaling={false} style={styles.subtitle}>
-    This is your Level 1 Trial access.{'\n'}Get a sneak peek of the course!
-   </Text>
-
    {/* Video or Play Button */}
-   <View style={styles.videoBox}>
-    {playVideo ? (
-     <Video
-      source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }}
-      style={styles.video}
-      controls
-      resizeMode="contain"
-      onFullscreenPlayerWillPresent={() => {
-       Orientation.unlockAllOrientations(); // allow auto landscape
-       Orientation.lockToLandscape();
-      }}
-      onFullscreenPlayerWillDismiss={() => {
-       Orientation.lockToPortrait(); // restore app orientation
-      }}
-     />
-    ) : (
-     <TouchableOpacity
-      onPress={() => setPlayVideo(true)}
-      style={styles.playButton}>
-      <FontAwesome
-       name="play"
-       size={20}
-       color={colors.white}
-       style={{ left: 2, top: 1 }}
-      />
-     </TouchableOpacity>
-    )}
-   </View>
+   {videoUrl && fileType !== 'unknown' && (
+    <View style={styles.videoBox}>
+     {fileType === 'youtube' ? (
+      <View
+       style={{
+        height: moderateScale(180),
+        width: '100%',
+        alignSelf: 'center'
+       }}>
+       <WebView
+        javaScriptEnabled
+        domStorageEnabled
+        allowsFullscreenVideo
+        source={{
+         uri: `https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}`
+        }}
+        style={{ flex: 1 }}
+       />
+      </View>
+     ) : fileType === 'mp4' || fileType === 'm3u8' ? (
+      playVideo ? (
+       <Video
+        source={{ uri: IMAGE_URL + videoUrl }}
+        style={styles.video}
+        controls
+        resizeMode="contain"
+        onFullscreenPlayerWillPresent={() => {
+         Orientation.unlockAllOrientations();
+         Orientation.lockToLandscape();
+        }}
+        onFullscreenPlayerWillDismiss={() => {
+         Orientation.lockToPortrait();
+        }}
+       />
+      ) : (
+       <TouchableOpacity
+        onPress={() => setPlayVideo(true)}
+        style={styles.playButton}>
+        <FontAwesome
+         name="play"
+         size={20}
+         color={colors.white}
+         style={{ left: 2, top: 1 }}
+        />
+       </TouchableOpacity>
+      )
+     ) : (
+      <Text style={{ color: 'red' }}>Unsupported video format</Text>
+     )}
+    </View>
+   )}
 
-   {/* Level 2 Button */}
-   <TouchableOpacity
-    onPress={() => navigation?.navigate('PlanScreen')}
-    style={styles.levelButton}>
-    <Text allowFontScaling={false} style={styles.levelText}>
-     Level 2
+   <View
+    style={{
+     width: moderateScale(300),
+     alignSelf: 'center',
+     marginTop: responsiveScreenHeight(3)
+    }}>
+    <Text
+     allowFontScaling={false}
+     style={{ color: colors.black, fontFamily: fonts.regular, fontSize: 17 }}>
+     Durtaion:- {formatDuration(item?.duration)}
     </Text>
-   </TouchableOpacity>
+    <View
+     style={{
+      width: moderateScale(300),
+      marginTop: responsiveScreenHeight(2)
+     }}>
+     <Text
+      allowFontScaling={false}
+      style={{ color: colors.black, fontFamily: fonts.regular, fontSize: 17 }}>
+      {item?.description || 'No description available'}
+     </Text>
+    </View>
+   </View>
   </View>
  );
 }
@@ -117,7 +179,7 @@ const styles = StyleSheet.create({
   color: colors.textColor
  },
  videoBox: {
-  width: moderateScale(290),
+  width: moderateScale(320),
   height: moderateScale(180),
   backgroundColor: '#000',
   justifyContent: 'center',

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
  View,
  Text,
  SafeAreaView,
  TextInput,
- TouchableOpacity
+ TouchableOpacity,
+ ActivityIndicator,
+ BackHandler
 } from 'react-native';
 
 import Styles from './Styles';
@@ -23,6 +25,14 @@ const StudentCode = () => {
  const navigation = useNavigation<any>();
  const [code, setCode] = useState<any>('');
  const [loading, setLoading] = useState(false);
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
+
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const checkUserTypeAndNavigate = async () => {
   try {
    const type = await AsyncStorage.getItem('userType');
@@ -42,7 +52,7 @@ const StudentCode = () => {
 
  const handleVerifyCode = async () => {
   if (!code) {
-   showToast('Enter code');
+   showToast('Enter student code');
    return;
   }
 
@@ -60,13 +70,14 @@ const StudentCode = () => {
     }
    );
 
-   console.log('✅ Verify Code Success:', response.data);
-   showToast('Code verification successful!');
-
+   console.log('✅ Verify Code Success:');
+   setLoading(false);
+   showToast(response?.data?.message || 'Code verification successful!');
+   navigation?.navigate('StudentCourseList');
    // Navigate based on userType
    //    await checkUserTypeAndNavigate();
   } catch (error: any) {
-   console.error('❌ Code API Error:', error.response?.data || error.message);
+   console.error('Code API Error:', error.response?.data || error.message);
    showToast(error?.response?.data?.message || 'Something went wrong');
   } finally {
    setLoading(false);
@@ -93,7 +104,8 @@ const StudentCode = () => {
     {/* Message */}
 
     <TouchableOpacity
-     onPress={() => navigation?.navigate('StudentCourseList')}
+     disabled={loading}
+     onPress={() => handleVerifyCode()}
      style={{
       width: moderateScale(210),
       padding: 14,
@@ -104,13 +116,17 @@ const StudentCode = () => {
       marginTop: responsiveScreenHeight(3),
       borderRadius: 12
      }}>
-     <Text
-      allowFontScaling
-      style={{ color: colors.white, fontFamily: fonts.medium, fontSize: 14 }}>
-      Submit
-     </Text>
+     {loading ? (
+      <ActivityIndicator color={colors.white} size={20} />
+     ) : (
+      <Text
+       allowFontScaling
+       style={{ color: colors.white, fontFamily: fonts.medium, fontSize: 14 }}>
+       Submit
+      </Text>
+     )}
     </TouchableOpacity>
-    <TouchableOpacity
+    {/* <TouchableOpacity
      onPress={() =>
       navigation?.navigate('main', {
        screen: 'NonStudentTrialScreen'
@@ -127,7 +143,7 @@ const StudentCode = () => {
       }}>
       Don't have code! Skip
      </Text>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
    </View>
   </SafeAreaView>
  );

@@ -49,7 +49,7 @@ export default StyleSheet.create({
  },
  planBox: {
   width: moderateScale(282),
-  height: moderateScale(68),
+  //   height: moderateScale(75),
   backgroundColor: colors.planColor,
   borderRadius: 12,
   padding: 15,

@@ -7,7 +7,8 @@ import {
  SafeAreaView,
  FlatList,
  ActivityIndicator,
- Alert
+ Alert,
+ BackHandler
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -27,11 +28,11 @@ const HelpSupport = () => {
  const [loading, setLoading] = useState(false);
 
  // ✅ Auto fetch on screen load
-useFocusEffect(
+ useFocusEffect(
   React.useCallback(() => {
-    fetchTickets();
+   fetchTickets();
   }, [])
-);
+ );
 
  const fetchTickets = async () => {
   setLoading(true);
@@ -62,7 +63,14 @@ useFocusEffect(
    setLoading(false);
   }
  };
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
  const renderTicket = ({ item }) => {
   const replyCount = item?.replies?.length || 0;
   const latestReply = item?.replies?.[replyCount - 1]?.message;
@@ -81,14 +89,18 @@ useFocusEffect(
          Styles.statusBox,
          { backgroundColor: item.status === 'open' ? '#00A318' : '#FF0000' }
         ]}>
-        <Text style={Styles.statusText}>
+        <Text allowFontScaling={false} style={Styles.statusText}>
          {item.status.replace(/^./, item.status[0].toUpperCase())}
         </Text>
        </View>
       </View>
 
-      <Text style={Styles.messageLabel}>Message :</Text>
-      <Text style={Styles.messageText}>{item.message}</Text>
+      <Text allowFontScaling={false} style={Styles.messageLabel}>
+       Message :
+      </Text>
+      <Text allowFontScaling={false} style={Styles.messageText}>
+       {item.message}
+      </Text>
 
       {/* {replyCount > 0 && (
        <View style={{ marginTop: 8 }}>
@@ -100,7 +112,9 @@ useFocusEffect(
       <View style={Styles.replyRow}>
        <View style={Styles.replyCountRow}>
         {/* ✅ Show actual reply count */}
-        <Text>{replyCount}</Text>
+        <Text allowFontScaling={false} style={Styles.messageText}>
+         {replyCount}
+        </Text>
         <TouchableOpacity>
          <Image source={REPLY} style={Styles.replyIcon} />
         </TouchableOpacity>
@@ -158,6 +172,13 @@ useFocusEffect(
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderTicket}
       contentContainerStyle={{ paddingBottom: 16 }}
+      ListEmptyComponent={
+       <View style={Styles.noTicketContainer}>
+        <Text allowFontScaling={true} style={Styles.noTicketText}>
+         No Ticket Found
+        </Text>
+       </View>
+      }
      />
     )}
    </View>

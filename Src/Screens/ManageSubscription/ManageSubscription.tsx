@@ -1,63 +1,65 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
+ View,
+ Text,
+ TouchableOpacity,
+ Image,
+ SafeAreaView,
+ BackHandler
 } from 'react-native';
-import {
-  APP_LOGO,
-  BACKICON,
-  USER,
-} from '../../Constant/Icons';
+import { APP_LOGO, BACKICON, USER } from '../../Constant/Icons';
 import Styles from './Styles';
 import { useNavigation } from '@react-navigation/native';
 
 const ManageSubscription = () => {
-  const navigation = useNavigation();
+ const navigation = useNavigation();
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+   navigation.goBack(); // Go back to the previous screen
+   return true; // Prevent default behavior (exit app)
+  });
 
-  return (
-    <SafeAreaView style={Styles.safeArea}>
-      <View style={Styles.container}>
-
-
-        {/* Header */}
-        {/* <View style={Styles.headerRow}>
+  return () => backHandler.remove(); // Clean up the event on unmount
+ }, []);
+ return (
+  <SafeAreaView style={Styles.safeArea}>
+   <View style={Styles.container}>
+    {/* Header */}
+    {/* <View style={Styles.headerRow}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={BACKICON} style={Styles.backIcon} />
           </TouchableOpacity> */}
 
-          <Text allowFontScaling={true} style={Styles.headerTitle}>
-            My Subscription
-          </Text>
+    <Text allowFontScaling={true} style={Styles.headerTitle}>
+     My Subscription
+    </Text>
 
-          {/* <View style={Styles.spacer} />
+    {/* <View style={Styles.spacer} />
         </View> */}
 
-        {/* Subscription Info */}
-        <View style={Styles.subscriptionRow}>
-          <View style={Styles.subscriptionInfo}>
-            <Text allowFontScaling={true} style={Styles.purchaseDate}>
-              Purchased on 21 Apr 2025
-            </Text>
-            <View style={Styles.priceRow}>
-              <Text allowFontScaling={true} style={Styles.price}>
-                $500
-              </Text>
-              <Text allowFontScaling={true} style={Styles.perMonth}>
-                per month
-              </Text>
-            </View>
-          </View>
-
-          <TouchableOpacity style={Styles.manageBtn}>
-            <Text style={Styles.manageBtnText}>Manage Subscription</Text>
-          </TouchableOpacity>
-        </View>
+    {/* Subscription Info */}
+    <View style={Styles.subscriptionRow}>
+     <View style={Styles.subscriptionInfo}>
+      <Text allowFontScaling={true} style={Styles.purchaseDate}>
+       Purchased on 21 Apr 2025
+      </Text>
+      <View style={Styles.priceRow}>
+       <Text allowFontScaling={true} style={Styles.price}>
+        $500
+       </Text>
+       <Text allowFontScaling={true} style={Styles.perMonth}>
+        per month
+       </Text>
       </View>
-    </SafeAreaView>
-  );
+     </View>
+
+     <TouchableOpacity style={Styles.manageBtn}>
+      <Text style={Styles.manageBtnText}>Manage Subscription</Text>
+     </TouchableOpacity>
+    </View>
+   </View>
+  </SafeAreaView>
+ );
 };
 
 export default ManageSubscription;

@@ -27,13 +27,15 @@ import StudentQuiz from '../Screens/StudentQuiz/StudentQuiz';
 import TicketReply from '../Screens/TicketReply/TicketReply';
 import QuizScreen from '../Screens/Quiz/Quiz';
 import TopHeader from '../Component/TopHeader/TopHeader';
+import NonStudentTrialScreen from '../Screens/NonStudentTrialScreen/NonStudentTrialScreen';
+import RequetsAccess from '../Screens/RequestAccess/RequestAccess';
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
  return (
   <Stack.Navigator
-   initialRouteName={'StudentCode'}
+   initialRouteName={'StudentCourseList'}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
@@ -80,6 +82,12 @@ const MainStackNavigator = () => {
    <Stack.Screen name="TermsPolicies" component={TermsPolicies} />
    <Stack.Screen name="AddTicket" component={AddTicket} />
    <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+   <Stack.Screen name="RequetsAccess" component={RequetsAccess} />
+   <Stack.Screen name="TrialAccessScreen" component={TrialAccessScreen} />
+   <Stack.Screen
+    name="NonStudentTrialScreen"
+    component={NonStudentTrialScreen}
+   />
   </Stack.Navigator>
  );
 };
