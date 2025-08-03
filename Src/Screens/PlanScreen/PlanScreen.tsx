@@ -9,7 +9,7 @@ import {
  BackHandler
 } from 'react-native';
 import { APP_LOGO, PREMIUM, USER } from '../../Constant/Icons';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, mvs } from 'react-native-size-matters';
 import fonts from '../../Constant/Fonts';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import colors from '../../Constant/colors';
@@ -64,30 +64,29 @@ export default function PlanScreen() {
  }, []);
  const renderPlans = ({ item, index }: any) => {
   return (
-   <View>
-    <TouchableOpacity
-     style={[Styles.planBox, selectedPlan === item && Styles.planSelected]}
-     onPress={() => setSelectedPlan(item)}>
-     <View style={Styles.planTop}>
-      <Text allowFontScaling={false} style={Styles.planTitle}>
-       {item?.title}
-      </Text>
-      <Text allowFontScaling={false} style={Styles.bestValue}>
-       {item?.badge}
-      </Text>
-     </View>
-     <View style={{ marginTop: 5 }}>
-      <Text allowFontScaling={false} style={Styles.planText}>
-       {item?.description} - {Number(item?.price).toFixed(0)} /
-       {item?.duration_months} months
-      </Text>
-     </View>
-    </TouchableOpacity>
-   </View>
+   <TouchableOpacity
+    style={[Styles.planBox, selectedPlan === item && Styles.planSelected]}
+    onPress={() => setSelectedPlan(item)}>
+    <View style={Styles.planTop}>
+     <Text allowFontScaling={false} style={Styles.planTitle}>
+      {item?.title}
+     </Text>
+     <Text allowFontScaling={false} style={Styles.bestValue}>
+      {item?.badge}
+     </Text>
+    </View>
+    <View style={{ marginTop: 5 }}>
+     <Text allowFontScaling={false} style={Styles.planText}>
+      {item?.description} - {Number(item?.price).toFixed(0)} /
+      {item?.duration_months} months
+     </Text>
+    </View>
+   </TouchableOpacity>
   );
  };
  return (
   <ScrollView
+   style={{ flex: 1 }}
    showsVerticalScrollIndicator={false}
    contentContainerStyle={Styles.container}>
    {/* Title */}
@@ -106,8 +105,10 @@ export default function PlanScreen() {
    />
    <View
     style={{
-     height: responsiveScreenHeight(22),
-     marginTop: responsiveScreenHeight(3)
+     height: mvs(230),
+     marginTop: mvs(10),
+
+     width: '95%'
     }}>
     <FlatList
      data={arrData}

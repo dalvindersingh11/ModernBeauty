@@ -12,8 +12,8 @@ const Styles = StyleSheet.create({
   gap: mvs(10),
   width: '90%',
   alignSelf: 'center',
-  paddingHorizontal: ms(8),
-  paddingTop: mvs(20)
+//   paddingHorizontal: ms(8),
+  paddingTop: mvs(10)
  },
 
  headerRow: {
@@ -50,14 +50,14 @@ const Styles = StyleSheet.create({
   backgroundColor: '#f0f0f0',
   borderRadius: 8,
   overflow: 'hidden',
-  marginBottom: 10
+  marginBottom: mvs(12)
  },
  ticketRow: {
   flexDirection: 'row'
  },
  statusBar: {
   backgroundColor: '#544C4C',
-  width: 20
+  width: 12
  },
  ticketContent: {
   padding: 12,

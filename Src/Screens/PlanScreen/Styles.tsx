@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
-import { moderateScale, mvs } from 'react-native-size-matters';
+import { moderateScale, moderateVerticalScale, ms, mvs } from 'react-native-size-matters';
 import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
@@ -9,18 +9,18 @@ export default StyleSheet.create({
   flex: 1,
   backgroundColor: colors.backgrounColor,
   alignItems: 'center',
-  paddingTop: moderateScale(21),
-  padding: 1
+  paddingTop: moderateScale(10),
+paddingHorizontal:ms(10)
  },
  header: {
-  width: '90%',
+//   width: '90%',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center'
  },
  brand: {
   fontSize: 12,
-  fontFamily: 'cursive',
+  fontFamily:fonts.bold,
   color: '#000'
  },
  profileIcon: {
@@ -29,7 +29,7 @@ export default StyleSheet.create({
   borderRadius: 20
  },
  title: {
-  fontSize: 32,
+  fontSize: 30,
   fontFamily: fonts.bold,
   marginTop: mvs(10),
   color: '#000'
@@ -39,23 +39,24 @@ export default StyleSheet.create({
   textAlign: 'center',
   fontFamily: fonts.regular,
   color: colors.black,
-  marginTop: responsiveScreenHeight(1)
+  marginTop: mvs(5)
  },
  giftImage: {
-  width: moderateScale(285),
-  height: moderateScale(130),
+//   width: moderateScale(285),
+  height: mvs(130),
   resizeMode: 'contain',
-  marginTop: responsiveScreenHeight(5)
+  marginTop: moderateVerticalScale(10)
  },
  planBox: {
-  width: moderateScale(282),
+//   width: moderateScale(282),
   //   height: moderateScale(75),
   backgroundColor: colors.planColor,
   borderRadius: 12,
   padding: 15,
   marginBottom: 15,
   borderWidth: 1.6,
-  borderColor: 'transparent'
+  borderColor: 'transparent',
+  height:mvs(90)
  },
  planSelected: {
   borderColor: '#000',
@@ -92,7 +93,7 @@ export default StyleSheet.create({
   justifyContent: 'center',
   alignItems: 'center',
   //   marginTop: responsiveScreenHeight(4),
-  width: moderateScale(285),
+  width:"80%",
   padding: moderateScale(15)
  },
  disableButton: {
@@ -103,7 +104,7 @@ export default StyleSheet.create({
   justifyContent: 'center',
   alignItems: 'center',
   //   marginTop: responsiveScreenHeight(4),
-  width: moderateScale(285),
+  width:"80%",
   padding: moderateScale(15)
  },
  proceedText: {

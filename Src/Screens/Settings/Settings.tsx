@@ -67,6 +67,7 @@ const Settings = () => {
    console.log('logoutResponse', response?.data);
 
    await AsyncStorage.removeItem('token');
+   await AsyncStorage.removeItem('codeSubmitted');
    await AsyncStorage?.clear();
    showToast('Logged out successfully');
    //    navigation?.navigate('auth');

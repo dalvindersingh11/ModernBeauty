@@ -334,7 +334,6 @@ const EditProfile = () => {
 
       {renderLabel('Country/Region')}
       <TouchableOpacity
-       disabled={true}
        onPress={() => setShowCountryPicker(true)}
        style={Styles.dropdownBox}>
        <Text>{country?.name || 'Select country'}</Text>

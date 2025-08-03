@@ -202,12 +202,13 @@ export default function NonStudentTrialScreen(props: any) {
        style={{
         width: moderateScale(20),
         height: moderateScale(20),
-        borderWidth: 1
+        borderWidth: 1,
        }}></View>
       <View
        style={{
-        width: moderateScale(260),
-        justifyContent: 'center'
+        // width: moderateScale(260),
+        width:'100%',
+        justifyContent: 'center',paddingLeft:20
        }}>
        <Text allowFontScaling={false} style={styles.bodyText}>
         {item.description || 'No description available'}
@@ -504,9 +505,9 @@ const styles = StyleSheet.create({
  },
  header: {
   backgroundColor: '#000',
-  width: moderateScale(340),
-  height: moderateScale(40),
-  padding: 12,
+  width: "100%",
+  // height: moderateScale(40),
+ padding:ms(12),
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center'
@@ -519,7 +520,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   backgroundColor: '#e8cbbf',
   borderWidth: 1,
-  width: moderateScale(340),
+  // width: moderateScale(340),
   // height: moderateScale(40),
   borderRadius: 10,
   padding: 8,
@@ -653,11 +654,11 @@ const styles = StyleSheet.create({
  },
  body: {
   backgroundColor: '#f7e3d9',
-  width: moderateScale(340),
+  // width: moderateScale(340),
   //   height: moderateScale(40),
-  padding: 12,
+  padding: ms(12),
   flexDirection: 'row',
-  justifyContent: 'space-around',
+  // justifyContent:'space-between',
   alignItems: 'center'
  },
  bodyText: {

@@ -20,6 +20,7 @@ import {
 } from '../../Constant/Icons';
 import Styles from './Styles';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { mvs } from 'react-native-size-matters';
 
 const HelpSupport = () => {
  const navigation = useNavigation();
@@ -159,7 +160,7 @@ const HelpSupport = () => {
 
     {/* Ticket List or Message */}
     {loading ? (
-     <ActivityIndicator size="large" color="#000" style={{ marginTop: 20 }} />
+     <ActivityIndicator size="large" color="#000" style={{ marginTop: 250, }} />
     ) : tickets.length === 0 ? (
      <View style={Styles.noTicketContainer}>
       <Text allowFontScaling={true} style={Styles.noTicketText}>
@@ -169,9 +170,10 @@ const HelpSupport = () => {
     ) : (
      <FlatList
       data={tickets}
+      showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderTicket}
-      contentContainerStyle={{ paddingBottom: 16 }}
+      contentContainerStyle={{ paddingBottom: mvs(110) }}
       ListEmptyComponent={
        <View style={Styles.noTicketContainer}>
         <Text allowFontScaling={true} style={Styles.noTicketText}>

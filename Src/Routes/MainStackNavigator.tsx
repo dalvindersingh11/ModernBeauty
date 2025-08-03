@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TopHeader from '../Component/TopHeader/TopHeader';
+import { useNavigation } from '@react-navigation/native';
 
-// Screens
+// All screen imports...
 import TrialAccessScreen from '../Screens/TrialScreen/TrialScreen';
 import PlanScreen from '../Screens/PlanScreen/PlanScreen';
 import PaymentScreen from '../Screens/PaymentScreen/PaymentScreen';
@@ -26,21 +28,66 @@ import ContentCourse from '../Screens/ContentSourse/ContentCourse';
 import StudentQuiz from '../Screens/StudentQuiz/StudentQuiz';
 import TicketReply from '../Screens/TicketReply/TicketReply';
 import QuizScreen from '../Screens/Quiz/Quiz';
-import TopHeader from '../Component/TopHeader/TopHeader';
 import NonStudentTrialScreen from '../Screens/NonStudentTrialScreen/NonStudentTrialScreen';
 import RequetsAccess from '../Screens/RequestAccess/RequestAccess';
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
+ const [initialRoute, setInitialRoute] = useState<string | null>(null);
+ const [loading, setLoading] = useState(true);
+
+ useEffect(() => {
+  const checkCodeSubmitted = async () => {
+   try {
+    const codeSubmitted = await AsyncStorage.getItem('codeSubmitted');
+    const userType = await AsyncStorage.getItem('userType');
+
+    if (userType === '0') {
+     setInitialRoute('NonStudentTrialScreen');
+    } else if (userType === '1') {
+     if (codeSubmitted === 'true') {
+      setInitialRoute('StudentCourseList');
+     } else {
+      setInitialRoute('StudentCode');
+     }
+    } else {
+     // fallback route if userType is something unexpected
+     setInitialRoute('NonStudentTrialScreen');
+    }
+   } catch (err) {
+    console.error('Error checking AsyncStorage:', err);
+    setInitialRoute('NonStudentTrialScreen');
+   } finally {
+    setLoading(false);
+   }
+  };
+
+  checkCodeSubmitted();
+ }, []);
+
+ if (loading || !initialRoute) {
+  return (
+   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ActivityIndicator size="large" />
+   </View>
+  );
+ }
+
  return (
   <Stack.Navigator
-   initialRouteName={'NonStudentTrialScreen'}
+   initialRouteName={initialRoute}
    screenOptions={{
     header: ({ navigation }) => (
      <TopHeader backOnPress={() => navigation.goBack()} />
     )
    }}>
+   {/* All your screen definitions */}
+   <Stack.Screen
+    name="StudentCode"
+    component={StudentCode}
+    options={{ headerShown: false }}
+   />
    <Stack.Screen
     name="QuizScreen"
     component={QuizScreen}
@@ -52,22 +99,20 @@ const MainStackNavigator = () => {
     component={StudentCourseList}
     options={{ headerShown: false }}
    />
-
    <Stack.Screen
     name="ContentCourse"
-    options={{ headerShown: false }}
     component={ContentCourse}
+    options={{ headerShown: false }}
    />
    <Stack.Screen name="PlanScreen" component={PlanScreen} />
    <Stack.Screen name="OtpScreen" component={OtpScreen} />
    <Stack.Screen
-    options={{ headerShown: false }}
     name="PaymentScreen"
     component={PaymentScreen}
+    options={{ headerShown: false }}
    />
    <Stack.Screen name="CourseListIndex" component={CourseListIndex} />
    <Stack.Screen name="HairCourses" component={HairCourses} />
-
    <Stack.Screen name="ViewFolder" component={ViewFolder} />
    <Stack.Screen name="SingleCoursePlayer" component={SingleCoursePlayer} />
    <Stack.Screen name="Settings" component={Settings} />
@@ -83,8 +128,10 @@ const MainStackNavigator = () => {
    <Stack.Screen
     name="NonStudentTrialScreen"
     component={NonStudentTrialScreen}
-     options={{ headerShown: false }}
+    options={{ headerShown: false }}
    />
+   <Stack.Screen name="TicketReply" component={TicketReply} />
+   <Stack.Screen name="StudentQuiz" component={StudentQuiz} />
   </Stack.Navigator>
  );
 };

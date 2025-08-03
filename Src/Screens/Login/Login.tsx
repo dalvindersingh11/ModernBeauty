@@ -101,13 +101,13 @@ export default function LoginScreen() {
 
    const targetScreen =
     Number(response?.data?.user_type) === 1
-     ? 'StudentCode'
-     : 'NonStudentTrialScreen';
+     ? {name: 'auth', params: { screen: 'StudentCode' }}
+     :{ name: 'main', params: { screen: 'NonStudentTrialScreen' }};
 
    navigation.dispatch(
     CommonActions.reset({
      index: 0,
-     routes: [{ name: 'main', params: { screen: targetScreen } }]
+     routes: [targetScreen]
     })
    );
    showToast('Login successful!');

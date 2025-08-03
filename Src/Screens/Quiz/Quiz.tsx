@@ -11,7 +11,7 @@ import {
  ActivityIndicator,
  BackHandler
 } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, mvs } from 'react-native-size-matters';
 import colors from '../../Constant/colors';
 import fonts from '../../Constant/Fonts';
 import { ATTEMPT, MARKS, QUESTION, TIMER, WARNING } from '../../Constant/Icons';
@@ -255,7 +255,7 @@ const QuizScreen = (props: any) => {
     </View>
    ) : (
     <View>
-     <View style={{ width: moderateScale(335) }}></View>
+     <View style={{ width: '100%' }}></View>
      <View style={styles.headerRow}>
       <View style={styles.headerBox}>
        <Image style={styles.topImage} source={MARKS} />
@@ -310,7 +310,7 @@ const QuizScreen = (props: any) => {
 
      <View
       style={{
-       height: responsiveScreenHeight(56),
+       height: responsiveScreenHeight(54),
        backgroundColor: colors.white,
        borderRadius: 9,
        borderWidth: 1,
@@ -323,13 +323,15 @@ const QuizScreen = (props: any) => {
        showsVerticalScrollIndicator={false}
        keyExtractor={(item) => item.id?.toString()}
        renderItem={renderItem}
-       contentContainerStyle={{ padding: 5 }}
+       contentContainerStyle={{ padding: 5, flex: 1 }}
+       style={{ flex: 1 }}
        ListEmptyComponent={
         <View
          style={{
+          flex: 1,
           justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: responsiveScreenHeight(10)
+          alignItems: 'center'
+          //   marginTop: responsiveScreenHeight(10)
          }}>
          <Text
           allowFontScaling={false}
@@ -387,32 +389,33 @@ const styles = StyleSheet.create({
  container: {
   flex: 1,
   backgroundColor: colors.backgrounColor,
-  padding: moderateScale(22)
+  paddingHorizontal: moderateScale(15),
+  paddingTop: mvs(10)
  },
  headerRow: {
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: 10,
-  //   width: '95%',
-  alignItems: 'center',
-  alignSelf: 'center'
+  marginTop: mvs(8)
  },
  subtitle: {
   fontFamily: fonts.medium,
-  marginVertical: 1,
+  //   marginVertical: 1,
   fontSize: 16,
   color: colors.textColor,
-  marginTop: responsiveScreenHeight(1)
+  marginTop: mvs(8)
+  //   marginTop: responsiveScreenHeight(1)
  },
  headerBox: {
-  width: moderateScale(80),
-  marginHorizontal: 4,
+  //   width: moderateScale(80),
+  flex: 1 / 4.2,
+  //   marginHorizontal: 4,
   backgroundColor: '#fff',
   padding: 8,
   borderRadius: 10,
   borderWidth: 1,
   alignItems: 'center',
-  marginTop: responsiveScreenHeight(1)
+  marginTop: mvs(8)
+  //   marginTop: responsiveScreenHeight(1)
  },
  headerBigText: {
   fontFamily: fonts.medium,
@@ -437,7 +440,8 @@ const styles = StyleSheet.create({
   backgroundColor: colors.white,
   borderRadius: 8,
   padding: 14,
-  marginBottom: 10
+  marginVertical: mvs(8)
+  //   marginBottom: 10
  },
  warningText: {
   color: colors.black,
@@ -453,8 +457,8 @@ const styles = StyleSheet.create({
   backgroundColor: '#fff',
   padding: 15,
   justifyContent: 'center',
-  alignSelf: 'center',
-  width: responsiveScreenWidth(85)
+  alignSelf: 'center'
+  //   width: responsiveScreenWidth(85)
  },
  questionText: {
   fontWeight: 'bold',
@@ -522,7 +526,7 @@ const styles = StyleSheet.create({
   alignSelf: 'center',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '4%'
+  marginTop: mvs(10)
  },
  loginText: {
   color: colors.white,

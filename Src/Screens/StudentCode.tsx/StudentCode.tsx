@@ -73,7 +73,9 @@ const StudentCode = () => {
    console.log('✅ Verify Code Success:');
    setLoading(false);
    showToast(response?.data?.message || 'Code verification successful!');
-   navigation?.navigate('StudentCourseList');
+   await AsyncStorage.setItem("codeSubmitted","true")
+   navigation?.navigate({name:"main",params:{screen:'StudentCourseList'}});
+   console.log(AsyncStorage.getItem("codeSubmitted"))
    // Navigate based on userType
    //    await checkUserTypeAndNavigate();
   } catch (error: any) {
